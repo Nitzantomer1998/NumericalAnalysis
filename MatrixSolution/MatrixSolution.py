@@ -1,9 +1,9 @@
-# Author : Nitzan Tomer.
-# Assignment Number Two.
+# Author: Nitzan Tomer.
+# Matrix Solution.
 
 def print_matrix(matrix):
     """
-    Matrix Printing Function
+    Printing matrix
 
     :param matrix: Matrix NxM
     """
