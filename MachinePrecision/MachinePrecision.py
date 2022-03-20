@@ -5,7 +5,6 @@
 # Variables
 ourEpsilon = 1
 loopsNum = 0
-flag = True
 
 # "Function" To Find Your Machine Precision
 print("\n[Machine Precision Find]")
