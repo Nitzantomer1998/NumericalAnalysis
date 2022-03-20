@@ -13,7 +13,6 @@ while 1.0 + (ourEpsilon / 2) > 1.0:
     loopsNum = loopsNum + 1
     ourEpsilon = ourEpsilon / 2
 
-
 # Your Own Machine Precision
 print(f'Your Epsilon Is --> {ourEpsilon}\n')
 
