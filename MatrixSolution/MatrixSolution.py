@@ -1,71 +1,193 @@
 # Author: Nitzan Tomer.
 # Matrix Solver.
 
-def print_matrix(matrix):
+
+def multiply_Matrix(matrix_A, matrix_B, flag):
     """
-    Printing matrix
+    Multiplying two matrices and return the outcome matrix
 
-    :param matrix: Matrix NxM
+    :param matrix_A: NxM Matrix
+    :param matrix_B: NxM Matrix
+    :return: NxM matrix
     """
-    # Printing the matrix
-    print('[Matrix Print]')
-    for row in range(len(matrix)):
-        print(matrix[row])
+    # Initialize NxM matrix filled with zeros
+    matrix_C = [[0.0] * len(matrix_B[0]) for row in range(len(matrix_A))]
+
+    # Multiply the two matrices and store the outcome in matrix_C
+    for i in range(len(matrix_A)):
+        for j in range(len(matrix_B[0])):
+            for k in range(len(matrix_B)):
+                matrix_C[i][j] = matrix_C[i][j] + matrix_A[i][k] * matrix_B[k][j]
+
+    # Adding the matrices to the right lists
+    if flag:
+        elementary_Matrix_List.append(matrix_A)
+        current_Matrix.append(matrix_B)
+        final_Matrix.append(matrix_C)
+
+    # Return the outcome matrix
+    return matrix_C
 
 
-def print_solution(vector_solution):
+def gaussian_Elimination():
     """
-    Print the matrix solution
+    Solving linear equation in LU Gaussian Elimination method, and return the solution
 
-    :param vector_solution: Nx1 matrix
     """
-    # Printing the vector solution
-    print('[Vector Solution]')
-    for i in range(len(vector_solution)):
-        print(chr(65 + i) + ' --> ' + str(vector_solution[i][0]))
+    # Initialize the matrix, and vector_B
+    origin_Matrix, vector_B = init_Matrix()
+
+    # In case the matrix has one solution
+    if determinant_Matrix(origin_Matrix):
+
+        # Getting matrix U and matrix_L
+        matrix_U = find_U(origin_Matrix)
+        matrix_L = matrix_Temp[0]
+
+        # Solve Ly = B
+        vector_Y = forward_Substitution(matrix_L, vector_B)
+
+        # Solve Ux = y
+        vector_X = back_Substitution(matrix_U, vector_Y)
+
+        # Getting the inverse matrix
+        inverse_U = negative_Matrix(matrix_U)
+        inverse_L = negative_Matrix(matrix_L)
+
+        # Getting the solution accuracy
+        solution_Precision = cond_A(origin_Matrix, multiply_Matrix(inverse_U, inverse_L, False))
+        print('Solution Precision --> ' + str(solution_Precision))
+
+        # Return Vector solution
+        return vector_X
 
 
-def print_elementary_matrix(elementary_matrices):
+def find_U(matrix):
     """
-    Printing all the elementary matrices
-
-    :param elementary_matrices: List of NxN matrices
-    """
-    # Printing the elementary matrices
-    print('[Elementary Matrices]')
-    for i in reversed(range(len(elementary_matrices))):
-        print('\n[Elementary Matrix[' + str(i) + ']')
-        print_matrix(elementary_matrices[i])
-
-
-def organize_matrix(matrix):
-    """
-    Rearrange the matrix, such that the pivot in every column will be the highest
+    Solve the matrix into an Upper matrix, and return it
 
     :param matrix: NxN matrix
-    :return: Return True if the matrix pivots are not Zero, and they are the highest in every column
+    :return: Upper NxN matrix
     """
+
+    # Solving matrix into an Upper matrix
     for i in range(len(matrix)):
-        max_pivot = abs(matrix[i][i])
-        for j in range(i, len(matrix)):
-            if abs(matrix[j][i]) > max_pivot:
-                max_pivot = abs(matrix[j][i])
-                matrix[i], matrix[j] = matrix[j], matrix[i]
+        for j in range(i + 1, len(matrix)):
+            matrix = multiply_Matrix(init_Elementary_Matrix(len(matrix), j, i, -(matrix[j][i]) / matrix[i][i]), matrix, True)
 
-    for i in reversed(range(len(matrix))):
-        if matrix[i][i] == 0:
-            matrix[i], matrix[i - 1] = matrix[i - 1], matrix[i]
-
-    for i in range(len(matrix)):
-        if matrix[i][i] == 0:
-            # Return false in case arbitrary pivot is zero
-            return False
-
-    # Return true if the matrix pivots in the right order
-    return True
+    # Return the Upper matrix
+    return matrix
 
 
-def elementary_matrix_init(size, row, col, value):
+def forward_Substitution(lower_Matrix, vector_B):
+    """
+    Solve Ly = B, and return the vector y
+
+    :param lower_Matrix: NxN lower matrix
+    :param vector_B: Nx1 vector B
+    :return: Nx1 vector solution
+    """
+    # Initialize vector_Y
+    vector_Y = [[0.0 for col in range(1)] for row in range(len(lower_Matrix))]
+
+    # Solve Ly = B
+    for i in range(len(lower_Matrix)):
+        vector_Y[i][0] = vector_B[i][0]
+        for j in range(i):
+            vector_Y[i][0] = vector_Y[i][0] - lower_Matrix[i][j] * vector_Y[j][0]
+        vector_Y[i][0] = vector_Y[i][0] / lower_Matrix[i][i]
+
+    # Return vector solution
+    return vector_Y
+
+
+def back_Substitution(upper_Matrix, vector_Y):
+    """
+    Solve Ux = y, and return the vector x
+
+    :param upper_Matrix: NxN upper matrix
+    :param vector_Y: Nx1 vector Y
+    :return: Nx1 vector solution
+    """
+    # Initialize vector_X
+    vector_X = [[0.0 for col in range(1)] for row in range(len(upper_Matrix))]
+    vector_X[len(upper_Matrix) - 1][0] = vector_Y[len(upper_Matrix) - 1][0] / upper_Matrix[len(upper_Matrix) - 1][len(upper_Matrix) - 1]
+
+    # Solve Ux = y
+    for i in range(len(upper_Matrix) - 2, -1, -1):
+        sum = vector_Y[i][0]
+        for j in range(i + 1, len(upper_Matrix)):
+            sum = sum - upper_Matrix[i][j] * vector_X[j][0]
+        vector_X[i][0] = sum / upper_Matrix[i][i]
+
+    # Return vector solution
+    return vector_X
+
+
+def cond_A(matrix, inverse_Matrix):
+    """
+    Return the Precision of the matrix
+
+    :param matrix: NxN matrix
+    :param inverse_Matrix: The inverse of matrix
+    :return: Matrix sulotion precision
+    """
+    return inf_Norm(inverse_Matrix) * inf_Norm(matrix)
+
+
+def inf_Norm(matrix):
+    """
+    Return the Max Norm of the matrix
+
+    :param matrix: NxN matrix
+    :return: Infinity norm of the matrix
+    """
+    norm = 0
+    for i in range(len(matrix[0])):
+        sum_Row = 0
+        for j in range(len(matrix)):
+            sum_Row = sum_Row + abs(matrix[i][j])
+        norm = max(sum_Row, norm)
+    return norm
+
+
+def init_Matrix():
+    """
+    Initialize user linear equations, and return them
+
+    :return: NxN matrix, and Nx1 vector B
+    """
+    # Asking for matrix size
+    size = int(input('Matrix Size --> '))
+
+    # Initialize matrix to zero's
+    matrix = [[0.0 for col in range(size)] for row in range(size)]
+
+    # Initialize matrix_L to matrix Unit
+    matrix_Temp.append([[1.0 if row == col else 0.0 for col in range(size)] for row in range(size)])
+
+    # Initialize vector_B to zero's
+    vector_B = [[0.0 for col in range(1)] for row in range(size)]
+
+    # Initialize matrix according to the user
+    """
+    print('[Initialize Matrix]')
+    for row in range(size):
+        for col in range(size):
+            matrix[row][col] = float(input(f'Matrix[{row}][{col}] Value --> '))
+
+        # Initialize vector solution according to the user
+        vector_B[row][0] = float(input(f'Vector_B[{row}] Value --> '))
+        print()
+    """
+    matrix = [[1.0, 1.0, -1.0], [1.0, -2.0, 3.0], [2.0, 3.0, 1.0]]
+    vector_B = [[4.0], [-6.0], [7.0]]
+
+    # Return the user linear equation
+    return matrix, vector_B
+
+
+def init_Elementary_Matrix(size, row, col, value):
     """
     Initialize elementary matrix, from identity matrix, and a specific value, and return it
 
@@ -76,45 +198,19 @@ def elementary_matrix_init(size, row, col, value):
     :return: Return the elementary matrix
     """
     # Initialize the desire elementary matrix
-    elementary_matrix = [[1 if x == y else 0 for y in range(size)] for x in range(size)]
-    elementary_matrix[row][col] = value
+    elementary_Matrix = [[1.0 if row == col else 0.0 for col in range(size)] for row in range(size)]
+    elementary_Matrix[row][col] = value
 
-    # Saving the elementary matrix in an array
-    elementary_matrix_array.append(elementary_matrix)
+    # Building Matrix_L
+    matrix_Temp[0][row][col] = -value
 
     # Return the elementary matrix
-    return elementary_matrix
+    return elementary_Matrix
 
 
-def multiply_matrix(matrix_a, matrix_b):
-    """
-    Multiplying two matrices and return the outcome matrix
-
-    :param matrix_a: NxM Matrix
-    :param matrix_b: NxM Matrix
-    :return: NxM matrix
-    """
-    # Initialize NxM matrix filled with zeros
-    multiplied_matrix = [[0] * len(matrix_b[0]) for _ in range(len(matrix_a))]
-
-    # Multiply the two matrices and store the outcome in the new matrix
-    for i in range(len(matrix_a)):
-        for j in range(len(matrix_b[0])):
-            for k in range(len(matrix_b)):
-                multiplied_matrix[i][j] = multiplied_matrix[i][j] + matrix_a[i][k] * matrix_b[k][j]
-
-    # Return the outcome matrix
-    return multiplied_matrix
-
-
-def get_co_factor(m, i, j):
-    return [row[: j] + row[j + 1:] for row in (m[: i] + m[i + 1:])]
-
-
-def determinant_matrix(matrix):
+def determinant_Matrix(matrix):
     """
     Calculate the matrix determinant and return the result
-
     :param matrix: NxN Matrix
     :return: Matrix determinant
     """
@@ -131,7 +227,7 @@ def determinant_matrix(matrix):
         sign = (-1) ** current_column
 
         # Calling the function recursively to get determinant value of sub matrix obtained
-        determinant_sub = determinant_matrix(get_co_factor(matrix, 0, current_column))
+        determinant_sub = determinant_Matrix([row[: current_column] + row[current_column + 1:] for row in (matrix[: 0] + matrix[0 + 1:])])
 
         # Adding the calculated determinant value of particular column matrix to total the determinant_sum
         determinant_sum = determinant_sum + (sign * matrix[0][current_column] * determinant_sub)
@@ -140,46 +236,52 @@ def determinant_matrix(matrix):
     return determinant_sum
 
 
-def inverse_matrix(matrix):
+def print_gaussian_elimination(elementary_matrices, current_matrices, outcome_matrices):
     """
-    Find the inverse matrix of the sent matrix and return it
+    Printing all the LU Gaussian Elimination process
+
+    :param elementary_matrices: List of NxN matrices
+    :param current_matrices: List of NxN matrices
+    :param outcome_matrices: List of NxN matrices
+    """
+    for i in range(len(elementary_matrices)):
+        print('\n[Iterator Number --> ' + str(i) + ']')
+        for j in range(len(elementary_matrices[i])):
+            if j == 1:
+                print(str(elementary_matrices[i][j]) + ' X ' + str(current_matrices[i][j]) + ' = ' + str(outcome_matrices[i][j]))
+
+            else:
+                print(str(elementary_matrices[i][j]) + ' ' + str(current_matrices[i][j]) + '  ' + str(outcome_matrices[i][j]))
+
+
+def negative_Matrix(matrix):
+    """
+    Return the inverse matrix
 
     :param matrix: NxN matrix
-    :return: NxN inverse matrix
+    :return: Inverse matrix
     """
-    if determinant_matrix(matrix):
-        if organize_matrix(matrix):
-            for i in range(len(matrix)):
-                if matrix[i][i] != 1:
-                    matrix = multiply_matrix(elementary_matrix_init(len(matrix), i, i, 1 / matrix[i][i]), matrix)
-                for j in range(len(matrix)):
-                    if i != j:
-                        if matrix[j][i] != 0:
-                            matrix = multiply_matrix(elementary_matrix_init(len(matrix), j, i, -(matrix[j][i])), matrix)
+    # Initialize inverse_Matrix to identity matrix
+    inverse_Matrix = [[1.0 if row == col else 0.0 for col in range(len(matrix))] for row in range(len(matrix))]
 
-            inversed_matrix = elementary_matrix_array[0]
-            for i in range(1, len(elementary_matrix_array)):
-                inversed_matrix = multiply_matrix(elementary_matrix_array[i], inversed_matrix)
-            return inversed_matrix
+    # Change the matrix, into -(matrix) but identity
+    for i in range(len(matrix)):
+        for j in range(len(matrix)):
+            if i != j:
+                inverse_Matrix[i][j] = - matrix[i][j]
 
-    else:
-        print('Matrix Not Singular')
+    # Return the inverse matrix
+    return inverse_Matrix
 
 
-def gaussian_elimination(matrix, vector_b):
-    """
-    Solving the matrix in Gaussian Elimination method, and return the solution
-
-    :param matrix: NxM matrix
-    :param vector_b: Nx1 matrix
-    :return: The vector solution
-    """
-    # Return the outcome matrix from multiply the reverse matrix with Vector_b
-    return multiply_matrix(inverse_matrix(matrix), vector_b)
+def driver():
+    vector_solution = gaussian_Elimination()
+    print(vector_solution)
 
 
-elementary_matrix_array = []
-mat = [[1, -1, -2], [2, -3, -5], [-1, 3, 5]]
-vector_b = [[5], [5], [5]]
-vector_solution = gaussian_elimination(mat, vector_b)
-print()
+elementary_Matrix_List = []
+current_Matrix = []
+final_Matrix = []
+matrix_Temp = []
+driver()
+
