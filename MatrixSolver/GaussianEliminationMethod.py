@@ -5,6 +5,13 @@ MATRIX_COUNT = 0
 
 
 def printIntoFile(data, message, isTrue):
+    """
+    Printing the data and the message content into a specified file
+
+    :param data: Data from a user
+    :param message: Message that contain the data subject
+    :param isTrue: Boolean parameter, which help to navigate to the right section
+    """
     # Our Global Variable To Count The Iteration Number
     global MATRIX_COUNT
 
@@ -24,7 +31,7 @@ def printIntoFile(data, message, isTrue):
             # Saving the matrix in the file
             file.write('\n' + str(message) + ' [' + str(MATRIX_COUNT) + ']\n')
             for i in range(len(data)):
-                for j in range(len(data)):
+                for j in range(len(data[0])):
                     objectData = '{: ^22}'.format(data[i][j])
                     file.write(objectData)
                 file.write('\n')
@@ -34,62 +41,44 @@ def printIntoFile(data, message, isTrue):
 
         # Our Solution Data
         else:
-            # In case we are printing the solution, or the solution accuracy
+            # In case we are printing the solution accuracy
             file.write('==============================================================================================')
             file.write('\n[' + str(message) + ']\n')
             file.write(str(data))
             file.write('\n')
 
 
-def multiplyMatrix(matrixA, matrixB, isTrue):
-    """
-    Multiplying two matrices and return the outcome matrix
-
-    :param matrixA: NxM Matrix
-    :param matrixB: NxM Matrix
-    :param isTrue: Boolean which decide if to save the matrices in a file
-    :return: NxM matrix
-    """
-    # Initialize NxM matrix filled with zero's
-    matrixC = [[0.0] * len(matrixB[0]) for _ in range(len(matrixA))]
-
-    # Multiply the two matrices and store the outcome in matrixC
-    for i in range(len(matrixA)):
-        for j in range(len(matrixB[0])):
-            for k in range(len(matrixB)):
-                matrixC[i][j] = matrixC[i][j] + matrixA[i][k] * matrixB[k][j]
-
-    # Saving the matrices in the right lists
-    if isTrue:
-        # Saving the matrices in a file
-        printIntoFile(matrixA, 'Elementary Matrix', True)
-        printIntoFile(matrixB, 'Pre Multiply Matrix', True)
-        printIntoFile(matrixC, 'After Multiply Matrix', True)
-
-    # Return the outcome matrix
-    return matrixC
-
-
 def gaussianElimination():
     """
-    Solving linear equation in LU Gaussian Elimination method
+    Solving linear equation in Gaussian Elimination method
 
     """
     # Initialize the matrix, and vectorB
     originMatrix, vectorB = initMatrix()
 
-    # In case the matrix has one solution
-    if determinantMatrix(originMatrix):
+    # Check if the matrix is Quadratic matrix, and check if vectorB is in appropriate size
+    if len(originMatrix) == len(originMatrix[0]) and (len(vectorB) == 1 and len(vectorB[0]) == len(originMatrix)):
 
-        # Getting the inverse matrix of originMatrix, and the fixed vectorB
-        inverseMatrix, vectorB = findInverse(originMatrix, vectorB)
+        # In case the matrix has one solution
+        if determinantMatrix(originMatrix):
 
-        # Getting the accuracy of the solution
-        solutionPrecision = matrixCond(originMatrix, inverseMatrix)
+            # Getting the inverse matrix of originMatrix, and the fixed vectorB
+            inverseMatrix, vectorB = findInverse(originMatrix, vectorB)
 
-        # Saving the matrix solution
-        printIntoFile(vectorB, 'Matrix Solution', False)
-        printIntoFile(solutionPrecision, 'Solution Accuracy Rate', False)
+            # Getting the accuracy of the solution
+            solutionPrecision = matrixCond(originMatrix, inverseMatrix)
+
+            # Saving the matrix solution
+            printIntoFile(vectorB, 'Matrix Solution', True)
+            printIntoFile(solutionPrecision, 'Solution Accuracy Rate', False)
+
+        # According message In case there is more or less than one solution
+        else:
+            print('This Is A Singular Matrix')
+
+    # In case the input Linear Equation isn't meet the demands
+    else:
+        print("The Input Linear Equation Isn't Match")
 
 
 def findInverse(matrix, vector):
@@ -110,7 +99,7 @@ def findInverse(matrix, vector):
 
         for j in range(i + 1, len(matrix)):
             if matrix[j][i] != 0:
-                # Multiply into an Upper matrix, fixing the matrix vector as well, and keep the inverseMatrix updated
+                # Multiply into an Upper matrix, updating matrix vector as well, and keep the inverseMatrix updated
                 vector = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), vector, False)
                 inverseMatrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), inverseMatrix, False)
                 matrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), matrix, True)
@@ -118,19 +107,19 @@ def findInverse(matrix, vector):
     # Solving matrix into a Lower matrix
     for i in reversed(range(len(matrix))):
         for j in reversed(range(i)):
-            # In case the matrix[i][j] value isn't zero, we will treat it, and fixed the matrix vector, as well the inverseMatrix
+            # Multiply into a Lower matrix, updating matrix vector as well, and keep the inverseMatrix updated
             if matrix[j][i] != 0:
                 vector = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), vector, False)
                 inverseMatrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), inverseMatrix, False)
                 matrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), matrix, True)
 
-    # Return the inverse matrix, and the fixed vector of the matrix
+    # Return the inverse matrix, and the updated solution vector of the matrix
     return inverseMatrix, vector
 
 
 def checkPivotColumn(matrix, vector, index):
     """
-    Taking care that the pivot in the column [index] will be the highest one, and return the fixed matrix and vector
+    Taking care that the pivot in the column [index] will be the highest one, and return the updated matrix and vector
 
     :param matrix: NxN matrix
     :param vector: Nx1 vector solution of the matrix
@@ -165,7 +154,7 @@ def checkPivotColumn(matrix, vector, index):
         vector = multiplyMatrix(initElementaryMatrix(len(matrix), index, index, 1 / matrix[index][index]), vector, False)
         matrix = multiplyMatrix(initElementaryMatrix(len(matrix), index, index, 1 / matrix[index][index]), matrix, True)
 
-    # Return the fixed matrix and vector order
+    # Return the updated matrix and vector
     return matrix, vector
 
 
@@ -196,6 +185,35 @@ def infinityNorm(matrix):
 
     # Return the max norm
     return norm
+
+
+def multiplyMatrix(matrixA, matrixB, isTrue):
+    """
+    Multiplying two matrices and return the outcome matrix
+
+    :param matrixA: NxM Matrix
+    :param matrixB: NxM Matrix
+    :param isTrue: Boolean which decide if to save the matrices in a file
+    :return: NxM matrix
+    """
+    # Initialize NxM matrix filled with zero's
+    matrixC = [[0.0] * len(matrixB[0]) for _ in range(len(matrixA))]
+
+    # Multiply the two matrices and store the outcome in matrixC
+    for i in range(len(matrixA)):
+        for j in range(len(matrixB[0])):
+            for k in range(len(matrixB)):
+                matrixC[i][j] = matrixC[i][j] + matrixA[i][k] * matrixB[k][j]
+
+    # Saving the matrices in the right lists
+    if isTrue:
+        # Saving the matrices in a file
+        printIntoFile(matrixA, 'Elementary Matrix', True)
+        printIntoFile(matrixB, 'Pre Multiply Matrix', True)
+        printIntoFile(matrixC, 'After Multiply Matrix', True)
+
+    # Return the outcome matrix
+    return matrixC
 
 
 def initMatrix():
@@ -259,4 +277,5 @@ def determinantMatrix(matrix):
     return determinantSum
 
 
+# Calling our matrix solver main
 gaussianElimination()
