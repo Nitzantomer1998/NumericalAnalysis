@@ -57,7 +57,7 @@ def gaussianElimination():
     originMatrix, vectorB = initMatrix()
 
     # Check if the matrix is Quadratic matrix, and check if vectorB is in appropriate size
-    if len(originMatrix) == len(originMatrix[0]) and (len(vectorB) == 1 and len(vectorB[0]) == len(originMatrix)):
+    if len(originMatrix) == len(originMatrix[0]) and len(vectorB) == len(originMatrix) and len(vectorB[0]) == 1:
 
         # In case the matrix has one solution
         if determinantMatrix(originMatrix):
@@ -223,8 +223,8 @@ def initMatrix():
     :return: NxN matrix, and Nx1 vector B
     """
     # Initialize Linear Equation from the user
-    matrix = [[5.5, 6.0, 1], [-10.0, 10.0, 15.0], [2.0, -8.0, 5.0]]
-    vectorB = [[2.0], [8.0], [4.0]]
+    matrix = [[0.913, 0.659], [0.457, 0.330]]
+    vectorB = [[0.254], [0.127]]
 
     # Return the user linear equation
     return matrix, vectorB
