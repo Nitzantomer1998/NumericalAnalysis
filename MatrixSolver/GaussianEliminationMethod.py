@@ -29,7 +29,7 @@ def printIntoFile(data, message, isTrue):
                 file.write('==========================================================================================')
 
             # Saving the matrix in the file
-            file.write('\n' + str(message) + ' [' + str(MATRIX_COUNT) + ']\n')
+            file.write('\n' + str(message) + ' [' + str(MATRIX_COUNT//3 + 1) + ']\n')
             for i in range(len(data)):
                 for j in range(len(data[0])):
                     objectData = '{: ^22}'.format(data[i][j])
