@@ -4,13 +4,12 @@
 MATRIX_COUNT = 0
 
 
-def printIntoFile(data, message, isTrue):
+def printIntoFile(data, message):
     """
     Printing the data and the message content into a specified file
 
     :param data: Data from a user
     :param message: Message that contain the data subject
-    :param isTrue: Boolean parameter, which help to navigate to the right section
     """
     # Our Global Variable To Count The Iteration Number
     global MATRIX_COUNT
@@ -22,30 +21,21 @@ def printIntoFile(data, message, isTrue):
 
     # Open the file and save the data
     with open('GaussianElimination.txt', 'a+') as file:
-        # In case we are in an iteration solution
-        if isTrue:
-            # In case we are printing new calculation
-            if MATRIX_COUNT % 3 == 0:
-                file.write('==========================================================================================')
 
-            # Saving the matrix in the file
-            file.write('\n' + str(message) + ' [' + str(MATRIX_COUNT//3 + 1) + ']\n')
-            for i in range(len(data)):
-                for j in range(len(data[0])):
-                    objectData = '{: ^22}'.format(data[i][j])
-                    file.write(objectData)
-                file.write('\n')
+        # In case we are printing new calculation
+        if MATRIX_COUNT % 3 == 0:
+            file.write('==========================================================================================')
 
-            # Increase Our Global Iteration Counter Variable
-            MATRIX_COUNT = MATRIX_COUNT + 1
-
-        # Our Solution Data
-        else:
-            # In case we are printing the solution accuracy
-            file.write('==============================================================================================')
-            file.write('\n[' + str(message) + ']\n')
-            file.write(str(data))
+        # Saving the matrix in the file
+        file.write('\n' + str(message) + ' [' + str(MATRIX_COUNT // 3 + 1) + ']\n')
+        for i in range(len(data)):
+            for j in range(len(data[0])):
+                objectData = '{: ^22}'.format(data[i][j])
+                file.write(objectData)
             file.write('\n')
+
+        # Increase Our Global Iteration Counter Variable
+        MATRIX_COUNT = MATRIX_COUNT + 1
 
 
 def gaussianElimination():
@@ -62,15 +52,14 @@ def gaussianElimination():
         # In case the matrix has one solution
         if determinantMatrix(originMatrix):
 
-            # Getting the inverse matrix of originMatrix, and the fixed vectorB
-            inverseMatrix, vectorB = findInverse(originMatrix, vectorB)
+            # Getting the inverse matrix of originMatrix, and the semi solution of the Linear Equation
+            inverseMatrix, vectorSemiSolution = findInverse(originMatrix, vectorB)
 
-            # Getting the accuracy of the solution
-            solutionPrecision = matrixCond(originMatrix, inverseMatrix)
+            # Checking accuracy of the semi solution, and return the final solution
+            vectorSolution = finalSolution(originMatrix, inverseMatrix, vectorSemiSolution, vectorB)
 
             # Saving the matrix solution
-            printIntoFile(vectorB, 'Matrix Solution', True)
-            printIntoFile(solutionPrecision, 'Solution Accuracy Rate', False)
+            printIntoFile(vectorB, 'Matrix Solution')
 
         # According message In case there is more or less than one solution
         else:
@@ -83,11 +72,11 @@ def gaussianElimination():
 
 def findInverse(matrix, vector):
     """
-    Solve the matrix into an Identity matrix, updating the vector of the matrix, and return the inverse matrix of matrix
+    Solve the matrix into an Identity matrix, updating the vector of the matrix, and return the inverse matrix
 
     :param matrix: NxN matrix
     :param vector: Nx1 vector solution of the matrix
-    :return: Inverse NxN matrix, the inverse matrix of matrix
+    :return: Inverse NxN matrix, the updated vector of the matrix
     """
     # Initialize inverseMatrix into an Identity matrix
     inverseMatrix = [[1.0 if row == col else 0.0 for col in range(len(matrix))] for row in range(len(matrix))]
@@ -95,7 +84,7 @@ def findInverse(matrix, vector):
     # Solving matrix into an Upper matrix
     for i in range(len(matrix)):
         # Calling function to reArrange the matrix, and the vector
-        matrix, vector = checkPivotColumn(matrix, vector, i)
+        matrix, vector, inverseMatrix = checkPivotColumn(matrix, vector, inverseMatrix, i)
 
         for j in range(i + 1, len(matrix)):
             if matrix[j][i] != 0:
@@ -117,15 +106,17 @@ def findInverse(matrix, vector):
     return inverseMatrix, vector
 
 
-def checkPivotColumn(matrix, vector, index):
+def checkPivotColumn(matrix, vector, inverseMatrix, index):
     """
-    Taking care that the pivot in the column [index] will be the highest one, and return the updated matrix and vector
+    Taking care that the pivot in the column [index] will be the highest one, and return the updated sent parameters
 
     :param matrix: NxN matrix
     :param vector: Nx1 vector solution of the matrix
+    :param inverseMatrix: NxN inverse matrix
     :param index: Column index
-    :return: The updated matrix and vector
+    :return: The updated sent parameters
     """
+   
     # Variable to store the max pivot in specific column
     maxPivot = abs(matrix[index][index])
 
@@ -147,44 +138,49 @@ def checkPivotColumn(matrix, vector, index):
 
         # Changed the Matrix and the vector Rows
         matrix = multiplyMatrix(elementaryMatrix, matrix, True)
+        inverseMatrix = multiplyMatrix(elementaryMatrix, inverseMatrix, False)
         vector = multiplyMatrix(elementaryMatrix, vector, False)
-
+   
     # In case the pivot isn't one, we will make sure it will be one
-    if matrix[index][index] != 1:
+    while matrix[index][index] != 1:
         vector = multiplyMatrix(initElementaryMatrix(len(matrix), index, index, 1 / matrix[index][index]), vector, False)
+        inverseMatrix = multiplyMatrix(initElementaryMatrix(len(matrix), index, index, 1 / matrix[index][index]), inverseMatrix, False)
         matrix = multiplyMatrix(initElementaryMatrix(len(matrix), index, index, 1 / matrix[index][index]), matrix, True)
 
     # Return the updated matrix and vector
-    return matrix, vector
+    return matrix, vector, inverseMatrix
 
 
-def matrixCond(matrix, inverseMatrix):
+def finalSolution(originMatrix, inverseMatrix, vectorSemiSolution, originVectorB):
     """
-    Multiply the max norm of the origin and inverse matrix, and return its solution accuracy
+    Getting the Linear equation components, check the accuracy of the solution, if the accuracy isn't precise
+    calculate the precise solution and return it
 
-    :param matrix: NxN matrix
-    :param inverseMatrix: NxN inverse matrix of matrix
-    :return: Matrix solution precision
+    :param originMatrix: NxN matrix
+    :param inverseMatrix: NxN inverse matrix of the origin matrix
+    :param vectorSemiSolution: Nx1 vector semi solution (not surly accurate)
+    :param originVectorB: Nx1 vector
+    :return: Nx1 the precise matrix solution
     """
-    return infinityNorm(matrix) * infinityNorm(inverseMatrix)
+    # Initialize the vector solution filled with zero's
+    vectorSolution = [[0.0] * len(vectorSemiSolution[0]) for _ in range(len(originMatrix))]
 
+    # Solve r = Ax0 - b --> How accurate our solution is
+    # A --> originMatrix, x0 --> semi matrix solution, b --> originVectorB, r --> solution accurate rating
+    vectorR = multiplyMatrix(originMatrix, vectorSemiSolution, False)
+    for i in range(len(vectorR)):
+        vectorR[i][0] = vectorR[i][0] - originVectorB[i][0]
 
-def infinityNorm(matrix):
-    """
-    Return the Max Norm of the matrix
+    # Solve A^-1 * r --> the adjustment we need to do, to accurate the solution
+    vectorATagR = multiplyMatrix(inverseMatrix, vectorR, False)
 
-    :param matrix: NxN matrix
-    :return: Infinity norm of the matrix
-    """
-    norm = 0
-    for i in range(len(matrix[0])):
-        sumRow = 0
-        for j in range(len(matrix)):
-            sumRow = sumRow + abs(matrix[i][j])
-        norm = max(sumRow, norm)
+    # Update the correct solution
+    for i in range(len(vectorSolution)):
+        vectorSolution[i][0] = vectorSemiSolution[i][0] - vectorATagR[i][0]
 
-    # Return the max norm
-    return norm
+    print(vectorSolution)
+    # Return the final solution of the Linear Equation
+    return vectorSolution
 
 
 def multiplyMatrix(matrixA, matrixB, isTrue):
@@ -208,9 +204,9 @@ def multiplyMatrix(matrixA, matrixB, isTrue):
     # Saving the matrices in the right lists
     if isTrue:
         # Saving the matrices in a file
-        printIntoFile(matrixA, 'Elementary Matrix', True)
-        printIntoFile(matrixB, 'Pre Multiply Matrix', True)
-        printIntoFile(matrixC, 'After Multiply Matrix', True)
+        printIntoFile(matrixA, 'Elementary Matrix')
+        printIntoFile(matrixB, 'Pre Multiply Matrix')
+        printIntoFile(matrixC, 'After Multiply Matrix')
 
     # Return the outcome matrix
     return matrixC
@@ -223,8 +219,8 @@ def initMatrix():
     :return: NxN matrix, and Nx1 vector B
     """
     # Initialize Linear Equation from the user
-    matrix = [[0.913, 0.659], [0.457, 0.330]]
-    vectorB = [[0.254], [0.127]]
+    matrix = [[2, -1, 1], [2, 2, 2], [-1, -1, 2]]
+    vectorB = [[-1], [4], [-5]]
 
     # Return the user linear equation
     return matrix, vectorB
@@ -268,7 +264,8 @@ def determinantMatrix(matrix):
         sign = (-1) ** current_column
 
         # Calling the function recursively to get determinant value of sub matrix obtained
-        determinant_sub = determinantMatrix([row[: current_column] + row[current_column + 1:] for row in (matrix[: 0] + matrix[0 + 1:])])
+        determinant_sub = determinantMatrix(
+            [row[: current_column] + row[current_column + 1:] for row in (matrix[: 0] + matrix[0 + 1:])])
 
         # Adding the calculated determinant value of particular column matrix to total the determinantSum
         determinantSum = determinantSum + (sign * matrix[0][current_column] * determinant_sub)
@@ -277,5 +274,4 @@ def determinantMatrix(matrix):
     return determinantSum
 
 
-# Calling our matrix solver main
 gaussianElimination()
