@@ -1,4 +1,4 @@
-# Gaussian Elimination the LU Method
+# Gaussian Elimination the Inverse Matrix Method
 
 
 # Global Variable [Only Used To print the iteration number]
@@ -48,7 +48,7 @@ def printIntoFile(data, message, isTrue=True):
 
 def gaussianElimination():
     """
-    Solving linear equation in Gaussian Elimination method
+    Solving linear equation in the Inverse Matrix method
 
     """
     # Initialize the matrix, and vectorB
@@ -63,17 +63,14 @@ def gaussianElimination():
             # Organize the matrix pivots
             originMatrix, originVectorB = organizeMatrix(originMatrix, originVectorB)
 
-            # Getting the Lower, and Upper matrices of our Linear Equation
-            upperMatrix, lowerMatrix = findLU(originMatrix)
+            # Getting the inverse matrix of originMatrix
+            inverseMatrix = findInverse(originMatrix)
 
-            # Solve Ly = B
-            vectorSolutionY = forwardSubstitution(lowerMatrix, originVectorB)
-
-            # Solve Ux = y
-            vectorSolutionX = backSubstitution(upperMatrix, vectorSolutionY)
+            # Getting the Linear Equation solution
+            vectorSolution = multiplyMatrix(inverseMatrix, originVectorB, False)
 
             # Saving the matrix solution
-            printIntoFile(vectorSolutionX, 'Matrix Solution')
+            printIntoFile(vectorSolution, 'Matrix Solution')
 
         # According message In case there is more or less than one solution
         else:
@@ -92,7 +89,10 @@ def organizeMatrix(originMatrix, originVectorB):
     :param originVectorB: Nx1 vector
     :return: The updated Linear Equation
     """
-    for i in range(len(originMatrix)):
+    # Iteration variable
+    i = 0
+    while i < len(originMatrix):
+        print(i)
         # Variable to store the highest value for the pivot
         maxPivot = abs(originMatrix[i][i])
 
@@ -122,102 +122,62 @@ def organizeMatrix(originMatrix, originVectorB):
         # In case there was a higher pivot, change the matrix so the Pivot will be the maximum
         if maxPivot != abs(originMatrix[i][i]):
 
-            # Initialize elementary matrix to swap the matrix and vector rows/columns
-            elementaryMatrix = [[1.0 if x == y else 0.0 for y in range(len(originMatrix))] for x in range(len(originMatrix))]
-
             # In case the highest pivot is on the Rows
             if pivotRow > pivotCol:
-                elementaryMatrix[i], elementaryMatrix[pivotRow] = elementaryMatrix[pivotRow], elementaryMatrix[i]
-
                 # Changed the Matrix and the vector Rows
-                originVectorB = multiplyMatrix(elementaryMatrix, originVectorB, False)
-                originMatrix = multiplyMatrix(elementaryMatrix, originMatrix, True)
+                originVectorB[i], originVectorB[pivotRow] = originVectorB[pivotRow], originVectorB[i]
+                originMatrix[i], originMatrix[pivotRow] = originMatrix[pivotRow], originMatrix[i]
 
             # In case the highest pivot is on the Columns
             else:
-                elementaryMatrix[i], elementaryMatrix[pivotCol] = elementaryMatrix[pivotCol], elementaryMatrix[i]
-
                 # Changed the Matrix Columns
-                originMatrix = multiplyMatrix(originMatrix, elementaryMatrix, True)
+                for i in range(len(originMatrix)):
+                    originMatrix[i][i], originMatrix[i][pivotCol] = originMatrix[i][pivotCol], originMatrix[i][i]
 
                 # In case changing Columns made a higher pivot on row
                 i = i - 1
+
+        # Next iteration
+        i = i + 1
 
     # Return the updated Linear Equation
     return originMatrix, originVectorB
 
 
-def findLU(upperMatrix):
+def findInverse(matrix):
     """
-    Solve the matrix into an Upper matrix, and Lower matrix
+    Solve the matrix into an Identity matrix, and return the inverse matrix
 
-    :param upperMatrix: NxN matrix of the Linear Equation
-    :return: Upper matrix, and Lower matrix
+    :param matrix: NxN matrix
+    :return: Inverse NxN matrix
     """
-    # Initialize Lower Matrix into an Identity matrix
-    lowerMatrix = [[1.0 if row == col else 0.0 for col in range(len(upperMatrix))] for row in range(len(upperMatrix))]
+    # Initialize inverseMatrix into an Identity matrix
+    inverseMatrix = [[1.0 if row == col else 0.0 for col in range(len(matrix))] for row in range(len(matrix))]
 
-    # Solving matrix into an Upper matrix, and Lower matrix
-    for i in range(len(upperMatrix)):
-        for j in range(i + 1, len(upperMatrix)):
-            if upperMatrix[j][i] != 0.0:
-                # Multiply into an Upper matrix, and updating the Lower matrix
-                lowerMatrix[j][i] = upperMatrix[j][i] / upperMatrix[i][i]
-                upperMatrix = multiplyMatrix(initElementaryMatrix(len(upperMatrix), j, i, - upperMatrix[j][i] / upperMatrix[i][i]), upperMatrix, True)
+    # Solving matrix into an Identity matrix, and get alongside the Inverse Matrix (Lower part)
+    for i in range(len(matrix)):
 
-    # Return Upper matrix, and Lower matrix
-    return upperMatrix, lowerMatrix
+        # In case the pivot isn't one, we will make sure it will be one
+        if matrix[i][i] != 1.0:
+            inverseMatrix = multiplyMatrix(initElementaryMatrix(len(matrix), i, i, 1 / matrix[i][i]), inverseMatrix, False)
+            matrix = multiplyMatrix(initElementaryMatrix(len(matrix), i, i, 1 / matrix[i][i]), matrix, True)
 
+        for j in range(i + 1, len(matrix)):
+            if matrix[j][i] != 0.0:
+                # Multiply into an Identity matrix, and updating the inverse Matrix as well
+                inverseMatrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), inverseMatrix, False)
+                matrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), matrix, True)
 
-def forwardSubstitution(lowerMatrix, vectorB):
-    """
-    Solve Ly = B, and return the vector y
-    :param lowerMatrix: NxN lower matrix
-    :param vectorB: Nx1 vector B
-    :return: Nx1 vector solution
-    """
-    # Initialize vectorY
-    vectorY = [[0.0 for _ in range(1)] for _ in range(len(lowerMatrix))]
+    # Solving matrix into an Identity matrix, and get alongside the Inverse Matrix (Upper part)
+    for i in reversed(range(len(matrix))):
+        for j in reversed(range(i)):
+            # Multiply into a Lower matrix, and updating the inverse Matrix as well
+            if matrix[j][i] != 0:
+                inverseMatrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), inverseMatrix, False)
+                matrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), matrix, True)
 
-    # Solve Ly = B
-    for i in range(len(lowerMatrix)):
-        vectorY[i][0] = vectorB[i][0]
-        for j in range(i):
-            vectorY[i][0] = vectorY[i][0] - lowerMatrix[i][j] * vectorY[j][0]
-        vectorY[i][0] = vectorY[i][0] / lowerMatrix[i][i]
-
-        # In case of round error
-        if abs(vectorY[i][0] - round(vectorY[i][0])) <= max(1e-09 * max(abs(vectorY[i][0]), abs(round(vectorY[i][0]))), 0.0):
-            vectorY[i][0] = round(vectorY[i][0])
-
-    # Return vector solution
-    return vectorY
-
-
-def backSubstitution(upperMatrix, vectorY):
-    """
-    Solve Ux = y, and return the vectorX
-    :param upperMatrix: NxN upper matrix
-    :param vectorY: Nx1 vector Y
-    :return: Nx1 vector solution
-    """
-    # Initialize vectorX
-    vectorX = [[0.0 for _ in range(1)] for _ in range(len(upperMatrix))]
-    vectorX[len(upperMatrix) - 1][0] = vectorY[len(upperMatrix) - 1][0] / upperMatrix[len(upperMatrix) - 1][len(upperMatrix) - 1]
-
-    # Solve Ux = y
-    for i in range(len(upperMatrix) - 2, -1, -1):
-        rowSum = vectorY[i][0]
-        for j in range(i + 1, len(upperMatrix)):
-            rowSum = rowSum - upperMatrix[i][j] * vectorX[j][0]
-        vectorX[i][0] = rowSum / upperMatrix[i][i]
-
-        # In case of round error
-        if abs(vectorX[i][0] - round(vectorX[i][0])) <= max(1e-09 * max(abs(vectorX[i][0]), abs(round(vectorX[i][0]))), 0.0):
-            vectorX[i][0] = round(vectorX[i][0])
-
-    # Return vector solution
-    return vectorX
+    # Return the inverse matrix
+    return inverseMatrix
 
 
 def multiplyMatrix(matrixA, matrixB, isTrue):
@@ -256,12 +216,12 @@ def multiplyMatrix(matrixA, matrixB, isTrue):
 
 def initMatrix():
     """
-    Initialize user Linear Equations, and return them
+    Initialize user linear equations, and return them
 
     :return: NxN matrix, and Nx1 vector B
     """
     # Initialize Linear Equation from the user
-    matrix = [[2, 2, 2], [2, -1, 1], [-1, -1, 2]]
+    matrix = [[1, 2, 3], [1, 2, 2], [1, 5, 7]]
     vectorB = [[4], [-1], [-5]]
 
     # Return the user linear equation
