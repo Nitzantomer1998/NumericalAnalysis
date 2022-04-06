@@ -89,7 +89,10 @@ def organizeMatrix(originMatrix, originVectorB):
     :param originVectorB: Nx1 vector
     :return: The updated Linear Equation
     """
-    for i in range(len(originMatrix)):
+    # Iteration variable
+    i = 0
+    while i < len(originMatrix):
+        print(i)
         # Variable to store the highest value for the pivot
         maxPivot = abs(originMatrix[i][i])
 
@@ -119,26 +122,23 @@ def organizeMatrix(originMatrix, originVectorB):
         # In case there was a higher pivot, change the matrix so the Pivot will be the maximum
         if maxPivot != abs(originMatrix[i][i]):
 
-            # Initialize elementary matrix to swap the matrix and vector rows/columns
-            elementaryMatrix = [[1.0 if x == y else 0.0 for y in range(len(originMatrix))] for x in range(len(originMatrix))]
-
             # In case the highest pivot is on the Rows
             if pivotRow > pivotCol:
-                elementaryMatrix[i], elementaryMatrix[pivotRow] = elementaryMatrix[pivotRow], elementaryMatrix[i]
-
                 # Changed the Matrix and the vector Rows
-                originVectorB = multiplyMatrix(elementaryMatrix, originVectorB, False)
-                originMatrix = multiplyMatrix(elementaryMatrix, originMatrix, True)
+                originVectorB[i], originVectorB[pivotRow] = originVectorB[pivotRow], originVectorB[i]
+                originMatrix[i], originMatrix[pivotRow] = originMatrix[pivotRow], originMatrix[i]
 
             # In case the highest pivot is on the Columns
             else:
-                elementaryMatrix[i], elementaryMatrix[pivotCol] = elementaryMatrix[pivotCol], elementaryMatrix[i]
-
                 # Changed the Matrix Columns
-                originMatrix = multiplyMatrix(originMatrix, elementaryMatrix, True)
+                for i in range(len(originMatrix)):
+                    originMatrix[i][i], originMatrix[i][pivotCol] = originMatrix[i][pivotCol], originMatrix[i][i]
 
                 # In case changing Columns made a higher pivot on row
                 i = i - 1
+
+        # Next iteration
+        i = i + 1
 
     # Return the updated Linear Equation
     return originMatrix, originVectorB
@@ -221,7 +221,7 @@ def initMatrix():
     :return: NxN matrix, and Nx1 vector B
     """
     # Initialize Linear Equation from the user
-    matrix = [[2, 2, 2], [2, -1, 1], [-1, -1, 2]]
+    matrix = [[1, 2, 3], [1, 2, 2], [1, 5, 7]]
     vectorB = [[4], [-1], [-5]]
 
     # Return the user linear equation
