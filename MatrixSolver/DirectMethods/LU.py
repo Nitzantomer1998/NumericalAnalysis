@@ -69,11 +69,11 @@ def gaussianElimination():
             # Solve Ly = B
             vectorSolutionY = forwardSubstitution(lowerMatrix, originVectorB)
 
-            # Solve Ux = y
-            vectorSolutionX = backSubstitution(upperMatrix, vectorSolutionY)
+            # Solve Ux = y (Getting the Linear Equation solution)
+            vectorSolutionX = finalSolution(originMatrix, originVectorB, backSubstitution(upperMatrix, vectorSolutionY))
 
-            # Saving the matrix solution
-            printIntoFile(vectorSolutionX, 'Matrix Solution')
+            # Saving the Linear Equation final solution
+            printIntoFile(vectorSolutionX, 'Linear Equation Final Solution')
 
         # According message In case there is more or less than one solution
         else:
@@ -95,7 +95,6 @@ def organizeMatrix(originMatrix, originVectorB):
     # Iteration variable
     i = 0
     while i < len(originMatrix):
-        print(i)
         # Variable to store the highest value for the pivot
         maxPivot = abs(originMatrix[i][i])
 
@@ -186,10 +185,6 @@ def forwardSubstitution(lowerMatrix, vectorB):
             vectorY[i][0] = vectorY[i][0] - lowerMatrix[i][j] * vectorY[j][0]
         vectorY[i][0] = vectorY[i][0] / lowerMatrix[i][i]
 
-        # In case of round error
-        if abs(vectorY[i][0] - round(vectorY[i][0])) <= max(1e-09 * max(abs(vectorY[i][0]), abs(round(vectorY[i][0]))), 0.0):
-            vectorY[i][0] = round(vectorY[i][0])
-
     # Return vector solution
     return vectorY
 
@@ -212,12 +207,38 @@ def backSubstitution(upperMatrix, vectorY):
             rowSum = rowSum - upperMatrix[i][j] * vectorX[j][0]
         vectorX[i][0] = rowSum / upperMatrix[i][i]
 
-        # In case of round error
-        if abs(vectorX[i][0] - round(vectorX[i][0])) <= max(1e-09 * max(abs(vectorX[i][0]), abs(round(vectorX[i][0]))), 0.0):
-            vectorX[i][0] = round(vectorX[i][0])
-
     # Return vector solution
     return vectorX
+
+
+def finalSolution(originMatrix, originVectorB, vectorSolution):
+    """
+    Getting the Linear equation components, check the accuracy of the solution, if the accuracy isn't precise
+    calculate the precise solution and return it
+
+    :param originMatrix: NxN matrix
+    :param originVectorB: Nx1 vector
+    :param vectorSolution: Nx1 vector semi solution (not surly accurate)
+    :return: Nx1 vector, the precise Linear Equation solution
+    """
+    # Solve r = Ax0 - b
+    # Vector r represent the accuracy of the solution we found
+    vectorR = multiplyMatrix(originMatrix, vectorSolution, False)
+    for i in range(len(vectorR)):
+        vectorR[i][0] = vectorR[i][0] - originVectorB[i][0]
+
+    # In case the Linear Equation solution, has round error
+    if sum(list(map(sum, vectorR))) != 0.0:
+        printIntoFile(vectorSolution, 'Linear Equation Solution With Round Error')
+
+    # Update to the correct solution
+    for i in range(len(vectorSolution)):
+        # In case of round error
+        if abs(vectorSolution[i][0] - round(vectorSolution[i][0])) <= max(1e-09 * max(abs(vectorSolution[i][0]), abs(round(vectorSolution[i][0]))), 0.0):
+            vectorSolution[i][0] = round(vectorSolution[i][0])
+
+    # Return the final solution of the Linear Equation
+    return vectorSolution
 
 
 def multiplyMatrix(matrixA, matrixB, isTrue):
@@ -238,10 +259,6 @@ def multiplyMatrix(matrixA, matrixB, isTrue):
         for j in range(len(matrixB[0])):
             for k in range(len(matrixB)):
                 matrixC[i][j] = matrixC[i][j] + matrixA[i][k] * matrixB[k][j]
-
-            # In case of round error
-            if abs(matrixC[i][j] - round(matrixC[i][j])) <= max(1e-09 * max(abs(matrixC[i][j]), abs(round(matrixC[i][j]))), 0.0):
-                matrixC[i][j] = round(matrixC[i][j])
 
     # Saving the matrices in the right lists
     if isTrue:
