@@ -18,11 +18,11 @@ def printIntoFile(data, message, isTrue=True):
 
     # In Case We Are Running A New Linear Equation, It will erase the lase one
     if MATRIX_COUNT == 0:
-        file = open('LU_Calculation.txt', 'w')
+        file = open('IM_Calculation.txt', 'w')
         file.close()
 
     # Open the file and save the data
-    with open('LU_Calculation.txt', 'a+') as file:
+    with open('IM_Calculation.txt', 'a+') as file:
 
         # In case the Linear Equation is valid
         if isTrue:
@@ -67,10 +67,10 @@ def gaussianElimination():
             inverseMatrix = findInverse(originMatrix)
 
             # Getting the Linear Equation solution
-            vectorSolution = multiplyMatrix(inverseMatrix, originVectorB, False)
+            vectorSolution = finalSolution(originMatrix, originVectorB, multiplyMatrix(inverseMatrix, originVectorB, False))
 
-            # Saving the matrix solution
-            printIntoFile(vectorSolution, 'Matrix Solution')
+            # Saving the Linear Equation final solution
+            printIntoFile(vectorSolution, 'Linear Equation Final Solution')
 
         # According message In case there is more or less than one solution
         else:
@@ -92,7 +92,6 @@ def organizeMatrix(originMatrix, originVectorB):
     # Iteration variable
     i = 0
     while i < len(originMatrix):
-        print(i)
         # Variable to store the highest value for the pivot
         maxPivot = abs(originMatrix[i][i])
 
@@ -180,6 +179,36 @@ def findInverse(matrix):
     return inverseMatrix
 
 
+def finalSolution(originMatrix, originVectorB, vectorSolution):
+    """
+    Getting the Linear equation components, check the accuracy of the solution, if the accuracy isn't precise
+    calculate the precise solution and return it
+
+    :param originMatrix: NxN matrix
+    :param originVectorB: Nx1 vector
+    :param vectorSolution: Nx1 vector semi solution (not surly accurate)
+    :return: Nx1 vector, the precise Linear Equation solution
+    """
+    # Solve r = Ax0 - b
+    # Vector r represent the accuracy of the solution we found
+    vectorR = multiplyMatrix(originMatrix, vectorSolution, False)
+    for i in range(len(vectorR)):
+        vectorR[i][0] = vectorR[i][0] - originVectorB[i][0]
+
+    # In case the Linear Equation solution, has round error
+    if sum(list(map(sum, vectorR))) != 0.0:
+        printIntoFile(vectorSolution, 'Linear Equation Solution With Round Error')
+
+    # Update to the correct solution
+    for i in range(len(vectorSolution)):
+        # In case of round error
+        if abs(vectorSolution[i][0] - round(vectorSolution[i][0])) <= max(1e-09 * max(abs(vectorSolution[i][0]), abs(round(vectorSolution[i][0]))), 0.0):
+            vectorSolution[i][0] = round(vectorSolution[i][0])
+
+    # Return the final solution of the Linear Equation
+    return vectorSolution
+
+
 def multiplyMatrix(matrixA, matrixB, isTrue):
     """
     Multiplying two matrices and return the outcome matrix
@@ -199,10 +228,6 @@ def multiplyMatrix(matrixA, matrixB, isTrue):
             for k in range(len(matrixB)):
                 matrixC[i][j] = matrixC[i][j] + matrixA[i][k] * matrixB[k][j]
 
-            # In case of round error
-            if abs(matrixC[i][j] - round(matrixC[i][j])) <= max(1e-09 * max(abs(matrixC[i][j]), abs(round(matrixC[i][j]))), 0.0):
-                matrixC[i][j] = round(matrixC[i][j])
-
     # Saving the matrices in the right lists
     if isTrue:
         # Saving the matrices in a file
@@ -221,7 +246,7 @@ def initMatrix():
     :return: NxN matrix, and Nx1 vector B
     """
     # Initialize Linear Equation from the user
-    matrix = [[1, 2, 3], [1, 2, 2], [1, 5, 7]]
+    matrix = [[2, 2, 2], [2, -1, 1], [-1, -1, 2]]
     vectorB = [[4], [-1], [-5]]
 
     # Return the user linear equation
