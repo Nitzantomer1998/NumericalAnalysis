@@ -1,8 +1,8 @@
-# Gaussian Elimination the Inverse Matrix Method
+# Solving Linear Equation In The Inverse Matrix Method
 
 
 # Global Variable [Only Used To print the iteration number]
-MATRIX_COUNT = 0
+MATRIX_COUNT = -2
 
 
 def printIntoFile(data, message, isTrue=True):
@@ -10,14 +10,14 @@ def printIntoFile(data, message, isTrue=True):
     Printing the data and the message content into a specified file
 
     :param data: Data is a list representing matrix or vector
-    :param message: Message is a String representing the data subject
+    :param message: Message is a String representing the data explanation
     :param isTrue: If True, The Linear Equation is valid, else False
     """
     # Our Global Variable To Count The Iteration Number
     global MATRIX_COUNT
 
-    # In Case We Are Running A New Linear Equation, It will erase the lase one
-    if MATRIX_COUNT == 0:
+    # In Case We Are Running A New Linear Equation Calculation, It will erase the lase one
+    if MATRIX_COUNT == -2:
         file = open('IM_Calculation.txt', 'w')
         file.close()
 
@@ -26,17 +26,29 @@ def printIntoFile(data, message, isTrue=True):
 
         # In case the Linear Equation is valid
         if isTrue:
+
             # In case we are printing new calculation
             if MATRIX_COUNT % 3 == 0:
                 file.write('==========================================================================================')
 
-            # Saving the matrix in the file
-            file.write('\n' + str(message) + ' [' + str(MATRIX_COUNT // 3 + 1) + ']\n')
-            for i in range(len(data)):
-                for j in range(len(data[0])):
-                    objectData = '{: ^22}'.format(data[i][j])
-                    file.write(objectData)
+            # Saving the Linear Equation input, and the updated one
+            if MATRIX_COUNT < 0:
+                file.write(str(message) + '\n')
+                for i in range(len(data)):
+                    for j in range(len(data[0])):
+                        objectData = '{: ^22}'.format(data[i][j])
+                        file.write(objectData)
+                    file.write('\n')
                 file.write('\n')
+
+            # Saving the calculation of the Linear Equation
+            elif MATRIX_COUNT > -1:
+                file.write('\n' + str(message) + ' [' + str(MATRIX_COUNT // 3 + 1) + ']\n')
+                for i in range(len(data)):
+                    for j in range(len(data[0])):
+                        objectData = '{: ^22}'.format(data[i][j])
+                        file.write(objectData)
+                    file.write('\n')
 
         # In case Linear Equation is not valid
         else:
@@ -46,7 +58,7 @@ def printIntoFile(data, message, isTrue=True):
         MATRIX_COUNT = MATRIX_COUNT + 1
 
 
-def gaussianElimination():
+def inverseMatrixMethod():
     """
     Solving linear equation in the Inverse Matrix method
 
@@ -89,7 +101,12 @@ def organizeMatrix(originMatrix, originVectorB):
     :param originVectorB: Nx1 vector
     :return: The updated Linear Equation
     """
-    # Iteration variable
+    # Saving the Linear Equation the user gave
+    LinearEquation = [[originMatrix[row][col] for col in range(len(originMatrix[0]))] for row in range(len(originMatrix))]
+    [LinearEquation[row].append(originVectorB[row][0]) for row in range(len(originVectorB))]
+    printIntoFile(LinearEquation, '[User Input Linear Equation]')
+
+    # Iteration Variable
     i = 0
     while i < len(originMatrix):
         # Variable to store the highest value for the pivot
@@ -138,6 +155,11 @@ def organizeMatrix(originMatrix, originVectorB):
 
         # Next iteration
         i = i + 1
+
+    # Saving the Linear Equation after changing
+    LinearEquation = [[originMatrix[row][col] for col in range(len(originMatrix[0]))] for row in range(len(originMatrix))]
+    [LinearEquation[row].append(originVectorB[row][0]) for row in range(len(originVectorB))]
+    printIntoFile(LinearEquation, '[Updated Linear Equation]')
 
     # Return the updated Linear Equation
     return originMatrix, originVectorB
@@ -301,4 +323,4 @@ def determinantMatrix(matrix):
     return determinantSum
 
 
-gaussianElimination()
+inverseMatrixMethod()
