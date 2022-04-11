@@ -58,7 +58,7 @@ def printIntoFile(data, message, isTrue=True):
         MATRIX_COUNT = MATRIX_COUNT + 1
 
 
-def inverseMatrixMethod():
+def InverseMatrixMethod():
     """
     Solving linear equation in the Inverse Matrix method
 
@@ -323,4 +323,4 @@ def determinantMatrix(matrix):
     return determinantSum
 
 
-inverseMatrixMethod()
+InverseMatrixMethod()
