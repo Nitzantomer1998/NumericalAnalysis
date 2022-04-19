@@ -1,21 +1,25 @@
 # Solving Linear Equation In The Gauss Seidel Method
 
+# Used Libraries
+import math
 
 # Global Variable [Only Used To print the iteration number]
 MATRIX_COUNT = -2
 
 # Global Variable To Store The Computer Epsilon Machine
-EPSILON = 1
+EPSILON = 0.00001
 
 
-def printIntoFile(data, message, isTrue):
+def printIntoFile(data, message, isTrue, isFinal):
     """
     Printing the data and the message content into a specified file
 
     :param data: Data is a list representing matrix or vector
     :param message: Message is a String representing the data explanation
     :param isTrue: If True, The Linear Equation is valid, else False
+    :param isFinal: If True, We Print the Linear Equation Solution
     """
+
     # Our Global Variable To Count The Iteration Number
     global MATRIX_COUNT
 
@@ -44,18 +48,13 @@ def printIntoFile(data, message, isTrue):
             if MATRIX_COUNT == 0:
                 file.write('========================================================================================\n')
                 for i in range(len(data) + 1):
-                    if i == 0:
-                        objectData = '{: ^22}'.format('Iteration')
-
-                    else:
-                        objectData = '{: ^22}'.format(chr(64 + i))
-
+                    objectData = '{: ^22}'.format('Iteration' if i == 0 else chr(64 + i))
                     file.write(objectData)
                 file.write('\n')
 
             # Saving the calculation of the Linear Equation
-            elif MATRIX_COUNT > -1:
-                objectData = '{: ^22}'.format(str(MATRIX_COUNT))
+            if MATRIX_COUNT > -1:
+                objectData = '{: ^22}'.format(str('Solution' if isFinal else (MATRIX_COUNT + 1)))
                 file.write(objectData)
                 for i in range(len(data)):
                     objectData = '{: ^22}'.format(data[i][0])
@@ -92,10 +91,7 @@ def GaussSeidelMethod():
 
             # According message in case the Matrix is Not Diagonal Dominant
             if isConvergent is False:
-                printIntoFile(None, 'This Is A Not Diagonal Dominant Matrix', False)
-
-            # Get the computer Epsilon machine
-            epsilonMachine()
+                printIntoFile(None, 'This Is A Not Diagonal Dominant Matrix', False, False)
 
             # Our lists for the Prev iteration values, and our Current iteration values
             prevIteration = [[0 for _ in range(1)] for _ in range(len(originMatrix))]
@@ -103,9 +99,10 @@ def GaussSeidelMethod():
 
             # The iteration loop to find the Linear Equation solution
             Counter = 0
+
             while True:
                 if isConvergent is False and Counter > 500:
-                    printIntoFile(None, 'The Matrix Is Not Convergent', False)
+                    printIntoFile(None, 'The Matrix Is Not Convergent', False, False)
                     break
 
                 # Calculate the next guess
@@ -118,27 +115,31 @@ def GaussSeidelMethod():
 
                 flag = True
                 for i in range(len(originMatrix)):
-                    if currentIteration[i][0] - prevIteration[i][0] > EPSILON:
+                    if abs(currentIteration[i][0] - prevIteration[i][0]) > EPSILON:
                         flag = False
 
+                # Save the current iteration values into the file, and update the current solution to be the prev
+                printIntoFile(currentIteration, None, True, False)
+                prevIteration = [[currentIteration[row][0] for _ in range(len(currentIteration[0]))] for row in range(len(currentIteration))]
+
+                # In case we found our solution, Stop the loop
                 if flag:
                     break
 
-                # Save the current iteration values into the file, and update the current solution to be the prev
-                printIntoFile(currentIteration, 'Linear Equation Final Solution', True)
-                prevIteration = [[currentIteration[row][0] for _ in range(len(currentIteration[0]))] for row in range(len(currentIteration))]
+                # Stop Condition In case of Not Dominant Diagonal
                 Counter = Counter + 1
 
             # Saving the Linear Equation final solution
-            printIntoFile(currentIteration, 'Linear Equation Final Solution', True)
+            currentIteration = [[format(currentIteration[row][0], '.' + str(int(-math.log10(EPSILON))) + 'f') for _ in range(len(currentIteration[0]))] for row in range(len(currentIteration))]
+            printIntoFile(currentIteration, None, True, True)
 
         # According message In case there is more or less than one solution
         else:
-            printIntoFile(None, 'This Is A Singular Matrix', False)
+            printIntoFile(None, 'This Is A Singular Matrix', False, False)
 
     # In case the input Linear Equation isn't meet the demands
     else:
-        printIntoFile(None, "The Input Linear Equation Isn't Match", False)
+        printIntoFile(None, "The Input Linear Equation Isn't Match", False, False)
 
 
 def organizeMatrix(originMatrix, originVectorB):
@@ -152,7 +153,7 @@ def organizeMatrix(originMatrix, originVectorB):
     # Saving the Linear Equation the user gave
     LinearEquation = [[originMatrix[row][col] for col in range(len(originMatrix[0]))] for row in range(len(originMatrix))]
     [LinearEquation[row].append(originVectorB[row][0]) for row in range(len(originVectorB))]
-    printIntoFile(LinearEquation, '[User Input Linear Equation]', True)
+    printIntoFile(LinearEquation, '[User Input Linear Equation]', True, False)
 
     # Iteration Variable
     i = 0
@@ -195,8 +196,8 @@ def organizeMatrix(originMatrix, originVectorB):
             # In case the highest pivot is on the Columns
             else:
                 # Changed the Matrix Columns
-                for i in range(len(originMatrix)):
-                    originMatrix[i][i], originMatrix[i][pivotCol] = originMatrix[i][pivotCol], originMatrix[i][i]
+                for k in range(len(originMatrix)):
+                    originMatrix[k][i], originMatrix[k][pivotCol] = originMatrix[k][pivotCol], originMatrix[k][i]
 
                 # In case changing Columns made a higher pivot on row
                 i = i - 1
@@ -207,7 +208,7 @@ def organizeMatrix(originMatrix, originVectorB):
     # Saving the Linear Equation after changing
     LinearEquation = [[originMatrix[row][col] for col in range(len(originMatrix[0]))] for row in range(len(originMatrix))]
     [LinearEquation[row].append(originVectorB[row][0]) for row in range(len(originVectorB))]
-    printIntoFile(LinearEquation, '[Updated Linear Equation]', True)
+    printIntoFile(LinearEquation, '[Updated Linear Equation]', True, False)
 
     # Return the updated Linear Equation
     return originMatrix, originVectorB
@@ -241,8 +242,8 @@ def initMatrix():
     :return: NxN matrix, and Nx1 vector B
     """
     # Initialize Linear Equation from the user
-    matrix = [[3, -1, 1], [0, 1, -1], [1, 1, -2]]
-    vectorB = [[4], [-1], [-3]]
+    matrix = [[4, 2, 0], [2, 10, 4], [0, 4, 5]]
+    vectorB = [[2], [6], [5]]
 
     # Return the user linear equation
     return matrix, vectorB
