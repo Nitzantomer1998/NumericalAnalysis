@@ -16,9 +16,10 @@ def printIntoFile(data, message, isTrue):
     # Our Global Variable To Count The Iteration Number
     global MATRIX_COUNT
 
-    # In Case We Are Running A New Linear Equation Calculation, It will erase the lase one
+    # In Case We Are Running A New Linear Equation Calculation, It will create a new file with the method name
     if MATRIX_COUNT == -2:
         file = open('IM_Calculation.txt', 'w')
+        file.write('------------------------------ Inverse Matrix Method ------------------------------\n')
         file.close()
 
     # Open the file and save the data
@@ -324,3 +325,4 @@ def determinantMatrix(matrix):
 
 
 InverseMatrixMethod()
+print('Calculation Is Done, Check File "IM_Calculation" For The Process')
