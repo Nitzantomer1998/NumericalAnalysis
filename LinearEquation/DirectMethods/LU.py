@@ -16,9 +16,10 @@ def printIntoFile(data, message, isTrue):
     # Our Global Variable To Count The Iteration Number
     global MATRIX_COUNT
 
-    # In Case We Are Running A New Linear Equation Calculation, It will erase the lase one
+    # In Case We Are Running A New Linear Equation Calculation, It will create a new file with the method name
     if MATRIX_COUNT == -2:
         file = open('LU_Calculation.txt', 'w')
+        file.write('------------------------------ LU Method ------------------------------\n')
         file.close()
 
     # Open the file and save the data
@@ -32,7 +33,7 @@ def printIntoFile(data, message, isTrue):
                 file.write(str(message) + '\n')
                 for i in range(len(data)):
                     for j in range(len(data[0])):
-                        objectData = '{: ^22}'.format(data[i][j])
+                        objectData = '{: ^22}'.format(float(data[i][j]))
                         file.write(objectData)
                     file.write('\n')
                 file.write('\n')
@@ -46,7 +47,7 @@ def printIntoFile(data, message, isTrue):
                 file.write('\n' + str(message) + ' [' + str(MATRIX_COUNT // 3 + 1) + ']\n')
                 for i in range(len(data)):
                     for j in range(len(data[0])):
-                        objectData = '{: ^22}'.format(data[i][j])
+                        objectData = '{: ^22}'.format(float(data[i][j]))
                         file.write(objectData)
                     file.write('\n')
 
@@ -358,3 +359,4 @@ def determinantMatrix(matrix):
 
 
 LU_DecompositionMethod()
+print('Calculation Is Done, Check File "LU_Calculation" For The Process')
