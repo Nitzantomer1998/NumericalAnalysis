@@ -2,7 +2,7 @@
 
 
 # Global Variable [Only Used To print the iteration number]
-MATRIX_COUNT = -2
+PRINT_COUNTER = -2
 
 
 def printIntoFile(data, message, isTrue):
@@ -14,10 +14,10 @@ def printIntoFile(data, message, isTrue):
     :param isTrue: If True, The Linear Equation is valid, else False
     """
     # Our Global Variable To Count The Iteration Number
-    global MATRIX_COUNT
+    global PRINT_COUNTER
 
     # In Case We Are Running A New Linear Equation Calculation, It will create a new file with the method name
-    if MATRIX_COUNT == -2:
+    if PRINT_COUNTER == -2:
         file = open('IM_Calculation.txt', 'w')
         file.write('------------------------------ Inverse Matrix Method ------------------------------\n')
         file.close()
@@ -29,7 +29,7 @@ def printIntoFile(data, message, isTrue):
         if isTrue:
 
             # Saving the Linear Equation input, and the updated one
-            if MATRIX_COUNT < 0:
+            if PRINT_COUNTER < 0:
                 file.write(str(message) + '\n')
                 for i in range(len(data)):
                     for j in range(len(data[0])):
@@ -39,12 +39,12 @@ def printIntoFile(data, message, isTrue):
                 file.write('\n')
 
             # In case we are printing new calculation
-            if MATRIX_COUNT % 3 == 0:
+            if PRINT_COUNTER % 3 == 0:
                 file.write('==========================================================================================')
 
             # Saving the calculation of the Linear Equation
-            elif MATRIX_COUNT > -1:
-                file.write('\n' + str(message) + ' [' + str(MATRIX_COUNT // 3 + 1) + ']\n')
+            elif PRINT_COUNTER > -1:
+                file.write('\n' + str(message) + ' [' + str(PRINT_COUNTER // 3 + 1) + ']\n')
                 for i in range(len(data)):
                     for j in range(len(data[0])):
                         objectData = '{: ^22}'.format(float(data[i][j]))
@@ -56,7 +56,7 @@ def printIntoFile(data, message, isTrue):
             file.write('\n' + str(message) + '\n')
 
         # Increase Our Global Iteration Counter Variable
-        MATRIX_COUNT = MATRIX_COUNT + 1
+        PRINT_COUNTER = PRINT_COUNTER + 1
 
 
 def InverseMatrixMethod():
