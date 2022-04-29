@@ -1,13 +1,11 @@
 # Solving Linear Equation In The Gauss Seidel Method
 
-# Used Libraries
-import math
 
 # Global Variable [Only Used To print the iteration number]
-MATRIX_COUNT = -2
+PRINT_COUNTER = -2
 
 # Global Variable To Store The Computer Epsilon Machine
-EPSILON = 0.00001
+EPSILON = 1
 
 
 def printIntoFile(data, message, isTrue, isFinal):
@@ -21,11 +19,12 @@ def printIntoFile(data, message, isTrue, isFinal):
     """
 
     # Our Global Variable To Count The Iteration Number
-    global MATRIX_COUNT
+    global PRINT_COUNTER
 
-    # In Case We Are Running A New Linear Equation Calculation, It will erase the lase one
-    if MATRIX_COUNT == -2:
+    # In Case We Are Running A New Linear Equation Calculation, It will create a new file with the method name
+    if PRINT_COUNTER == -2:
         file = open('GS_Calculation.txt', 'w')
+        file.write('------------------------------ Gauss Seidel Method ------------------------------\n')
         file.close()
 
     # Open the file and save the data
@@ -35,7 +34,7 @@ def printIntoFile(data, message, isTrue, isFinal):
         if isTrue:
 
             # Saving the Linear Equation input, and the updated one
-            if MATRIX_COUNT < 0:
+            if PRINT_COUNTER < 0:
                 file.write(str(message) + '\n')
                 for i in range(len(data)):
                     for j in range(len(data[0])):
@@ -45,7 +44,7 @@ def printIntoFile(data, message, isTrue, isFinal):
                 file.write('\n')
 
             # In case we are printing new calculation
-            if MATRIX_COUNT == 0:
+            if PRINT_COUNTER == 0:
                 file.write('========================================================================================\n')
                 for i in range(len(data) + 1):
                     objectData = '{: ^22}'.format('Iteration' if i == 0 else chr(64 + i))
@@ -53,8 +52,8 @@ def printIntoFile(data, message, isTrue, isFinal):
                 file.write('\n')
 
             # Saving the calculation of the Linear Equation
-            if MATRIX_COUNT > -1:
-                objectData = '{: ^22}'.format(str('Solution' if isFinal else (MATRIX_COUNT + 1)))
+            if PRINT_COUNTER > -1:
+                objectData = '{: ^22}'.format(str('Solution' if isFinal else (PRINT_COUNTER + 1)))
                 file.write(objectData)
                 for i in range(len(data)):
                     objectData = '{: ^22}'.format(data[i][0])
@@ -66,7 +65,7 @@ def printIntoFile(data, message, isTrue, isFinal):
             file.write('\n' + str(message) + '\n')
 
         # Increase Our Global Iteration Counter Variable
-        MATRIX_COUNT = MATRIX_COUNT + 1
+        PRINT_COUNTER = PRINT_COUNTER + 1
 
 
 def GaussSeidelMethod():
@@ -85,6 +84,9 @@ def GaussSeidelMethod():
 
             # Organize the matrix pivots
             originMatrix, originVectorB = organizeMatrix(originMatrix, originVectorB)
+
+            # Getting Your Epsilon Machine
+            epsilonMachine()
 
             # Store if the Linear Equation is Diagonal Dominant
             isConvergent = isDiagonalDominant(originMatrix)
@@ -113,24 +115,20 @@ def GaussSeidelMethod():
                             rowSum = rowSum + originMatrix[i][j] * currentIteration[j][0]
                     currentIteration[i][0] = (originVectorB[i][0] - rowSum) / originMatrix[i][i]
 
-                flag = True
-                for i in range(len(originMatrix)):
-                    if abs(currentIteration[i][0] - prevIteration[i][0]) > EPSILON:
-                        flag = False
-
-                # Save the current iteration values into the file, and update the current solution to be the prev
+                # Save the current iteration values into the file
                 printIntoFile(currentIteration, None, True, False)
-                prevIteration = [[currentIteration[row][0] for _ in range(len(currentIteration[0]))] for row in range(len(currentIteration))]
 
-                # In case we found our solution, Stop the loop
-                if flag:
+                # Check if we arrive to the solution, In case we found our solution, Stop the program
+                if all([False if abs(currentIteration[row][0] - prevIteration[row][0]) > EPSILON else True for row in range(len(currentIteration))]):
                     break
+
+                # Update the current solution to be the prev
+                prevIteration = [[currentIteration[row][0] for _ in range(1)] for row in range(len(currentIteration))]
 
                 # Stop Condition In case of Not Dominant Diagonal
                 Counter = Counter + 1
 
             # Saving the Linear Equation final solution
-            currentIteration = [[format(currentIteration[row][0], '.' + str(int(-math.log10(EPSILON))) + 'f') for _ in range(len(currentIteration[0]))] for row in range(len(currentIteration))]
             printIntoFile(currentIteration, None, True, True)
 
         # According message In case there is more or less than one solution
@@ -285,9 +283,11 @@ def epsilonMachine():
 
     """
     global EPSILON
+
     EPSILON = 1
     while 1.0 + (EPSILON / 2) > 1.0:
         EPSILON = EPSILON / 2
 
 
 GaussSeidelMethod()
+print('Calculation Is Done, Check File "GS_Calculation" For The Process')
