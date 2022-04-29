@@ -2,7 +2,7 @@
 
 
 # Global Variable [Only Used To print the iteration number]
-MATRIX_COUNT = -2
+PRINT_COUNTER = -2
 
 # Global Variable To Store The Computer Epsilon Machine
 EPSILON = 1
@@ -19,10 +19,10 @@ def printIntoFile(data, message, isTrue, isFinal):
     """
 
     # Our Global Variable To Count The Iteration Number
-    global MATRIX_COUNT
+    global PRINT_COUNTER
 
     # In Case We Are Running A New Linear Equation Calculation, It will create a new file with the method name
-    if MATRIX_COUNT == -2:
+    if PRINT_COUNTER == -2:
         file = open('Jacobi_Calculation.txt', 'w')
         file.write('------------------------------ Jacobi Method ------------------------------\n')
         file.close()
@@ -34,7 +34,7 @@ def printIntoFile(data, message, isTrue, isFinal):
         if isTrue:
 
             # Saving the Linear Equation input, and the updated one
-            if MATRIX_COUNT < 0:
+            if PRINT_COUNTER < 0:
                 file.write(str(message) + '\n')
                 for i in range(len(data)):
                     for j in range(len(data[0])):
@@ -44,7 +44,7 @@ def printIntoFile(data, message, isTrue, isFinal):
                 file.write('\n')
 
             # In case we are printing new calculation
-            if MATRIX_COUNT == 0:
+            if PRINT_COUNTER == 0:
                 file.write('========================================================================================\n')
                 for i in range(len(data) + 1):
                     objectData = '{: ^22}'.format('Iteration' if i == 0 else chr(64 + i))
@@ -52,8 +52,8 @@ def printIntoFile(data, message, isTrue, isFinal):
                 file.write('\n')
 
             # Saving the calculation of the Linear Equation
-            if MATRIX_COUNT > -1:
-                objectData = '{: ^22}'.format(str('Solution' if isFinal else (MATRIX_COUNT + 1)))
+            if PRINT_COUNTER > -1:
+                objectData = '{: ^22}'.format(str('Solution' if isFinal else (PRINT_COUNTER + 1)))
                 file.write(objectData)
                 for i in range(len(data)):
                     objectData = '{: ^22}'.format(data[i][0])
@@ -65,7 +65,7 @@ def printIntoFile(data, message, isTrue, isFinal):
             file.write('\n' + str(message) + '\n')
 
         # Increase Our Global Iteration Counter Variable
-        MATRIX_COUNT = MATRIX_COUNT + 1
+        PRINT_COUNTER = PRINT_COUNTER + 1
 
 
 def JacobiMethod():
