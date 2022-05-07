@@ -70,7 +70,7 @@ def bisectionMethod(f, left, right):
         elif f(middle) * f(right) < 0:
             left = middle
 
-    # In case we didn't find the root within the allowed amount iteration, Send fail message and shut down the program
+    # In case we didn't find the root within the allowed amount iteration, Send failed message and shut down the program
     print('Failed To Find The Root, The Bisection Method Is Not Suitable For This Function')
     exit()
 
@@ -84,3 +84,4 @@ if __name__ == "__main__":
 
     print('---------- Bisection Method ----------')
     rootFinder(function, domainStart, domainEnd)
+
