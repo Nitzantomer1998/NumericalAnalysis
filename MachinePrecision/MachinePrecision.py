@@ -1,5 +1,5 @@
-# Author: Nitzan Tomer.
-# Machine Precision.
+# Machine Precision Finder
+
 
 # Global Variable [Only Used To print the iteration number]
 PRINT_COUNTER = 1
@@ -42,16 +42,25 @@ def printIntoFile(data, message, isFinal):
 
         # Increase Our Global Iteration Counter Variable
         PRINT_COUNTER = PRINT_COUNTER + 1
-# Variables
-ourEpsilon = 1
-loopsNum = 0
 
-# "Function" To Find Your Machine Precision
-print("\n[Machine Precision Find]")
-while 1.0 + (ourEpsilon / 2) > 1.0:
-    print(f'({loopsNum}) {ourEpsilon} \\ 2 = {ourEpsilon / 2}')
-    loopsNum = loopsNum + 1
-    ourEpsilon = ourEpsilon / 2
 
-# Your Own Machine Precision
-print(f'Your Epsilon Is --> {ourEpsilon}\n')
+def machinePrecisionMethod():
+
+    # Variable
+    ourEpsilon = 1
+
+    # Loop To Find The Machine Precision
+    print("[Machine Precision Finder]")
+    while 1.0 + (ourEpsilon / 2) > 1.0:
+        printIntoFile([ourEpsilon, '\\', 2, '=', ourEpsilon / 2], None, False)
+        ourEpsilon = ourEpsilon / 2
+
+    # Your Own Machine Precision
+    printIntoFile(ourEpsilon, '\nYour Epsilon Machine --> ', True)
+    print(f'Your Epsilon Is --> {ourEpsilon}')
+
+
+# Our Program Driver
+if __name__ == "__main__":
+    machinePrecisionMethod()
+    print('Calculation Is Done, Check File "MP_Calculation" For More Information')
