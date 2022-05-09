@@ -11,11 +11,11 @@ ACCURACY = 0.00001
 
 def rootFinder(f, startAt, endAt):
     """
-    Method for getting the functions Roots
+    Method for getting the function Roots
 
     :param f: Our function
-    :param startAt: The leftDomain domain of the function
-    :param endAt: The rightDomain domain of the function
+    :param startAt: The left domain of the function
+    :param endAt: The right domain of the function
     """
     # Variables to store our derivative function
     g = f.diff(x)
@@ -44,7 +44,7 @@ def rootFinder(f, startAt, endAt):
             if abs(f(possibleRoot)) < ACCURACY:
                 print('The root --> ' + str(possibleRoot) + '\tIteration --> ' + str(iteration))
 
-        # Update our domain for this iteration
+        # Update our domain for the next iteration
         startAt = startAt + 0.1
 
 
