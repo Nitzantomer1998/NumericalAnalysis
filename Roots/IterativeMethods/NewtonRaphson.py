@@ -1,9 +1,12 @@
+# Finding The Roots In The Newton-Raphson Method
+
+
+# Libraries
 import sympy as sp
 from sympy.utilities.lambdify import lambdify
 
-
-# Global Variable To Set The Wanted Accuracy Solution
-MAX_ERROR = 0.00001
+# Global Variable To Set The Solution Accuracy
+ACCURACY = 0.00001
 
 
 def rootFinder(f, startAt, endAt):
@@ -11,8 +14,8 @@ def rootFinder(f, startAt, endAt):
     Method for getting the functions Roots
 
     :param f: Our function
-    :param startAt: The left domain of the function
-    :param endAt: The right domain of the function
+    :param startAt: The leftDomain domain of the function
+    :param endAt: The rightDomain domain of the function
     """
     # Variables to store our derivative function
     g = f.diff(x)
@@ -26,19 +29,19 @@ def rootFinder(f, startAt, endAt):
     # Divide our function domain range into multiply domains with 0.1 range, then search for each one of them for a root
     while startAt < endAt:
 
-        # In case the function change its sign (Means there's at least one root)
+        # In case the function changes its sign (It means there's at least one root)
         if f(startAt) * f(startAt + 0.1) < 0:
             root, iteration = newtonRaphsonMethod(f, g, startAt + 0.05)
             print('The root --> ' + str(root) + '\tIteration --> ' + str(iteration))
 
-        # In case the derivative function change its sign (Mean there's a possibility for a root)
+        # In case the derivative function changes its sign (Mean there's a possibility for a root)
         if g(startAt) * g(startAt + 0.1) < 0:
 
-            # Getting a possible root (The return of the derivative function can be Root or an Extreme point)
+            # Getting a possible root (The return of the derivative function can be a Root or an Extreme point)
             possibleRoot, iteration = newtonRaphsonMethod(g, h, startAt + 0.05)
 
             # Checking the possible root is indeed a root
-            if abs(f(possibleRoot)) < MAX_ERROR:
+            if abs(f(possibleRoot)) < ACCURACY:
                 print('The root --> ' + str(possibleRoot) + '\tIteration --> ' + str(iteration))
 
         # Update our domain for this iteration
@@ -60,14 +63,14 @@ def newtonRaphsonMethod(f, g, currentX):
         # Variable to store the next X
         nextX = currentX - f(currentX) / g(currentX)
 
-        # In case we found our root, Return the root and the iteration number
-        if abs(nextX - currentX) < MAX_ERROR:
+        # In case we found our root, Return root and the iteration number
+        if abs(nextX - currentX) < ACCURACY:
             return int(nextX * 10 ** 5) / 10 ** 5, i + 1
 
         # Update the currentX to be the new one
         currentX = nextX
 
-    # In case we didn't find the root within the allowed amount iteration, Send fail message and shut down the program
+    # In case we didn't find the root within the allowed amount of iteration, Print a fail message and end the program
     print('Failed To Find The Root, The Newton Raphson Method Is Not Suitable For This Function')
     exit()
 
