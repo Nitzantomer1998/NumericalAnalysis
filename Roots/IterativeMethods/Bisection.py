@@ -11,11 +11,11 @@ ACCURACY = 0.00001
 
 def rootFinder(f, startAt, endAt):
     """
-    Method for getting the functions Roots
+    Method for getting the function Roots
 
     :param f: Our function
-    :param startAt: The leftDomain domain of the function
-    :param endAt: The rightDomain domain of the function
+    :param startAt: The left domain of the function
+    :param endAt: The right domain of the function
     """
     # Variables to store our derivative function
     g = f.diff(x)
@@ -42,7 +42,7 @@ def rootFinder(f, startAt, endAt):
             if abs(f(possibleRoot)) < ACCURACY:
                 print('The root --> ' + str(possibleRoot) + '\tIteration --> ' + str(iteration))
 
-        # Update our domain for this iteration
+        # Update our domain for the next iteration
         startAt = startAt + 0.1
 
 
@@ -58,10 +58,10 @@ def bisectionMethod(f, leftDomain, rightDomain):
     # Search the root within the maximum allowed iteration
     for i in range(100):
 
-        # Variable to store the middle of the function segment
+        # Variable to store the middle of the current function domain
         middle = leftDomain + (rightDomain - leftDomain) / 2
 
-        # In case we found our root, Return the root and the iteration number
+        # In case we found our root, Return root and the iteration number
         if abs(f(middle)) < ACCURACY:
             return int(middle * 10 ** 5) / 10 ** 5, i + 1
 
@@ -73,7 +73,7 @@ def bisectionMethod(f, leftDomain, rightDomain):
         elif f(middle) * f(rightDomain) < 0:
             leftDomain = middle
 
-    # In case we didn't find the root within the allowed amount of iteration, Send a fail message and end the program
+    # In case we didn't find the root within the allowed amount of iteration, Print a fail message and end the program
     print('Failed To Find The Root, The Bisection Method Is Not Suitable For This Function')
     exit()
 
@@ -82,7 +82,6 @@ def bisectionMethod(f, leftDomain, rightDomain):
 if __name__ == "__main__":
     x = sp.symbols('x')
     function = x ** 4 + x ** 3 - 3 * x ** 2
-
     domainStart = -3
     domainEnd = 2
 
