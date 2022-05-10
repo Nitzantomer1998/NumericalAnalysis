@@ -324,5 +324,7 @@ def determinantMatrix(matrix):
     return determinantSum
 
 
-InverseMatrixMethod()
-print('Calculation Is Done, Check File "IM_Calculation" For The Process')
+# Our Program Driver
+if __name__ == "__main__":
+    InverseMatrixMethod()
+    print('Calculation Is Done, Check File "IM_Calculation" For More Information')
