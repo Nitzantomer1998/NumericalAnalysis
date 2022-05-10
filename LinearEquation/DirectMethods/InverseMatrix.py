@@ -147,8 +147,8 @@ def organizeMatrix(originMatrix, originVectorB):
             # In case the highest pivot is on the Columns
             else:
                 # Changed the Matrix Columns
-                for i in range(len(originMatrix)):
-                    originMatrix[i][i], originMatrix[i][pivotCol] = originMatrix[i][pivotCol], originMatrix[i][i]
+                for k in range(len(originMatrix)):
+                    originMatrix[k][i], originMatrix[k][pivotCol] = originMatrix[k][pivotCol], originMatrix[k][i]
 
                 # In case changing Columns made a higher pivot on row
                 i = i - 1
@@ -250,7 +250,7 @@ def multiplyMatrix(matrixA, matrixB, isTrue):
             for k in range(len(matrixB)):
                 matrixC[i][j] = matrixC[i][j] + matrixA[i][k] * matrixB[k][j]
 
-    # Saving the matrices in the right lists
+    # Saving the matrices in the rightDomain lists
     if isTrue:
         # Saving the matrices in a file
         printIntoFile(matrixA, 'Elementary Matrix', True)
@@ -286,11 +286,11 @@ def initElementaryMatrix(size, row, col, value):
     :return: Return the elementary matrix
     """
     # Initialize the desire elementary matrix
-    elementary_Matrix = [[1.0 if row == col else 0.0 for col in range(size)] for row in range(size)]
-    elementary_Matrix[row][col] = value
+    elementaryMatrix = [[1.0 if row == col else 0.0 for col in range(size)] for row in range(size)]
+    elementaryMatrix[row][col] = value
 
     # Return the elementary matrix
-    return elementary_Matrix
+    return elementaryMatrix
 
 
 def determinantMatrix(matrix):
