@@ -18,23 +18,22 @@ def printIntoFile(data, message, isTrue):
 
     # In Case We Are Running A New Linear Equation Calculation, It will create a new file with the method name
     if PRINT_COUNTER == -2:
-        file = open('LU_Calculation.txt', 'w')
-        file.write('------------------------------ LU Method ------------------------------\n')
+        file = open('IM_Calculation.txt', 'w')
+        file.write('------------------------------ Inverse Matrix Method ------------------------------\n')
         file.close()
 
     # Open the file and save the data
-    with open('LU_Calculation.txt', 'a+') as file:
+    with open('IM_Calculation.txt', 'a+') as file:
 
         # In case the Linear Equation is valid
         if isTrue:
 
             # Saving the Linear Equation input, and the updated one
             if PRINT_COUNTER < 0:
-                file.write(str(message) + '\n')
+                file.write(f'{message}\n')
                 for i in range(len(data)):
                     for j in range(len(data[0])):
-                        objectData = '{: ^22}'.format(float(data[i][j]))
-                        file.write(objectData)
+                        file.write('{: ^22}'.format(float(data[i][j])))
                     file.write('\n')
                 file.write('\n')
 
@@ -43,17 +42,16 @@ def printIntoFile(data, message, isTrue):
                 file.write('==========================================================================================')
 
             # Saving the calculation of the Linear Equation
-            elif PRINT_COUNTER > -1:
-                file.write('\n' + str(message) + ' [' + str(PRINT_COUNTER // 3 + 1) + ']\n')
+            if PRINT_COUNTER > -1:
+                file.write(f'\n{message} [{PRINT_COUNTER // 3 + 1}]\n')
                 for i in range(len(data)):
                     for j in range(len(data[0])):
-                        objectData = '{: ^22}'.format(float(data[i][j]))
-                        file.write(objectData)
+                        file.write('{: ^22}'.format(float(data[i][j])))
                     file.write('\n')
 
         # In case Linear Equation is not valid
         else:
-            file.write('\n' + str(message) + '\n')
+            file.write(f'\n{message}\n')
 
         # Increase Our Global Iteration Counter Variable
         PRINT_COUNTER = PRINT_COUNTER + 1
