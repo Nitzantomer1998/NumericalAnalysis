@@ -18,12 +18,12 @@ def printIntoFile(data, message, isTrue):
 
     # In Case We Are Running A New Linear Equation Calculation, It will create a new file with the method name
     if PRINT_COUNTER == -2:
-        file = open('IM_Calculation.txt', 'w')
-        file.write('------------------------------ Inverse Matrix Method ------------------------------\n')
+        file = open('LU_Calculation.txt', 'w')
+        file.write('------------------------------ LU Method ------------------------------\n')
         file.close()
 
     # Open the file and save the data
-    with open('IM_Calculation.txt', 'a+') as file:
+    with open('LU_Calculation.txt', 'a+') as file:
 
         # In case the Linear Equation is valid
         if isTrue:
@@ -85,6 +85,7 @@ def LU_DecompositionMethod():
 
             # Saving the Linear Equation final solution
             printIntoFile(vectorSolutionX, 'Linear Equation Final Solution', True)
+            print('[Linear Equation Solution]\n' + str(list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, vectorSolutionX))))
 
         # According message In case there is more or less than one solution
         else:
