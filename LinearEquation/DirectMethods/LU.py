@@ -357,5 +357,8 @@ def determinantMatrix(matrix):
     return determinantSum
 
 
-LU_DecompositionMethod()
-print('Calculation Is Done, Check File "LU_Calculation" For The Process')
+# Our Program Driver
+if __name__ == "__main__":
+    LU_DecompositionMethod()
+    print('Calculation Is Done, Check File "LU_Calculation" For More Information')
+
