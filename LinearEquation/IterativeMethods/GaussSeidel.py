@@ -8,61 +8,53 @@ PRINT_COUNTER = -2
 EPSILON = 1
 
 
-def printIntoFile(data, message, isTrue, isFinal):
+def printIntoFile(data, message, isTrue):
     """
     Printing the data and the message content into a specified file
 
     :param data: Data is a list representing matrix or vector
     :param message: Message is a String representing the data explanation
     :param isTrue: If True, The Linear Equation is valid, else False
-    :param isFinal: If True, We Print the Linear Equation Solution
     """
-
     # Our Global Variable To Count The Iteration Number
     global PRINT_COUNTER
 
     # In Case We Are Running A New Linear Equation Calculation, It will create a new file with the method name
     if PRINT_COUNTER == -2:
-        file = open('GS_Calculation.txt', 'w')
-        file.write('------------------------------ Gauss Seidel Method ------------------------------\n')
+        file = open('LU_Calculation.txt', 'w')
+        file.write('------------------------------ LU Method ------------------------------\n')
         file.close()
 
     # Open the file and save the data
-    with open('GS_Calculation.txt', 'a+') as file:
+    with open('LU_Calculation.txt', 'a+') as file:
 
         # In case the Linear Equation is valid
         if isTrue:
 
             # Saving the Linear Equation input, and the updated one
             if PRINT_COUNTER < 0:
-                file.write(str(message) + '\n')
+                file.write(f'{message}\n')
                 for i in range(len(data)):
                     for j in range(len(data[0])):
-                        objectData = '{: ^22}'.format(data[i][j])
-                        file.write(objectData)
+                        file.write('{: ^22}'.format(float(data[i][j])))
                     file.write('\n')
                 file.write('\n')
 
             # In case we are printing new calculation
-            if PRINT_COUNTER == 0:
-                file.write('========================================================================================\n')
-                for i in range(len(data) + 1):
-                    objectData = '{: ^22}'.format('Iteration' if i == 0 else chr(64 + i))
-                    file.write(objectData)
-                file.write('\n')
+            if PRINT_COUNTER % 3 == 0:
+                file.write('==========================================================================================')
 
             # Saving the calculation of the Linear Equation
             if PRINT_COUNTER > -1:
-                objectData = '{: ^22}'.format(str('Solution' if isFinal else (PRINT_COUNTER + 1)))
-                file.write(objectData)
+                file.write(f'\n{message} [{PRINT_COUNTER // 3 + 1}]\n')
                 for i in range(len(data)):
-                    objectData = '{: ^22}'.format(data[i][0])
-                    file.write(objectData)
-                file.write('\n')
+                    for j in range(len(data[0])):
+                        file.write('{: ^22}'.format(float(data[i][j])))
+                    file.write('\n')
 
         # In case Linear Equation is not valid
         else:
-            file.write('\n' + str(message) + '\n')
+            file.write(f'\n{message}\n')
 
         # Increase Our Global Iteration Counter Variable
         PRINT_COUNTER = PRINT_COUNTER + 1
