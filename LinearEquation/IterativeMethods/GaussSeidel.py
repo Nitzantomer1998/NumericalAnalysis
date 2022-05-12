@@ -8,25 +8,27 @@ PRINT_COUNTER = -2
 EPSILON = 1
 
 
-def printIntoFile(data, message, isTrue):
+def printIntoFile(data, message, isTrue, isFinal):
     """
     Printing the data and the message content into a specified file
 
     :param data: Data is a list representing matrix or vector
     :param message: Message is a String representing the data explanation
     :param isTrue: If True, The Linear Equation is valid, else False
+    :param isFinal: If True, We Print the Linear Equation Solution
     """
+
     # Our Global Variable To Count The Iteration Number
     global PRINT_COUNTER
 
     # In Case We Are Running A New Linear Equation Calculation, It will create a new file with the method name
     if PRINT_COUNTER == -2:
-        file = open('LU_Calculation.txt', 'w')
-        file.write('------------------------------ LU Method ------------------------------\n')
+        file = open('GS_Calculation.txt', 'w')
+        file.write('------------------------------ Gauss Seidel Method ------------------------------\n')
         file.close()
 
     # Open the file and save the data
-    with open('LU_Calculation.txt', 'a+') as file:
+    with open('GS_Calculation.txt', 'a+') as file:
 
         # In case the Linear Equation is valid
         if isTrue:
@@ -36,21 +38,23 @@ def printIntoFile(data, message, isTrue):
                 file.write(f'{message}\n')
                 for i in range(len(data)):
                     for j in range(len(data[0])):
-                        file.write('{: ^22}'.format(float(data[i][j])))
+                        file.write('{: ^22}'.format(data[i][j]))
                     file.write('\n')
                 file.write('\n')
 
             # In case we are printing new calculation
-            if PRINT_COUNTER % 3 == 0:
-                file.write('==========================================================================================')
+            if PRINT_COUNTER == 0:
+                file.write('========================================================================================\n')
+                for i in range(len(data) + 1):
+                    file.write('{: ^22}'.format('Iteration' if i == 0 else chr(64 + i)))
+                file.write('\n')
 
             # Saving the calculation of the Linear Equation
             if PRINT_COUNTER > -1:
-                file.write(f'\n{message} [{PRINT_COUNTER // 3 + 1}]\n')
+                file.write('{: ^22}'.format('Solution' if isFinal else (PRINT_COUNTER + 1)))
                 for i in range(len(data)):
-                    for j in range(len(data[0])):
-                        file.write('{: ^22}'.format(float(data[i][j])))
-                    file.write('\n')
+                    file.write('{: ^22}'.format(data[i][0]))
+                file.write('\n')
 
         # In case Linear Equation is not valid
         else:
@@ -60,9 +64,9 @@ def printIntoFile(data, message, isTrue):
         PRINT_COUNTER = PRINT_COUNTER + 1
 
 
-def LU_DecompositionMethod():
+def GaussSeidelMethod():
     """
-    Solving linear equation in the LU Decomposition method
+    Solving Linear Equation in the Gauss Seidel method
 
     """
     # Initialize the matrix, and vectorB
@@ -77,26 +81,60 @@ def LU_DecompositionMethod():
             # Organize the matrix pivots
             originMatrix, originVectorB = organizeMatrix(originMatrix, originVectorB)
 
-            # Getting the Lower, and Upper matrices of our Linear Equation
-            upperMatrix, lowerMatrix = findLU(originMatrix)
+            # Getting Your Epsilon Machine
+            epsilonMachine()
 
-            # Solve Ly = B
-            vectorSolutionY = forwardSubstitution(lowerMatrix, originVectorB)
+            # Store if the Linear Equation is Diagonal Dominant
+            isConvergent = isDiagonalDominant(originMatrix)
 
-            # Solve Ux = y (Getting the Linear Equation solution)
-            vectorSolutionX = finalSolution(originMatrix, originVectorB, backSubstitution(upperMatrix, vectorSolutionY))
+            # According message in case the Matrix is Not Diagonal Dominant
+            if isConvergent is False:
+                printIntoFile(None, 'This Is A Not Diagonal Dominant Matrix', False, False)
+
+            # Our lists for the Prev iteration values, and our Current iteration values
+            prevIteration = [[0 for _ in range(1)] for _ in range(len(originMatrix))]
+            currentIteration = [[0 for _ in range(1)] for _ in range(len(originMatrix))]
+
+            # The iteration loop to find the Linear Equation solution
+            Counter = 0
+
+            while True:
+                if isConvergent is False and Counter > 500:
+                    printIntoFile(None, 'The Matrix Is Not Convergent', False, False)
+                    break
+
+                # Calculate the next guess
+                for i in range(len(originMatrix)):
+                    rowSum = 0
+                    for j in range(len(originMatrix)):
+                        if i != j:
+                            rowSum = rowSum + originMatrix[i][j] * currentIteration[j][0]
+                    currentIteration[i][0] = (originVectorB[i][0] - rowSum) / originMatrix[i][i]
+
+                # Save the current iteration values into the file
+                printIntoFile(currentIteration, None, True, False)
+
+                # Check if we arrive to the solution, In case we found our solution, Stop the program
+                if all([False if abs(currentIteration[row][0] - prevIteration[row][0]) > EPSILON else True for row in range(len(currentIteration))]):
+                    break
+
+                # Update the current solution to be the prev
+                prevIteration = [[currentIteration[row][0] for _ in range(1)] for row in range(len(currentIteration))]
+
+                # Stop Condition In case of Not Dominant Diagonal
+                Counter = Counter + 1
 
             # Saving the Linear Equation final solution
-            printIntoFile(vectorSolutionX, 'Linear Equation Final Solution', True)
-            print('[Linear Equation Solution]\n' + str(list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, vectorSolutionX))))
+            printIntoFile(currentIteration, None, True, True)
+            print('[Linear Equation Solution]\n' + str(list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, currentIteration))))
 
         # According message In case there is more or less than one solution
         else:
-            printIntoFile(None, 'This Is A Singular Matrix', False)
+            printIntoFile(None, 'This Is A Singular Matrix', False, False)
 
     # In case the input Linear Equation isn't meet the demands
     else:
-        printIntoFile(None, "The Input Linear Equation Isn't Match", False)
+        printIntoFile(None, "The Input Linear Equation Doesn't Meet The Demands", False, False)
 
 
 def organizeMatrix(originMatrix, originVectorB):
@@ -250,5 +288,5 @@ def epsilonMachine():
 
 # Our Program Driver
 if __name__ == "__main__":
-    LU_DecompositionMethod()
-    print('Calculation Is Done, Check File "LU_Calculation" For More Information')
+    GaussSeidelMethod()
+    print('Calculation Is Done, Check File "GS_Calculation" For More Information')
