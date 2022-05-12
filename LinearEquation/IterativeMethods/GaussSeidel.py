@@ -68,9 +68,9 @@ def printIntoFile(data, message, isTrue, isFinal):
         PRINT_COUNTER = PRINT_COUNTER + 1
 
 
-def GaussSeidelMethod():
+def LU_DecompositionMethod():
     """
-    Solving Linear Equation in the Gauss Seidel method
+    Solving linear equation in the LU Decomposition method
 
     """
     # Initialize the matrix, and vectorB
@@ -85,59 +85,26 @@ def GaussSeidelMethod():
             # Organize the matrix pivots
             originMatrix, originVectorB = organizeMatrix(originMatrix, originVectorB)
 
-            # Getting Your Epsilon Machine
-            epsilonMachine()
+            # Getting the Lower, and Upper matrices of our Linear Equation
+            upperMatrix, lowerMatrix = findLU(originMatrix)
 
-            # Store if the Linear Equation is Diagonal Dominant
-            isConvergent = isDiagonalDominant(originMatrix)
+            # Solve Ly = B
+            vectorSolutionY = forwardSubstitution(lowerMatrix, originVectorB)
 
-            # According message in case the Matrix is Not Diagonal Dominant
-            if isConvergent is False:
-                printIntoFile(None, 'This Is A Not Diagonal Dominant Matrix', False, False)
-
-            # Our lists for the Prev iteration values, and our Current iteration values
-            prevIteration = [[0 for _ in range(1)] for _ in range(len(originMatrix))]
-            currentIteration = [[0 for _ in range(1)] for _ in range(len(originMatrix))]
-
-            # The iteration loop to find the Linear Equation solution
-            Counter = 0
-
-            while True:
-                if isConvergent is False and Counter > 500:
-                    printIntoFile(None, 'The Matrix Is Not Convergent', False, False)
-                    break
-
-                # Calculate the next guess
-                for i in range(len(originMatrix)):
-                    rowSum = 0
-                    for j in range(len(originMatrix)):
-                        if i != j:
-                            rowSum = rowSum + originMatrix[i][j] * currentIteration[j][0]
-                    currentIteration[i][0] = (originVectorB[i][0] - rowSum) / originMatrix[i][i]
-
-                # Save the current iteration values into the file
-                printIntoFile(currentIteration, None, True, False)
-
-                # Check if we arrive to the solution, In case we found our solution, Stop the program
-                if all([False if abs(currentIteration[row][0] - prevIteration[row][0]) > EPSILON else True for row in range(len(currentIteration))]):
-                    break
-
-                # Update the current solution to be the prev
-                prevIteration = [[currentIteration[row][0] for _ in range(1)] for row in range(len(currentIteration))]
-
-                # Stop Condition In case of Not Dominant Diagonal
-                Counter = Counter + 1
+            # Solve Ux = y (Getting the Linear Equation solution)
+            vectorSolutionX = finalSolution(originMatrix, originVectorB, backSubstitution(upperMatrix, vectorSolutionY))
 
             # Saving the Linear Equation final solution
-            printIntoFile(currentIteration, None, True, True)
+            printIntoFile(vectorSolutionX, 'Linear Equation Final Solution', True)
+            print('[Linear Equation Solution]\n' + str(list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, vectorSolutionX))))
 
         # According message In case there is more or less than one solution
         else:
-            printIntoFile(None, 'This Is A Singular Matrix', False, False)
+            printIntoFile(None, 'This Is A Singular Matrix', False)
 
     # In case the input Linear Equation isn't meet the demands
     else:
-        printIntoFile(None, "The Input Linear Equation Isn't Match", False, False)
+        printIntoFile(None, "The Input Linear Equation Isn't Match", False)
 
 
 def organizeMatrix(originMatrix, originVectorB):
