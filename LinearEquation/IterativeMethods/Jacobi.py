@@ -289,5 +289,8 @@ def epsilonMachine():
         EPSILON = EPSILON / 2
 
 
-JacobiMethod()
-print('Calculation Is Done, Check File "Jacobi_Calculation" For The Process')
+# Our Program Driver
+if __name__ == "__main__":
+    JacobiMethod()
+    print('Calculation Is Done, Check File "Jacobi_Calculation" For More Information')
+
