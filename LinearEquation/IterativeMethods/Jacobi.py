@@ -35,11 +35,10 @@ def printIntoFile(data, message, isTrue, isFinal):
 
             # Saving the Linear Equation input, and the updated one
             if PRINT_COUNTER < 0:
-                file.write(str(message) + '\n')
+                file.write(f'{message}\n')
                 for i in range(len(data)):
                     for j in range(len(data[0])):
-                        objectData = '{: ^22}'.format(data[i][j])
-                        file.write(objectData)
+                        file.write('{: ^22}'.format(data[i][j]))
                     file.write('\n')
                 file.write('\n')
 
@@ -47,22 +46,19 @@ def printIntoFile(data, message, isTrue, isFinal):
             if PRINT_COUNTER == 0:
                 file.write('========================================================================================\n')
                 for i in range(len(data) + 1):
-                    objectData = '{: ^22}'.format('Iteration' if i == 0 else chr(64 + i))
-                    file.write(objectData)
+                    file.write('{: ^22}'.format('Iteration' if i == 0 else chr(64 + i)))
                 file.write('\n')
 
             # Saving the calculation of the Linear Equation
             if PRINT_COUNTER > -1:
-                objectData = '{: ^22}'.format(str('Solution' if isFinal else (PRINT_COUNTER + 1)))
-                file.write(objectData)
+                file.write('{: ^22}'.format(str('Solution' if isFinal else (PRINT_COUNTER + 1))))
                 for i in range(len(data)):
-                    objectData = '{: ^22}'.format(data[i][0])
-                    file.write(objectData)
+                    file.write('{: ^22}'.format(data[i][0]))
                 file.write('\n')
 
         # In case Linear Equation is not valid
         else:
-            file.write('\n' + str(message) + '\n')
+            file.write(f'\n{message}\n')
 
         # Increase Our Global Iteration Counter Variable
         PRINT_COUNTER = PRINT_COUNTER + 1
