@@ -45,6 +45,16 @@ def rootFinder(f, startAt, endAt):
         # Update our domain for the next iteration
         startAt = startAt + 0.1
 
+def resetFile():
+    """
+    Reset the calculation file
+
+    """
+    file = open('Root_Calculation.txt', 'w')
+    file.write('------------------------------ Bisection Method ------------------------------\n')
+    file.write('{: ^25}{: ^25}{: ^25}'.format('Iteration', 'x', 'f(x)') + '\n')
+    file.close()
+
 
 def bisectionMethod(f, leftDomain, rightDomain):
     """
