@@ -1,12 +1,46 @@
 # Finding The Roots In The Bisection Method
 
 
-# Libraries
+# Libraries for getting the derivative of a function
 import sympy as sp
 from sympy.utilities.lambdify import lambdify
 
-# Global Variable To Set The Solution Accuracy
+# Global Variable To Store The Accuracy For The Solution
 ACCURACY = 0.00001
+
+
+def printIntoFile(data, isFinal):
+    """
+    Printing the data and the message content into a specified file
+
+    :param data: Data is a list representing the arguments
+    :param isFinal: If True, We Print the root Solution
+    """
+    # Open the file and save the data
+    with open('Root_Calculation.txt', 'a+') as file:
+        # Writing into the file
+
+        if isFinal:
+            # Saving the solution
+            file.write(f'\nRoot --> {data[1]}    Iteration --> {data[0]}\n')
+            file.write('--------------------------------------------------------------------------------------------\n')
+
+        else:
+            # Saving the calculation
+            for i in range(len(data)):
+                file.write('{: ^25}'.format(data[i]))
+            file.write('\n')
+
+
+def resetFile():
+    """
+    Reset the calculation file
+
+    """
+    file = open('Root_Calculation.txt', 'w')
+    file.write('------------------------------ Bisection Method ------------------------------\n')
+    file.write('{: ^25}{: ^25}{: ^25}'.format('Iteration', 'x', 'f(x)') + '\n')
+    file.close()
 
 
 def rootFinder(f, startAt, endAt):
@@ -27,10 +61,11 @@ def rootFinder(f, startAt, endAt):
     # Divide our function domain range into multiply domains with 0.1 range, then search for each one of them for a root
     while startAt < endAt:
 
-        # In case the function changes its sign (It means there's at least one root)
+        # In case the function changes its sign (Means there's at least one root)
         if f(startAt) * f(startAt + 0.1) < 0:
             root, iteration = bisectionMethod(f, startAt, startAt + 0.1)
-            print('The root --> ' + str(root) + '\tIteration --> ' + str(iteration))
+            printIntoFile([iteration, root], True)
+            print(f'The root --> {root}    Iteration --> {iteration}')
 
         # In case the derivative function changes its sign (Mean there's a possibility for a root)
         if g(startAt) * g(startAt + 0.1) < 0:
@@ -40,20 +75,14 @@ def rootFinder(f, startAt, endAt):
 
             # Checking the possible root is indeed a root
             if abs(f(possibleRoot)) < ACCURACY:
-                print('The root --> ' + str(possibleRoot) + '\tIteration --> ' + str(iteration))
+                printIntoFile([iteration, possibleRoot], True)
+                print(f'The root --> {possibleRoot}    Iteration --> {iteration}')
+
+            else:
+                printIntoFile([iteration, '"Failed" Found Extreme Point, Not A Root'], True)
 
         # Update our domain for the next iteration
         startAt = startAt + 0.1
-
-def resetFile():
-    """
-    Reset the calculation file
-
-    """
-    file = open('Root_Calculation.txt', 'w')
-    file.write('------------------------------ Bisection Method ------------------------------\n')
-    file.write('{: ^25}{: ^25}{: ^25}'.format('Iteration', 'x', 'f(x)') + '\n')
-    file.close()
 
 
 def bisectionMethod(f, leftDomain, rightDomain):
@@ -70,6 +99,9 @@ def bisectionMethod(f, leftDomain, rightDomain):
 
         # Variable to store the middle of the current function domain
         middle = leftDomain + (rightDomain - leftDomain) / 2
+
+        # Save the calculation in the file
+        printIntoFile([i + 1, middle, f(middle)], False)
 
         # In case we found our root, Return root and the iteration number
         if abs(f(middle)) < ACCURACY:
@@ -90,6 +122,11 @@ def bisectionMethod(f, leftDomain, rightDomain):
 
 # Our Program Driver
 if __name__ == "__main__":
+
+    # Reset the calculation file
+    resetFile()
+
+    # Function to solve
     x = sp.symbols('x')
     function = x ** 4 + x ** 3 - 3 * x ** 2
     domainStart = -3
