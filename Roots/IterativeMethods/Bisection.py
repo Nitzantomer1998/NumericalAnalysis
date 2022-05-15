@@ -1,27 +1,26 @@
-# Finding The Roots In The Bisection Method
+# Finding Roots Using Bisection Method
 
 
 # Libraries for getting the derivative of a function
 import sympy as sp
 from sympy.utilities.lambdify import lambdify
 
-# Global Variable To Store The Accuracy For The Solution
+# Global variable to set the accuracy of the solution
 ACCURACY = 0.00001
 
 
 def printIntoFile(data, isFinal):
     """
-    Printing the data and the message content into a specified file
+    Printing the data content into a specified file
 
     :param data: Data is a list representing the arguments
-    :param isFinal: If True, We Print the root Solution
+    :param isFinal: If True, We print the root solution, Else we print the calculation
     """
-    # Open the file and save the data
-    with open('Root_Calculation.txt', 'a+') as file:
-        # Writing into the file
+    # Open file and save the sent data
+    with open('Calculation.txt', 'a+') as file:
 
+        # In case it's the solution
         if isFinal:
-            # Saving the solution
             file.write(f'\nRoot --> {data[1]}    Iteration --> {data[0]}\n')
             file.write('--------------------------------------------------------------------------------------------\n')
 
@@ -37,29 +36,36 @@ def resetFile():
     Reset the calculation file
 
     """
-    file = open('Root_Calculation.txt', 'w')
-    file.write('------------------------------ Bisection Method ------------------------------\n')
-    file.write('{: ^25}{: ^25}{: ^25}'.format('Iteration', 'x', 'f(x)') + '\n')
-    file.close()
+    with open('Calculation.txt', 'w') as file:
+        file.write('------------------------------ Bisection Method ------------------------------\n')
+        file.write('{: ^25}{: ^25}{: ^25}'.format('Iteration', 'x', 'f(x)') + '\n')
 
 
 def rootFinder(f, startAt, endAt):
     """
-    Method for getting the function Roots
+    Method for finding the function Roots
 
     :param f: Our function
-    :param startAt: The left domain of the function
-    :param endAt: The right domain of the function
+    :param startAt: Left domain of the function
+    :param endAt: Right domain of the function
     """
-    # Variables to store our derivative function
+    # Variable to store the derivative function
     g = f.diff(x)
 
-    # Making our functions be able to get an X
+    # Activating the functions to be able to get an X
     f = lambdify(x, f)
     g = lambdify(x, g)
 
     # Divide our function domain range into multiply domains with 0.1 range, then search for each one of them for a root
     while startAt < endAt:
+
+        # In case the root is in the domain edge
+        if f(startAt) == 0:
+            printIntoFile(['None (Special case)', startAt], True)
+            print(f'The root --> {startAt}    Iteration --> None (Special case)')
+
+            startAt = startAt + 0.1
+            continue
 
         # In case the function changes its sign (Means there's at least one root)
         if f(startAt) * f(startAt + 0.1) < 0:
@@ -70,11 +76,11 @@ def rootFinder(f, startAt, endAt):
         # In case the derivative function changes its sign (Mean there's a possibility for a root)
         if g(startAt) * g(startAt + 0.1) < 0:
 
-            # Getting a possible root (The return of the derivative function can be a Root or an Extreme point)
+            # Getting a possibility for a root (Might be a Root or an Extreme point)
             possibleRoot, iteration = bisectionMethod(g, startAt, startAt + 0.1)
 
-            # Checking the possible root is indeed a root
-            if abs(f(possibleRoot)) < ACCURACY:
+            # In case we found a root
+            if abs(f(possibleRoot)) == 0:
                 printIntoFile([iteration, possibleRoot], True)
                 print(f'The root --> {possibleRoot}    Iteration --> {iteration}')
 
@@ -87,15 +93,15 @@ def rootFinder(f, startAt, endAt):
 
 def bisectionMethod(f, leftDomain, rightDomain):
     """
-    Finding the function f root between the domain [left To right]
+    Finding the function root in the domain [left To right]
 
     :param f: Our function
-    :param leftDomain: The left domain of the function
-    :param rightDomain: The right domain of the function
+    :param leftDomain: Left domain of the function
+    :param rightDomain: Right domain of the function
     :return: The root of the function if existed, else according failed message
     """
     # Search the root within the maximum allowed iteration
-    for i in range(100):
+    for i in range(500):
 
         # Variable to store the middle of the current function domain
         middle = leftDomain + (rightDomain - leftDomain) / 2
@@ -103,8 +109,8 @@ def bisectionMethod(f, leftDomain, rightDomain):
         # Save the calculation in the file
         printIntoFile([i + 1, middle, f(middle)], False)
 
-        # In case we found our root, Return root and the iteration number
-        if abs(f(middle)) < ACCURACY:
+        # In case we found our root, Return the root and the iteration number
+        if (rightDomain - leftDomain) < ACCURACY:
             return int(middle * 10 ** 5) / 10 ** 5, i + 1
 
         # In case the root is between the leftDomain To the middle domain, Update the rightDomain to be the middle
@@ -134,3 +140,4 @@ if __name__ == "__main__":
 
     print('---------- Bisection Method ----------')
     rootFinder(function, domainStart, domainEnd)
+    print('\nCalculation Is Done, Check File "Calculation" For More Information')
