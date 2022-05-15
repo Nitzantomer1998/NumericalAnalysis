@@ -44,13 +44,14 @@ def resetFile():
         file.write('{: ^25}{: ^25}{: ^25}'.format('Iteration', 'x', 'f(x)') + '\n')
 
 
-def rootFinder(f, startAt, endAt):
+def rootFinder(f, startAt, endAt, maxIteration):
     """
     Method for finding the function Roots
 
     :param f: Our function
     :param startAt: Left domain of the function
     :param endAt: Right domain of the function
+    :param maxIteration: The maximum iteration for finding the root
     """
     # Variable to store the derivative function
     g = f.diff(x)
@@ -72,7 +73,7 @@ def rootFinder(f, startAt, endAt):
 
         # In case the function changes its sign (Means there's at least one root)
         if f(startAt) * f(startAt + 0.1) < 0:
-            root, iteration = bisectionMethod(f, startAt, startAt + 0.1)
+            root, iteration = bisectionMethod(f, startAt, startAt + 0.1, maxIteration)
             printIntoFile([iteration, root], True)
             print(f'The root --> {root}    Iteration --> {iteration}')
 
@@ -80,7 +81,7 @@ def rootFinder(f, startAt, endAt):
         if g(startAt) * g(startAt + 0.1) < 0:
 
             # Getting a possibility for a root (Might be a Root or an Extreme point)
-            possibleRoot, iteration = bisectionMethod(g, startAt, startAt + 0.1)
+            possibleRoot, iteration = bisectionMethod(g, startAt, startAt + 0.1, maxIteration)
 
             # In case we found a root
             if abs(f(possibleRoot)) == 0:
@@ -94,17 +95,18 @@ def rootFinder(f, startAt, endAt):
         startAt = startAt + 0.1
 
 
-def bisectionMethod(f, leftDomain, rightDomain):
+def bisectionMethod(f, leftDomain, rightDomain, maxIteration):
     """
     Finding the function root in the domain [left To right]
 
     :param f: Our function
     :param leftDomain: Left domain of the function
     :param rightDomain: Right domain of the function
+    :param maxIteration: The maximum iteration for finding the root
     :return: The root of the function if existed, else according failed message
     """
     # Search the root within the maximum allowed iteration
-    for i in range(500):
+    for i in range(maxIteration):
 
         # Variable to store the middle of the current function domain
         middle = leftDomain + (rightDomain - leftDomain) / 2
@@ -113,7 +115,7 @@ def bisectionMethod(f, leftDomain, rightDomain):
         printIntoFile([i + 1, middle, f(middle)], False)
 
         # In case we found our root, Return the root and the iteration number
-        if (rightDomain - leftDomain) < ACCURACY:
+        if abs(f(middle)) < ACCURACY:
             return int(middle * 10 ** 5) / 10 ** 5, i + 1
 
         # In case the root is between the leftDomain To the middle domain, Update the rightDomain to be the middle
@@ -141,8 +143,9 @@ if __name__ == "__main__":
     domainStart = -3
     domainEnd = 2
 
-     # Variable to store the maximum iteration in order to find the function roots
+    # Variable to store the maximum iteration in order to find the function roots
     allowedIteration = int(-(log(ACCURACY / (domainEnd - domainStart)) / log(2))) + 1
+
     print('---------- Bisection Method ----------')
-    rootFinder(function, domainStart, domainEnd)
+    rootFinder(function, domainStart, domainEnd, allowedIteration)
     print('\nCalculation Is Done, Check File "Calculation" For More Information')
