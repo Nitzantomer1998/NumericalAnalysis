@@ -5,6 +5,9 @@
 import sympy as sp
 from sympy.utilities.lambdify import lambdify
 
+# Libraries for calculation log
+from math import log
+
 # Global variable to set the accuracy of the solution
 ACCURACY = 0.00001
 
