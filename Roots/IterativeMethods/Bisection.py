@@ -12,38 +12,6 @@ from math import log
 ACCURACY = 0.00001
 
 
-def printIntoFile(data, isFinal):
-    """
-    Printing the data content into a specified file
-
-    :param data: Data is a list representing the arguments
-    :param isFinal: If True, We print the root solution, Else we print the calculation
-    """
-    # Open file and save the sent data
-    with open('Calculation.txt', 'a+') as file:
-
-        # In case it's the solution
-        if isFinal:
-            file.write(f'\nRoot --> {data[1]}    Iteration --> {data[0]}\n')
-            file.write('--------------------------------------------------------------------------------------------\n')
-
-        else:
-            # Saving the calculation
-            for i in range(len(data)):
-                file.write('{: ^25}'.format(data[i]))
-            file.write('\n')
-
-
-def resetFile():
-    """
-    Reset the calculation file
-
-    """
-    with open('Calculation.txt', 'w') as file:
-        file.write('------------------------------ Bisection Method ------------------------------\n')
-        file.write('{: ^25}{: ^25}{: ^25}'.format('Iteration', 'x', 'f(x)') + '\n')
-
-
 def rootFinder(f, startAt, endAt, maxIteration):
     """
     Method for finding the function Roots
@@ -129,6 +97,38 @@ def bisectionMethod(f, leftDomain, rightDomain, maxIteration):
     # In case we didn't find the root within the allowed amount of iteration, Print a fail message and end the program
     print('Failed To Find The Root, The Bisection Method Is Not Suitable For This Function')
     exit()
+
+
+def printIntoFile(data, isFinal):
+    """
+    Printing the data content into a specified file
+
+    :param data: Data is a list representing the arguments
+    :param isFinal: If True, We print the root solution, Else we print the calculation
+    """
+    # Open file and save the sent data
+    with open('Calculation.txt', 'a+') as file:
+
+        # In case it's the solution
+        if isFinal:
+            file.write(f'\nRoot --> {data[1]}    Iteration --> {data[0]}\n')
+            file.write('--------------------------------------------------------------------------------------------\n')
+
+        else:
+            # Saving the calculation
+            for i in range(len(data)):
+                file.write('{: ^25}'.format(data[i]))
+            file.write('\n')
+
+
+def resetFile():
+    """
+    Reset the calculation file
+
+    """
+    with open('Calculation.txt', 'w') as file:
+        file.write('------------------------------ Bisection Method ------------------------------\n')
+        file.write('{: ^25}{: ^25}{: ^25}'.format('Iteration', 'x', 'f(x)') + '\n')
 
 
 # Our Program Driver
