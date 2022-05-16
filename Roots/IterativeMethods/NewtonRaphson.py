@@ -33,7 +33,13 @@ def rootFinder(f, startAt, endAt, maxIteration):
     # Divide our function domain range into multiply domains with 0.1 range, then search for each one of them for a root
     while startAt < endAt:
 
- 
+     # In case the root is in the domain edge
+        if f(startAt) == 0:
+            printIntoFile(['None (Special case)', startAt], True)
+            print(f'The root --> {startAt}    Iteration --> None (Special case)')
+
+            startAt = startAt + 0.1
+            continue
 
         # In case the function changes its sign (Means there's at least one root)
         if f(startAt) * f(startAt + 0.1) < 0:
