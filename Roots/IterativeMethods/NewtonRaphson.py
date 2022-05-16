@@ -84,6 +84,9 @@ if __name__ == "__main__":
     function = x ** 4 + x ** 3 - 3 * x ** 2
     domainStart = -3
     domainEnd = 2
+    
+    # Variable to store the maximum iteration in order to find the function roots
+    allowedIteration = int(-(log(ACCURACY / (domainEnd - domainStart)) / log(2))) + 1
 
     print('---------- Newton Raphson Method ----------')
     rootFinder(function, domainStart, domainEnd)
