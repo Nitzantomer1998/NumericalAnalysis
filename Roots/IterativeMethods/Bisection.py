@@ -95,7 +95,8 @@ def bisectionMethod(f, leftDomain, rightDomain, maxIteration):
             leftDomain = middle
 
     # In case we didn't find the root within the allowed amount of iteration, Print a fail message and end the program
-    print('Failed To Find The Root, The Bisection Method Is Not Suitable For This Function')
+    printIntoFile([maxIteration, 'Failed to find the root, The Bisection Method is not suitable for this function'], True)
+    print('Failed to find the root, The Bisection Method is not suitable for this function')
     exit()
 
 
