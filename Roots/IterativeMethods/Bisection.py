@@ -128,7 +128,7 @@ def resetFile():
 
     """
     with open('Calculation.txt', 'w') as file:
-        file.write('------------------------------ Bisection Method ------------------------------\n')
+        file.write('------------------------------- Bisection Method -------------------------------\n')
         file.write('{: ^25}{: ^25}{: ^25}'.format('Iteration', 'x', 'f(x)') + '\n')
 
 

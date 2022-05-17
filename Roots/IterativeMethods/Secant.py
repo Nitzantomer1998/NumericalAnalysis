@@ -125,7 +125,7 @@ def resetFile():
 
     """
     with open('Calculation.txt', 'w') as file:
-        file.write('------------------------------ Secant Method ------------------------------\n')
+        file.write('------------------------------- Secant Method -------------------------------\n')
         file.write('{: ^25}{: ^25}{: ^25}{: ^25}'.format('Iteration', 'previewX', 'nextX', "f(nextX)") + '\n')
 
 
