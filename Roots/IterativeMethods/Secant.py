@@ -87,5 +87,8 @@ if __name__ == "__main__":
     domainStart = -3
     domainEnd = 2
 
+    # Variable to store the maximum iteration in order to find the function roots
+    allowedIteration = int(-(log(ACCURACY / (domainEnd - domainStart)) / log(2))) + 1
+    
     print('---------- Secant Method ----------')
     rootFinder(function, domainStart, domainEnd)
