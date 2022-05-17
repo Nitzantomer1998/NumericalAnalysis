@@ -31,7 +31,7 @@ def resetFile():
 
     """
     with open('Calculation.txt', 'w') as file:
-        file.write('------------------------------- Machine Precision Method -------------------------------\n')
+        file.write('------------------------------ Machine Precision Method ------------------------------\n')
         file.write('{: ^22}'.format('Iteration') + 'Calculation\n')
 
 
