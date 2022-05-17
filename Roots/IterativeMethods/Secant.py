@@ -12,61 +12,78 @@ from math import log
 ACCURACY = 0.00001
 
 
-def rootFinder(f, startAt, endAt):
+def rootFinder(f, startAt, endAt, maxIteration):
     """
-    Method for getting the functions Roots
+    Method for finding the function Roots
 
     :param f: Our function
-    :param startAt: The left domain of the function
-    :param endAt: The right domain of the function
+    :param startAt: Left domain of the function
+    :param endAt: Right domain of the function
+    :param maxIteration: The maximum iteration for finding the root
     """
-    # Variables to store our derivative function
+    # Variable to store the derivative function
     g = f.diff(x)
 
-    # Making our function be able to get an X
+    # Activating the functions to be able to get an X
     f = lambdify(x, f)
     g = lambdify(x, g)
 
     # Divide our function domain range into multiply domains with 0.1 range, then search for each one of them for a root
     while startAt < endAt:
 
-        # In case the function change its sign (Means there's at least one root)
+        # In case the root is in the domain edge
+        if f(startAt) == 0:
+            printIntoFile(['None (Special case)', startAt], True)
+            print(f'The root --> {startAt}    Iteration --> None (Special case)')
+
+            startAt = startAt + 0.1
+            continue
+
+        # In case the function changes its sign (Means there's at least one root)
         if f(startAt) * f(startAt + 0.1) < 0:
-            root, iteration = secantMethod(f, startAt, startAt + 0.1)
+            root, iteration = secantMethod(f, startAt, startAt + 0.1, maxIteration)
+            printIntoFile([iteration, root], True)
             print('The root --> ' + str(root) + '\tIteration --> ' + str(iteration))
 
-        # In case the derivative function change its sign (Mean there's a possibility for a root)
+        # In case the derivative function changes its sign (Mean there's a possibility for a root)
         if g(startAt) * g(startAt + 0.1) < 0:
 
-            # Getting a possible root (The return of the derivative function can be Root or an Extreme point)
-            possibleRoot, iteration = secantMethod(g, startAt, startAt + 0.1)
+            # Getting a possibility for a root (Might be a Root or an Extreme point)
+            possibleRoot, iteration = secantMethod(g, startAt, startAt + 0.1, maxIteration)
 
-            # Checking the possible root is indeed a root
+            # In case we found a root
             if abs(f(possibleRoot)) < ACCURACY:
+                printIntoFile([iteration, possibleRoot], True)
                 print('The root --> ' + str(possibleRoot) + '\tIteration --> ' + str(iteration))
 
-        # Update our domain for this iteration
+            else:
+                printIntoFile([iteration, '"Failed" found extreme point, Not a root'], True)
+
+        # Update our domain for the next iteration
         startAt = startAt + 0.1
 
 
-def secantMethod(f, previewX, currentX):
+def secantMethod(f, previewX, currentX, maxIteration):
     """
-    Finding the function f root between the domain range [previewX To currentX]
+    Finding the function root in the domain range [left To right]
 
     :param f: Our function
-    :param previewX: The left domain of the function
-    :param currentX: The right domain of the function
-    :return: The root of the function in the domain [previewX To currentX] if existed, else according failed message
+    :param previewX: Left domain of the function
+    :param currentX: Right domain of the function
+    :param maxIteration: The maximum iteration for finding the root
+    :return: The root of the function if existed, else according failed message
     """
-
     # Search the root within the maximum allowed iteration
-    for i in range(100):
+    for i in range(maxIteration):
 
         # Variable to store the next X
         nextX = (previewX * f(currentX) - currentX * f(previewX)) / (f(currentX) - f(previewX))
 
+        # Save the calculation in the file
+        printIntoFile([i + 1, previewX, nextX, f(nextX)], False)
+
         # In case we found our root, Return the root and the iteration number
-        if abs(nextX - currentX) < ACCURACY:
+        if abs(f(nextX)) < ACCURACY:
             return int(nextX * 10 ** 5) / 10 ** 5, i + 1
 
         # Update the previewX to be the currentX
@@ -75,8 +92,9 @@ def secantMethod(f, previewX, currentX):
         # Update the currentX to be new one
         currentX = nextX
 
-    # In case we didn't find the root within the allowed amount iteration, Send fail message and shut down the program
-    print('Failed To Find The Root, The Secant Method Is Not Suitable For This Function')
+    # In case we didn't find the root within the allowed amount iteration, Print fail message and shut down the program
+    printIntoFile([maxIteration, 'Failed to find the root, The Secant Method is not suitable for this function'], True)
+    print('Failed to find the root, The Secant Method is not suitable for this function')
     exit()
 
 
