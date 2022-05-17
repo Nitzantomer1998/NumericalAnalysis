@@ -93,8 +93,8 @@ def secantMethod(f, previewX, currentX, maxIteration):
         currentX = nextX
 
     # In case we didn't find the root within the allowed amount iteration, Print fail message and shut down the program
-    printIntoFile([maxIteration, 'Failed to find the root, The Secant Method is not suitable for this function'], True)
-    print('Failed to find the root, The Secant Method is not suitable for this function')
+    printIntoFile([maxIteration, 'Failed to find the root, Secant Method is not suitable'], True)
+    print('Failed to find the root, Secant Method is not suitable')
     exit()
 
 

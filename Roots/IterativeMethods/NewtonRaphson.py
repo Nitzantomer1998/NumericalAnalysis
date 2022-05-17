@@ -92,8 +92,8 @@ def newtonRaphsonMethod(f, g, currentX, maxIteration):
         currentX = nextX
 
     # In case we didn't find the root within the allowed amount of iteration, Print a fail message and end the program
-    printIntoFile([maxIteration, 'Failed to find the root, The Newton Raphson Method is not suitable for this function'], True)
-    print('Failed to find the root, The Newton Raphson Method is not suitable for this function')
+    printIntoFile([maxIteration, 'Failed to find the root, Newton Raphson Method is not suitable'], True)
+    print('Failed to find the root, Newton Raphson Method is not suitable')
     exit()
 
 
