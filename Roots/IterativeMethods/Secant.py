@@ -93,8 +93,8 @@ def secant(f, previewX, currentX, maxIteration):
         currentX = nextX
 
     # In case we didn't find the root within the allowed amount iteration, Print fail message and shut down the program
-    printIntoFile([maxIteration, 'Failed to find the root, Secant Method is not suitable'], True)
-    print('Failed to find the root, Secant Method is not suitable')
+    printIntoFile([maxIteration, "Failed to find the root, Secant Method isn't suitable"], True)
+    print("Failed to find the root, Secant Method isn't suitable")
     exit()
 
 
@@ -146,4 +146,4 @@ if __name__ == "__main__":
 
     print('---------- Secant Method ----------')
     rootFinder(function, domainStart, domainEnd, allowedIteration)
-    print('\nCalculation Is Done, Check File "Calculation" For More Information')
+    print('\n\nCalculation Is Done, Check File "Calculation" For More Information')

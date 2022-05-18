@@ -5,7 +5,6 @@
 import sympy as sp
 from sympy.utilities.lambdify import lambdify
 
-
 # Libraries for calculation log
 from math import log
 
@@ -96,8 +95,8 @@ def bisection(f, leftDomain, rightDomain, maxIteration):
             leftDomain = middle
 
     # In case we didn't find the root within the allowed amount of iteration, Print a fail message and end the program
-    printIntoFile([maxIteration, 'Failed to find the root, Bisection Method is not suitable'], True)
-    print('Failed to find the root, Bisection Method is not suitable')
+    printIntoFile([maxIteration, "Failed to find the root, Bisection Method isn't suitable"], True)
+    print("Failed to find the root, Bisection Method isn't suitable")
     exit()
 
 
@@ -150,4 +149,4 @@ if __name__ == "__main__":
 
     print('---------- Bisection Method ----------')
     rootFinder(function, domainStart, domainEnd, allowedIteration)
-    print('\nCalculation Is Done, Check File "Calculation" For More Information')
+    print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
