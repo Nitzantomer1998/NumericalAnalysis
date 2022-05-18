@@ -43,7 +43,7 @@ def rootFinder(f, startAt, endAt, maxIteration):
 
         # In case the function changes its sign (Means there's at least one root)
         if f(startAt) * f(startAt + 0.1) < 0:
-            root, iteration = newtonRaphsonMethod(f, g, startAt + 0.05, maxIteration)
+            root, iteration = newtonRaphson(f, g, startAt + 0.05, maxIteration)
             printIntoFile([iteration, root], True)
             print('The root --> ' + str(root) + '\tIteration --> ' + str(iteration))
 
@@ -51,7 +51,7 @@ def rootFinder(f, startAt, endAt, maxIteration):
         if g(startAt) * g(startAt + 0.1) < 0:
 
             # Getting a possibility for a root (Might be a Root or an Extreme point)
-            possibleRoot, iteration = newtonRaphsonMethod(g, h, startAt + 0.05, maxIteration)
+            possibleRoot, iteration = newtonRaphson(g, h, startAt + 0.05, maxIteration)
 
             # In case we found a root
             if abs(f(possibleRoot)) < ACCURACY:
@@ -65,7 +65,7 @@ def rootFinder(f, startAt, endAt, maxIteration):
         startAt = startAt + 0.1
 
 
-def newtonRaphsonMethod(f, g, currentX, maxIteration):
+def newtonRaphson(f, g, currentX, maxIteration):
     """
     Finding the function root
 

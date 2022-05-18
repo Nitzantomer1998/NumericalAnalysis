@@ -41,7 +41,7 @@ def rootFinder(f, startAt, endAt, maxIteration):
 
         # In case the function changes its sign (Means there's at least one root)
         if f(startAt) * f(startAt + 0.1) < 0:
-            root, iteration = secantMethod(f, startAt, startAt + 0.1, maxIteration)
+            root, iteration = secant(f, startAt, startAt + 0.1, maxIteration)
             printIntoFile([iteration, root], True)
             print('The root --> ' + str(root) + '\tIteration --> ' + str(iteration))
 
@@ -49,7 +49,7 @@ def rootFinder(f, startAt, endAt, maxIteration):
         if g(startAt) * g(startAt + 0.1) < 0:
 
             # Getting a possibility for a root (Might be a Root or an Extreme point)
-            possibleRoot, iteration = secantMethod(g, startAt, startAt + 0.1, maxIteration)
+            possibleRoot, iteration = secant(g, startAt, startAt + 0.1, maxIteration)
 
             # In case we found a root
             if abs(f(possibleRoot)) < ACCURACY:
@@ -63,7 +63,7 @@ def rootFinder(f, startAt, endAt, maxIteration):
         startAt = startAt + 0.1
 
 
-def secantMethod(f, previewX, currentX, maxIteration):
+def secant(f, previewX, currentX, maxIteration):
     """
     Finding the function root in the domain range [left To right]
 

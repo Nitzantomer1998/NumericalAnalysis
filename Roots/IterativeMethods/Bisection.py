@@ -5,6 +5,7 @@
 import sympy as sp
 from sympy.utilities.lambdify import lambdify
 
+
 # Libraries for calculation log
 from math import log
 
@@ -41,7 +42,7 @@ def rootFinder(f, startAt, endAt, maxIteration):
 
         # In case the function changes its sign (Means there's at least one root)
         if f(startAt) * f(startAt + 0.1) < 0:
-            root, iteration = bisectionMethod(f, startAt, startAt + 0.1, maxIteration)
+            root, iteration = bisection(f, startAt, startAt + 0.1, maxIteration)
             printIntoFile([iteration, root], True)
             print(f'The root --> {root}    Iteration --> {iteration}')
 
@@ -49,7 +50,7 @@ def rootFinder(f, startAt, endAt, maxIteration):
         if g(startAt) * g(startAt + 0.1) < 0:
 
             # Getting a possibility for a root (Might be a Root or an Extreme point)
-            possibleRoot, iteration = bisectionMethod(g, startAt, startAt + 0.1, maxIteration)
+            possibleRoot, iteration = bisection(g, startAt, startAt + 0.1, maxIteration)
 
             # In case we found a root
             if abs(f(possibleRoot)) == 0:
@@ -63,7 +64,7 @@ def rootFinder(f, startAt, endAt, maxIteration):
         startAt = startAt + 0.1
 
 
-def bisectionMethod(f, leftDomain, rightDomain, maxIteration):
+def bisection(f, leftDomain, rightDomain, maxIteration):
     """
     Finding the function root in the domain [left To right]
 
