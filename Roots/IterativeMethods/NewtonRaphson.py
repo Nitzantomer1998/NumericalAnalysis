@@ -35,7 +35,7 @@ def rootFinder(f, startAt, endAt, maxIteration):
 
         # In case the root is in the domain edge
         if f(startAt) == 0:
-            printIntoFile(['None (Special case)', startAt], True)
+            printIntoFile(None, f'The root --> {startAt}    Iteration --> None (Special case)')
             print(f'The root --> {startAt}    Iteration --> None (Special case)')
 
             startAt = startAt + 0.1
@@ -44,7 +44,7 @@ def rootFinder(f, startAt, endAt, maxIteration):
         # In case the function changes its sign (Means there's at least one root)
         if f(startAt) * f(startAt + 0.1) < 0:
             root, iteration = newtonRaphson(f, g, startAt + 0.05, maxIteration)
-            printIntoFile([iteration, root], True)
+            printIntoFile(None, f'Root --> {root}    Iteration --> {iteration}')
             print('The root --> ' + str(root) + '\tIteration --> ' + str(iteration))
 
         # In case the derivative function changes its sign (Mean there's a possibility for a root)
@@ -55,11 +55,11 @@ def rootFinder(f, startAt, endAt, maxIteration):
 
             # In case we found a root
             if abs(f(possibleRoot)) < ACCURACY:
-                printIntoFile([iteration, possibleRoot], True)
+                printIntoFile(None, f'Root --> {possibleRoot}    Iteration --> {iteration}')
                 print('The root --> ' + str(possibleRoot) + '\tIteration --> ' + str(iteration))
 
             else:
-                printIntoFile([iteration, '"Failed" Found Extreme Point, Not A Root'], True)
+                printIntoFile(None, 'Failed found extreme point, Not a root')
 
         # Update our domain for the next iteration
         startAt = startAt + 0.1
@@ -82,7 +82,7 @@ def newtonRaphson(f, g, currentX, maxIteration):
         nextX = currentX - f(currentX) / g(currentX)
 
         # Save the calculation in the file
-        printIntoFile([i + 1, nextX, f(nextX), g(nextX)], False)
+        printIntoFile([i + 1, nextX, f(nextX), g(nextX)], None)
 
         # In case we found our root, Return the root and the iteration number
         if abs(f(nextX)) < ACCURACY:
@@ -92,29 +92,30 @@ def newtonRaphson(f, g, currentX, maxIteration):
         currentX = nextX
 
     # In case we didn't find the root within the allowed amount of iteration, Print a fail message and end the program
-    printIntoFile([maxIteration, "Failed to find the root, Newton Raphson Method isn't suitable"], True)
+    printIntoFile(None, "Failed to find the root, Newton Raphson Method isn't suitable")
     print("Failed to find the root, Newton Raphson Method isn't suitable")
-    exit()
 
 
-def printIntoFile(data, isFinal):
+def printIntoFile(data, message):
     """
-    Printing the data content into a specified file
+    Printing the content into a specified file
 
-    :param data: Data is a list representing the arguments
-    :param isFinal: If True, We print the root solution, Else we print the calculation
+    :param data: Data is a list representing matrix
+    :param message: Message is a string representing a message
     """
-    # Open file and save the sent data
+    # Open file and save the sent content
     with open('Calculation.txt', 'a+') as file:
 
-        # In case it's the solution
-        if isFinal:
-            file.write(f'\nRoot --> {data[1]}    Iteration --> {data[0]}\n')
+        # In case we sent a message
+        if message:
+            file.write('\n{: ^25}\n'.format(message))
             file.write('--------------------------------------------------------------------------------------------\n')
 
-        else:
+        # In case we sent a data
+        if data:
             for i in range(len(data)):
-                file.write('{: ^25}'.format(data[i]))
+                file.write('{: ^25}'.format(float(data[i])))
+
             file.write('\n')
 
 
@@ -125,7 +126,7 @@ def resetFile():
     """
     with open('Calculation.txt', 'w') as file:
         file.write('------------------------------- Newton-Raphson Method -------------------------------\n')
-        file.write('{: ^25}{: ^25}{: ^25}{: ^25}'.format('Iteration', 'x', 'f(x)', "f'(x)") + '\n')
+        file.write('{: ^25}{: ^25}{: ^25}{: ^25}\n'.format('Iteration', 'x', 'f(x)', "f'(x)"))
 
 
 # Our Program Driver
