@@ -1,6 +1,28 @@
 # Machine Precision Finder
 
 
+def machinePrecision():
+    """
+    Finding the machine precision
+
+    """
+    # Variable to store our machine precision
+    ourPrecision = 1
+
+    # Variable to store the amount of iteration
+    loopCounter = 1
+
+    # Loop for finding the Machine Precision
+    while 1.0 + (ourPrecision / 2) > 1.0:
+        printIntoFile([loopCounter, ourPrecision, '\\', 2, '=', ourPrecision / 2], False)
+        ourPrecision = ourPrecision / 2
+        loopCounter = loopCounter + 1
+
+    # Your Machine Precision
+    printIntoFile(f'\nYour Epsilon Machine --> {ourPrecision}', True)
+    print(f'Your Epsilon Is --> {ourPrecision}')
+
+
 def printIntoFile(data, isFinal):
     """
     Printing the data content into a specified file
@@ -35,28 +57,6 @@ def resetFile():
         file.write('{: ^22}'.format('Iteration') + 'Calculation\n')
 
 
-def machinePrecisionMethod():
-    """
-    Finding the machine precision
-
-    """
-    # Variable to store our machine precision
-    ourPrecision = 1
-
-    # Variable to store the amount of iteration
-    loopCounter = 1
-
-    # Loop for finding the Machine Precision
-    while 1.0 + (ourPrecision / 2) > 1.0:
-        printIntoFile([loopCounter, ourPrecision, '\\', 2, '=', ourPrecision / 2], False)
-        ourPrecision = ourPrecision / 2
-        loopCounter = loopCounter + 1
-
-    # Your Machine Precision
-    printIntoFile(f'\nYour Epsilon Machine --> {ourPrecision}', True)
-    print(f'Your Epsilon Is --> {ourPrecision}')
-
-
 # Our Program Driver
 if __name__ == "__main__":
 
@@ -64,5 +64,5 @@ if __name__ == "__main__":
     resetFile()
 
     print('---------- Machine Precision Method ----------')
-    machinePrecisionMethod()
+    machinePrecision()
     print('\nCalculation Is Done, Check File "Calculation" For More Information')
