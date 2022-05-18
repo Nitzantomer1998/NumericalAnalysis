@@ -14,33 +14,34 @@ def machinePrecision():
 
     # Loop for finding the Machine Precision
     while 1.0 + (ourPrecision / 2) > 1.0:
-        printIntoFile([loopCounter, ourPrecision, '\\', 2, '=', ourPrecision / 2], False)
+        printIntoFile([loopCounter, ourPrecision, '\\', 2, '=', ourPrecision / 2], None)
         ourPrecision = ourPrecision / 2
         loopCounter = loopCounter + 1
 
     # Your Machine Precision
-    printIntoFile(f'\nYour Epsilon Machine --> {ourPrecision}', True)
+    printIntoFile(None, f'\nYour Epsilon Machine --> {ourPrecision}')
     print(f'Your Epsilon Is --> {ourPrecision}')
 
 
-def printIntoFile(data, isFinal):
+def printIntoFile(data, message):
     """
-    Printing the data content into a specified file
+    Printing the content into a specified file
 
-    :param data: Data is a list representing the arguments
-    :param isFinal: If True, We print the solution, Else we print the calculation
+    :param data: Data is a list representing matrix
+    :param message: Message is a string representing a message
     """
     # Open file and save the sent data
     with open('Calculation.txt', 'a+') as file:
 
-        # In case it's the solution
-        if isFinal:
-            file.write(f'{data}')
+        # In case we sent a message
+        if message:
+            file.write(message)
 
-        else:
+        # In case we sent a data
+        if data:
             for i in range(len(data)):
                 if i == 0:
-                    file.write('{: ^22}'.format(f'({data[0]})'))
+                    file.write('{: ^25}'.format(f'({data[0]})'))
 
                 else:
                     file.write(f'{data[i]} ')
@@ -54,7 +55,7 @@ def resetFile():
     """
     with open('Calculation.txt', 'w') as file:
         file.write('------------------------------- Machine Precision Method -------------------------------\n')
-        file.write('{: ^22}'.format('Iteration') + 'Calculation\n')
+        file.write('{: ^25}Calculation\n'.format('Iteration'))
 
 
 # Our Program Driver
