@@ -112,7 +112,7 @@ def organizeMatrix(originMatrix, originVectorB):
     # Saving the Linear Equation after changing rows/cols
     LinearEquation = [[originMatrix[row][col] for col in range(len(originMatrix[0]))] for row in range(len(originMatrix))]
     [LinearEquation[row].append(originVectorB[row][0]) for row in range(len(originVectorB))]
-    printIntoFile(LinearEquation, 'Updated Linear Equation\n', False)
+    printIntoFile(LinearEquation, 'Updated Linear Equation', False)
 
     # Return the updated Linear Equation
     return originMatrix, originVectorB
@@ -125,6 +125,7 @@ def isDiagonalDominant(matrix):
 
     """
     for i in range(len(matrix)):
+
         # Variable to store, the summation of absolute row [i]
         rowSum = 0
         for j in range(len(matrix)):
@@ -196,6 +197,7 @@ def printIntoFile(data, message, isVector):
         # In case we sent a message
         if message:
             file.write('\n{: ^25}'.format(message))
+            file.write('\n' if message == 'Updated Linear Equation' else '')
 
         # In case we sent a data
         if data:
@@ -205,7 +207,7 @@ def printIntoFile(data, message, isVector):
                 file.write('' if isVector else '\n')
 
         # Used to enhance the appearance
-        if message == 'Updated Linear Equation\n':
+        if message == 'Updated Linear Equation':
             file.write('\n==========================================================================================\n')
             for i in range(len(data) + 1):
                 file.write('{: ^25}'.format('Iteration' if i == 0 else chr(64 + i)))
