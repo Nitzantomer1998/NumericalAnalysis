@@ -1,70 +1,17 @@
-# Solving Linear Equation In The Inverse Matrix Method
+# Solving Linear Equation Using Inverse Matrix Method
 
 
 # Global Variable [Only Used To print the iteration number]
-PRINT_COUNTER = -2
+PRINT_COUNTER = 0
 
 
-def printIntoFile(data, message, isTrue):
-    """
-    Printing the data and the message content into a specified file
-
-    :param data: Data is a list representing matrix or vector
-    :param message: Message is a String representing the data explanation
-    :param isTrue: If True, The Linear Equation is valid, else False
-    """
-    # Our Global Variable To Count The Iteration Number
-    global PRINT_COUNTER
-
-    # In Case We Are Running A New Linear Equation Calculation, It will create a new file with the method name
-    if PRINT_COUNTER == -2:
-        file = open('IM_Calculation.txt', 'w')
-        file.write('------------------------------ Inverse Matrix Method ------------------------------\n')
-        file.close()
-
-    # Open the file and save the data
-    with open('IM_Calculation.txt', 'a+') as file:
-
-        # In case the Linear Equation is valid
-        if isTrue:
-
-            # Saving the Linear Equation input, and the updated one
-            if PRINT_COUNTER < 0:
-                file.write(f'{message}\n')
-                for i in range(len(data)):
-                    for j in range(len(data[0])):
-                        file.write('{: ^22}'.format(float(data[i][j])))
-                    file.write('\n')
-                file.write('\n')
-
-            # In case we are printing new calculation
-            if PRINT_COUNTER % 3 == 0:
-                file.write('==========================================================================================')
-
-            # Saving the calculation of the Linear Equation
-            if PRINT_COUNTER > -1:
-                file.write(f'\n{message} [{PRINT_COUNTER // 3 + 1}]\n')
-                for i in range(len(data)):
-                    for j in range(len(data[0])):
-                        file.write('{: ^22}'.format(float(data[i][j])))
-                    file.write('\n')
-
-        # In case Linear Equation is not valid
-        else:
-            file.write(f'\n{message}\n')
-
-        # Increase Our Global Iteration Counter Variable
-        PRINT_COUNTER = PRINT_COUNTER + 1
-
-
-def InverseMatrixMethod():
+def InverseMatrix(originMatrix, originVectorB):
     """
     Solving linear equation in the Inverse Matrix method
 
+    :param originMatrix: NxN Matrix
+    :param originVectorB: Nx1 Vector
     """
-    # Initialize the matrix, and vectorB
-    originMatrix, originVectorB = initMatrix()
-
     # Check if the matrix is Quadratic matrix, and check if the vector is in appropriate size
     if len(originMatrix) == len(originMatrix[0]) and len(originVectorB) == len(originMatrix) and len(originVectorB[0]) == 1:
 
@@ -81,16 +28,18 @@ def InverseMatrixMethod():
             vectorSolution = finalSolution(originMatrix, originVectorB, multiplyMatrix(inverseMatrix, originVectorB, False))
 
             # Saving the Linear Equation final solution
-            printIntoFile(vectorSolution, 'Linear Equation Final Solution', True)
-            print('[Linear Equation Solution]\n' + str(list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, vectorSolution))))
+            printIntoFile(vectorSolution, 'Linear Equation Final Solution')
+            print(f'Linear Equation Solution {list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, vectorSolution))}')
 
         # According message In case there is more or less than one solution
         else:
-            printIntoFile(None, 'This Is A Singular Matrix', False)
+            printIntoFile(None, 'This is a Singular matrix')
+            print('This is a Singular matrix')
 
     # In case the input Linear Equation isn't meet the demands
     else:
-        printIntoFile(None, "The Input Linear Equation Isn't Match", False)
+        printIntoFile(None, "The input Linear Equation isn't match")
+        print("The input Linear Equation isn't match")
 
 
 def organizeMatrix(originMatrix, originVectorB):
@@ -104,62 +53,34 @@ def organizeMatrix(originMatrix, originVectorB):
     # Saving the Linear Equation the user gave
     LinearEquation = [[originMatrix[row][col] for col in range(len(originMatrix[0]))] for row in range(len(originMatrix))]
     [LinearEquation[row].append(originVectorB[row][0]) for row in range(len(originVectorB))]
-    printIntoFile(LinearEquation, '[User Input Linear Equation]', True)
+    printIntoFile(LinearEquation, 'Inserted Linear Equation')
 
-    # Iteration Variable
-    i = 0
-    while i < len(originMatrix):
+    # Loop to get the highest pivots possible
+    for i in range(len(originMatrix)):
+
         # Variable to store the highest value for the pivot
         maxPivot = abs(originMatrix[i][i])
 
         # Variable to store the new pivot row
-        pivotRow = 0
+        pivotRow = -1
 
-        # Variable to store the new pivot column
-        pivotCol = 0
-
-        # Searching for the highest Pivot in originMatrix[i][i]
+        # Searching the highest potential Pivot for originMatrix[i][i]
         for j in range(i + 1, len(originMatrix)):
 
             # In case there's a higher pivot (on the Column[i])
             if abs(originMatrix[j][i]) > maxPivot:
-                # Store the new highest pivot, and his row
                 maxPivot = abs(originMatrix[j][i])
                 pivotRow = j
-                pivotCol = 0
-
-            # In case there's a higher pivot (on the Row[i])
-            if abs(originMatrix[i][j]) > maxPivot:
-                # Store the new highest pivot, and his column
-                maxPivot = abs(originMatrix[i][j])
-                pivotCol = j
-                pivotRow = 0
 
         # In case there was a higher pivot, change the matrix so the Pivot will be the maximum
         if maxPivot != abs(originMatrix[i][i]):
+            originVectorB[i], originVectorB[pivotRow] = originVectorB[pivotRow], originVectorB[i]
+            originMatrix[i], originMatrix[pivotRow] = originMatrix[pivotRow], originMatrix[i]
 
-            # In case the highest pivot is on the Rows
-            if pivotRow > pivotCol:
-                # Changed the Matrix and the vector Rows
-                originVectorB[i], originVectorB[pivotRow] = originVectorB[pivotRow], originVectorB[i]
-                originMatrix[i], originMatrix[pivotRow] = originMatrix[pivotRow], originMatrix[i]
-
-            # In case the highest pivot is on the Columns
-            else:
-                # Changed the Matrix Columns
-                for k in range(len(originMatrix)):
-                    originMatrix[k][i], originMatrix[k][pivotCol] = originMatrix[k][pivotCol], originMatrix[k][i]
-
-                # In case changing Columns made a higher pivot on row
-                i = i - 1
-
-        # Next iteration
-        i = i + 1
-
-    # Saving the Linear Equation after changing
+    # Saving the Linear Equation after changing rows/cols
     LinearEquation = [[originMatrix[row][col] for col in range(len(originMatrix[0]))] for row in range(len(originMatrix))]
     [LinearEquation[row].append(originVectorB[row][0]) for row in range(len(originVectorB))]
-    printIntoFile(LinearEquation, '[Updated Linear Equation]', True)
+    printIntoFile(LinearEquation, 'Updated Linear Equation')
 
     # Return the updated Linear Equation
     return originMatrix, originVectorB
@@ -178,21 +99,19 @@ def findInverse(matrix):
     # Solving matrix into an Identity matrix, and get alongside the Inverse Matrix (Lower part)
     for i in range(len(matrix)):
 
-        # In case the pivot isn't one, we will make sure it will be one
+        # In case the pivot isn't one, we will make sure it will be
         if matrix[i][i] != 1.0:
             inverseMatrix = multiplyMatrix(initElementaryMatrix(len(matrix), i, i, 1 / matrix[i][i]), inverseMatrix, False)
             matrix = multiplyMatrix(initElementaryMatrix(len(matrix), i, i, 1 / matrix[i][i]), matrix, True)
 
         for j in range(i + 1, len(matrix)):
             if matrix[j][i] != 0.0:
-                # Multiply into an Identity matrix, and updating the inverse Matrix as well
                 inverseMatrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), inverseMatrix, False)
                 matrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), matrix, True)
 
     # Solving matrix into an Identity matrix, and get alongside the Inverse Matrix (Upper part)
     for i in reversed(range(len(matrix))):
         for j in reversed(range(i)):
-            # Multiply into a Lower matrix, and updating the inverse Matrix as well
             if matrix[j][i] != 0:
                 inverseMatrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), inverseMatrix, False)
                 matrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), matrix, True)
@@ -211,19 +130,17 @@ def finalSolution(originMatrix, originVectorB, vectorSolution):
     :param vectorSolution: Nx1 vector semi solution (not surly accurate)
     :return: Nx1 vector, the precise Linear Equation solution
     """
-    # Solve r = Ax0 - b
-    # Vector r represent the accuracy of the solution we found
+    # Solve r = Ax0 - b (Vector r represent the accuracy of the solution we found)
     vectorR = multiplyMatrix(originMatrix, vectorSolution, False)
     for i in range(len(vectorR)):
         vectorR[i][0] = vectorR[i][0] - originVectorB[i][0]
 
-    # In case the Linear Equation solution, has round error
+    # In case the Linear Equation solution has round error
     if sum(list(map(sum, vectorR))) != 0.0:
-        printIntoFile(vectorSolution, 'Linear Equation Solution With Round Error', True)
+        printIntoFile(vectorSolution, 'Linear Equation Solution With Round Error')
 
     # Update to the correct solution
     for i in range(len(vectorSolution)):
-        # In case of round error
         if abs(vectorSolution[i][0] - round(vectorSolution[i][0])) <= max(1e-09 * max(abs(vectorSolution[i][0]), abs(round(vectorSolution[i][0]))), 0.0):
             vectorSolution[i][0] = round(vectorSolution[i][0])
 
@@ -237,11 +154,10 @@ def multiplyMatrix(matrixA, matrixB, isTrue):
 
     :param matrixA: NxM Matrix
     :param matrixB: NxM Matrix
-    :param isTrue: Boolean which decide if to save the matrices in a file
+    :param isTrue: Boolean which say if to save the matrices in a file
     :return: NxM matrix
     """
     # Initialize NxM matrix filled with zero's
-
     matrixC = [[0.0] * len(matrixB[0]) for _ in range(len(matrixA))]
 
     # Multiply the two matrices and store the outcome in matrixC
@@ -250,29 +166,19 @@ def multiplyMatrix(matrixA, matrixB, isTrue):
             for k in range(len(matrixB)):
                 matrixC[i][j] = matrixC[i][j] + matrixA[i][k] * matrixB[k][j]
 
-    # Saving the matrices in the rightDomain lists
+    # Saving the matrices in a file
     if isTrue:
-        # Saving the matrices in a file
-        printIntoFile(matrixA, 'Elementary Matrix', True)
-        printIntoFile(matrixB, 'Pre Multiply Matrix', True)
-        printIntoFile(matrixC, 'After Multiply Matrix', True)
+
+        # Global variable to follow the iteration calculation
+        global PRINT_COUNTER
+        PRINT_COUNTER = PRINT_COUNTER + 1
+
+        printIntoFile(matrixA, 'Elementary Matrix')
+        printIntoFile(matrixB, 'Pre Multiply Matrix')
+        printIntoFile(matrixC, 'After Multiply Matrix')
 
     # Return the outcome matrix
     return matrixC
-
-
-def initMatrix():
-    """
-    Initialize user linear equations, and return them
-
-    :return: NxN matrix, and Nx1 vector B
-    """
-    # Initialize Linear Equation from the user
-    matrix = [[2, 2, 2], [2, -1, 1], [-1, -1, 2]]
-    vectorB = [[4], [-1], [-5]]
-
-    # Return the user linear equation
-    return matrix, vectorB
 
 
 def initElementaryMatrix(size, row, col, value):
@@ -323,7 +229,52 @@ def determinantMatrix(matrix):
     return determinantSum
 
 
+def printIntoFile(data, message):
+    """
+    Printing the content into a specified file
+
+    :param data: Data is a list representing matrix
+    :param message: Message is a string representing a message
+    """
+    # Open file and save the sent content
+    with open('Calculation.txt', 'a+') as file:
+
+        # In case we sent a message
+        if message:
+            file.write(f'{message} ({PRINT_COUNTER})\n' if PRINT_COUNTER > 0 else f'{message}\n')
+
+        # In case we sent a data
+        if data:
+            for i in range(len(data)):
+                for j in range(len(data[i])):
+                    file.write('{: ^25}'.format(float(data[i][j])))
+                file.write('\n')
+            file.write('\n')
+
+        # Used to enhance the appearance
+        if message == 'Updated Linear Equation' or message == 'After Multiply Matrix':
+            file.write('============================================================================================\n')
+
+
+def resetFile():
+    """
+    Reset the calculation file
+
+    """
+    with open('Calculation.txt', 'w') as file:
+        file.write('------------------------------ Inverse Matrix Method ------------------------------\n')
+
+
 # Our Program Driver
 if __name__ == "__main__":
-    InverseMatrixMethod()
-    print('Calculation Is Done, Check File "IM_Calculation" For More Information')
+
+    # Reset the calculation file
+    resetFile()
+
+    # Linear Equation to solve
+    inputMatrix = [[2, 2, 2], [2, -1, 1], [-1, -1, 2]]
+    inputVectorB = [[4], [-1], [-5]]
+
+    print('---------- Inverse Matrix Method ----------')
+    InverseMatrix(inputMatrix, inputVectorB)
+    print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
