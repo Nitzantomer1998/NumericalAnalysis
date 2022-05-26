@@ -61,7 +61,7 @@ def GaussSeidel(originMatrix, originVectorB):
 
             # Saving the Linear Equation final solution
             printIntoFile(currentIteration, 'Solution', True)
-            print(list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, currentIteration)))
+            print(f'Linear Equation Solution {list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, currentIteration))}')
 
         # According message In case there is more or less than one solution
         else:
@@ -197,7 +197,7 @@ def printIntoFile(data, message, isVector):
         # In case we sent a message
         if message:
             file.write('\n{: ^25}'.format(message))
-            file.write('\n' if message == 'Updated Linear Equation' else '')
+            file.write('' if message != 'Updated Linear Equation' else '\n')
 
         # In case we sent a data
         if data:
