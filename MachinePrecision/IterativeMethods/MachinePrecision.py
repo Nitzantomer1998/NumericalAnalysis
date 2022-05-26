@@ -1,7 +1,7 @@
 # Machine Precision Finder
 
 
-def machinePrecision():
+def MachinePrecision():
     """
     Finding the machine precision
 
@@ -19,8 +19,8 @@ def machinePrecision():
         loopCounter = loopCounter + 1
 
     # Your Machine Precision
-    printIntoFile(None, f'\nYour Epsilon Machine --> {ourPrecision}')
-    print(f'Your Epsilon Is --> {ourPrecision}')
+    printIntoFile(None, f'\nYour Machine Accuracy --> {ourPrecision}')
+    print(f'Your Machine Accuracy --> {ourPrecision}')
 
 
 def printIntoFile(data, message):
@@ -65,5 +65,5 @@ if __name__ == "__main__":
     resetFile()
 
     print('---------- Machine Precision Method ----------')
-    machinePrecision()
+    MachinePrecision()
     print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
