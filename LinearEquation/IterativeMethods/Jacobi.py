@@ -61,7 +61,7 @@ def Jacobi(originMatrix, originVectorB):
 
             # Saving the Linear Equation final solution
             printIntoFile(currentIteration, 'Solution', True)
-            print(str(list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, currentIteration))))
+            print(f'Linear Equation Solution {list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, currentIteration))}')
 
         # According message In case there is more or less than one solution
         else:
