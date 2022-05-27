@@ -7,7 +7,7 @@ ACCURACY = 1
 
 def Jacobi(originMatrix, originVectorB):
     """
-    Solving Linear Equation using Jacobi method
+    Solving Linear Equation using the Jacobi method
 
     :param originMatrix: NxN Matrix
     :param originVectorB: Nx1 Vector
