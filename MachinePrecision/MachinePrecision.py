@@ -64,6 +64,7 @@ if __name__ == "__main__":
     # Reset the calculation file
     resetFile()
 
+    # Running the program
     print('---------- Machine Precision Method ----------')
     MachinePrecision()
     print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
