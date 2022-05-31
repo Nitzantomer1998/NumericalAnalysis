@@ -19,3 +19,10 @@ def MachinePrecision():
 
     # Your Machine Precision
     print(f'Your Machine Accuracy --> {ourPrecision}')
+
+
+# Our Program Driver
+if __name__ == "__main__":
+
+    print('---------- Machine Precision Method ----------')
+    MachinePrecision()
