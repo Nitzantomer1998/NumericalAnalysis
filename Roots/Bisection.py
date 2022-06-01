@@ -1,10 +1,11 @@
 # Finding Roots Using Bisection Method
 
 
-# Libraries for getting the derivative of a function
+# Libraries for getting the derivatives of a function
 import sympy as sp
 from sympy.utilities.lambdify import lambdify
 
+# Libraries for calculation log
 from math import log
 
 # Global variable to set the accuracy of the solution
