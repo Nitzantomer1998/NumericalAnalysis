@@ -4,6 +4,9 @@
 import sympy as sp
 from sympy.utilities.lambdify import lambdify
 
+# Libraries for calculation log
+from math import log
+
 
 ACCURACY = 0.00001
 
@@ -85,4 +88,19 @@ def Bisection(f, leftDomain, rightDomain, maxIteration):
     print("Failed to find the root, Bisection Method isn't suitable")
 
 
+# Our Program Driver
+if __name__ == "__main__":
+
+    # Function to solve
+    x = sp.symbols('x')
+    function = x ** 4 + x ** 3 - 3 * x ** 2
+    domainStart = -3
+    domainEnd = 2
+
+    # Variable to store the maximum iteration in order to find the function roots
+    allowedIteration = int(-(log(ACCURACY / (domainEnd - domainStart)) / log(2))) + 1
+
+    # Running the program
+    print('---------- Bisection Method ----------')
+    rootFinder(function, domainStart, domainEnd, allowedIteration)
 
