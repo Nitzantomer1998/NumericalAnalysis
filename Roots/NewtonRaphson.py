@@ -84,3 +84,20 @@ def NewtonRaphson(f, g, currentX, maxIteration):
 
     # In case we didn't find the root within the allowed amount of iteration, Print a fail message and end the program
     print("Failed to find the root, Newton Raphson Method isn't suitable")
+
+
+# Our Program Driver
+if __name__ == "__main__":
+
+    # Input section
+    x = sp.symbols('x')
+    function = x ** 4 + x ** 3 - 3 * x ** 2
+    domainStart = -3
+    domainEnd = 2
+
+    # Variable to store the maximum iteration in order to find the function roots
+    allowedIteration = int(-(log(ACCURACY / (domainEnd - domainStart)) / log(2))) + 1
+
+    # Running the program
+    print('---------- Newton Raphson Method ----------')
+    rootFinder(function, domainStart, domainEnd, allowedIteration)
