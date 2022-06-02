@@ -106,12 +106,12 @@ def printIntoFile(data, message):
     # Open file and save the sent content
     with open('Calculation.txt', 'a+') as file:
 
-
+        # In case we sent a message
         if message:
             file.write('\n{: ^25}\n'.format(message))
             file.write('--------------------------------------------------------------------------------------------\n')
 
-
+        # In case we sent a data
         if data:
             for i in range(len(data)):
                 file.write('{: ^25}'.format(float(data[i])))
@@ -132,19 +132,19 @@ def resetFile():
 # Our Program Driver
 if __name__ == "__main__":
 
-
+    # Reset the calculation file
     resetFile()
 
-
+    # Input section
     x = sp.symbols('x')
     function = x ** 4 + x ** 3 - 3 * x ** 2
     domainStart = -3
     domainEnd = 2
 
-
+    # Variable to store the maximum iteration in order to find the function roots
     allowedIteration = int(-(log(ACCURACY / (domainEnd - domainStart)) / log(2))) + 1
 
-
+    # Running the program
     print('---------- Newton Raphson Method ----------')
     rootFinder(function, domainStart, domainEnd, allowedIteration)
     print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
