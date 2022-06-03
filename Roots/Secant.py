@@ -1,4 +1,56 @@
 # Finding Roots Using Secant Method
+# Libraries for getting the derivative of a function
+import sympy as sp
+from sympy.utilities.lambdify import lambdify
+
+# Libraries for calculation log
+from math import log
+
+# Global variable to set the accuracy of the solution
+ACCURACY = 0.00001
+def rootFinder(f, startAt, endAt, maxIteration):
+    """
+    Method for finding the function Roots
+
+    :param f: Our function
+    :param startAt: Left domain of the function
+    :param endAt: Right domain of the function
+    :param maxIteration: The maximum iteration for finding the root
+    """
+    # Variable to store the derivative function
+    g = f.diff(x)
+
+    # Activating the functions to be able to get an X
+    f = lambdify(x, f)
+    g = lambdify(x, g)
+
+    # Divide our function domain range into multiply domains with 0.1 range, then search for each one of them for a root
+    while startAt < endAt:
+
+        # In case the root is in the domain edge
+        if f(startAt) == 0:
+            print(f'The root --> {startAt}    Iteration --> None (Special case)')
+
+            startAt = startAt + 0.1
+            continue
+
+        # In case the function changes its sign (Means there's at least one root)
+        if f(startAt) * f(startAt + 0.1) < 0:
+            root, iteration = Secant(f, startAt, startAt + 0.1, maxIteration)
+            print(f'The root --> {root}    Iteration --> {iteration}')
+
+        # In case the derivative function changes its sign (Mean there's a possibility for a root)
+        if g(startAt) * g(startAt + 0.1) < 0:
+
+            # Getting a possibility for a root (Might be a Root or an Extreme point)
+            possibleRoot, iteration = Secant(g, startAt, startAt + 0.1, maxIteration)
+
+            # In case we found a root
+            if abs(f(possibleRoot)) < 0.0001:
+                print(f'The root --> {possibleRoot}    Iteration --> {iteration}')
+
+        # Update our domain for the next iteration
+        startAt = startAt + 0.1
 
 
 def Secant(f, previewX, currentX, maxIteration):
