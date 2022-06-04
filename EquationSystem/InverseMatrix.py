@@ -77,3 +77,40 @@ def organizeMatrix(originMatrix, originVectorB):
 
     # Return the updated Equation System
     return originMatrix, originVectorB
+
+
+def findInverse(matrix):
+    """
+    Solve the matrix into an Identity matrix, and return the inverse matrix
+
+    :param matrix: NxN matrix
+    :return: Inverse NxN matrix
+    """
+    # Initialize inverseMatrix into an Identity matrix
+    inverseMatrix = [[1 if row == col else 0 for col in range(len(matrix))] for row in range(len(matrix))]
+
+    # Solving matrix into an Identity matrix, and get alongside the Inverse Matrix (Lower part)
+    for i in range(len(matrix)):
+
+        # In case the pivot isn't one, we will make sure it will be
+        if matrix[i][i] != 1:
+            inverseMatrix = multiplyMatrix(initElementaryMatrix(len(matrix), i, i, 1 / matrix[i][i]), inverseMatrix, False)
+            matrix = multiplyMatrix(initElementaryMatrix(len(matrix), i, i, 1 / matrix[i][i]), matrix, True)
+
+        # In case the column under the pivot isn't zero
+        for j in range(i + 1, len(matrix)):
+            if matrix[j][i] != 0.0:
+                inverseMatrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), inverseMatrix, False)
+                matrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), matrix, True)
+
+    # Solving matrix into an Identity matrix, and get alongside the Inverse Matrix (Upper part)
+    for i in reversed(range(len(matrix))):
+
+        # In case the column above the pivot isn't zero
+        for j in reversed(range(i)):
+            if matrix[j][i] != 0:
+                inverseMatrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), inverseMatrix, False)
+                matrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), matrix, True)
+
+    # Return the inverse matrix
+    return inverseMatrix
