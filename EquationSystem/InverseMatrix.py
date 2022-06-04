@@ -106,7 +106,7 @@ def findInverse(matrix):
 
         # In case the column under the pivot isn't zero
         for j in range(i + 1, len(matrix)):
-            if matrix[j][i] != 0.0:
+            if matrix[j][i] != 0:
                 inverseMatrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), inverseMatrix, False)
                 matrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), matrix, True)
 
@@ -139,12 +139,12 @@ def finalSolution(originMatrix, originVectorB, vectorSolution):
         vectorR[i][0] = vectorR[i][0] - originVectorB[i][0]
 
     # In case the equation system solution has round error
-    if sum(list(map(sum, vectorR))) != 0.0:
+    if sum(list(map(sum, vectorR))) != 0:
         printIntoFile(vectorSolution, 'Equation System Solution With Round Error')
 
     # Update to the accurate solution
     for i in range(len(vectorSolution)):
-        if abs(vectorSolution[i][0] - round(vectorSolution[i][0])) <= max(1e-09 * max(abs(vectorSolution[i][0]), abs(round(vectorSolution[i][0]))), 0.0):
+        if abs(vectorSolution[i][0] - round(vectorSolution[i][0])) <= max(1e-09 * max(abs(vectorSolution[i][0]), abs(round(vectorSolution[i][0]))), 0):
             vectorSolution[i][0] = round(vectorSolution[i][0])
 
     # Return the final solution of the equation system
