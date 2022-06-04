@@ -140,7 +140,7 @@ def finalSolution(originMatrix, originVectorB, vectorSolution):
 
     # In case the Equation System solution has round error
     if sum(list(map(sum, vectorR))) != 0.0:
-        printIntoFile(vectorSolution, 'Linear Equation Solution With Round Error')
+        printIntoFile(vectorSolution, 'Equation System solution With Round Error')
 
     # Update to the accurate solution
     for i in range(len(vectorSolution)):
@@ -266,3 +266,15 @@ def resetFile():
     """
     with open('Calculation.txt', 'w') as file:
         file.write('------------------------------ Inverse Matrix Method ------------------------------\n')
+
+
+if __name__ == "__main__":
+
+    resetFile()
+
+    inputMatrix = [[2, 2, 2], [2, -1, 1], [-1, -1, 2]]
+    inputVectorB = [[4], [-1], [-5]]
+
+    print('---------- Inverse Matrix Method ----------')
+    InverseMatrix(inputMatrix, inputVectorB)
+    print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
