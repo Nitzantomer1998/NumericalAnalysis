@@ -24,33 +24,33 @@ def InverseMatrix(originMatrix, originVectorB):
             # Getting the inverse matrix of originMatrix
             inverseMatrix = findInverse(originMatrix)
 
-            # Getting the Equation System solution
+            # Getting the equation system solution
             vectorSolution = finalSolution(originMatrix, originVectorB, multiplyMatrix(inverseMatrix, originVectorB, False))
 
-            # Saving the Equation System final solution
+            # Saving the equation system final solution
             printIntoFile(vectorSolution, 'Equation System Final Solution')
-            print(f'Equation System Solution {list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, vectorSolution))}')
+            print(f'Equation system solution {list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, vectorSolution))}')
 
         # According message In case there is more or less than one solution
         else:
             printIntoFile(None, 'This is a Singular matrix')
             print('This is a Singular matrix')
 
-    # In case the input Equation System isn't meet the demands
+    # In case the input equation system isn't meet the demands
     else:
-        printIntoFile(None, "The input Equation System isn't match")
-        print("The input Equation System isn't match")
+        printIntoFile(None, "The input equation system isn't match")
+        print("The input equation system isn't match")
 
 
 def organizeMatrix(originMatrix, originVectorB):
     """
-    Taking care that the pivot in the every row will be the highest possible, and return the updated Equation System
+    Taking care that the pivot in the every row will be the highest possible, and return the updated equation system
 
     :param originMatrix: NxN matrix
     :param originVectorB: Nx1 vector
-    :return: The updated Equation System
+    :return: The updated equation system
     """
-    # Saving the Equation System the user gave
+    # Saving the equation system the user gave
     EquationSystem = [[originMatrix[row][col] for col in range(len(originMatrix[0]))] for row in range(len(originMatrix))]
     [EquationSystem[row].append(originVectorB[row][0]) for row in range(len(originVectorB))]
     printIntoFile(EquationSystem, 'Inserted Equation System')
@@ -77,12 +77,12 @@ def organizeMatrix(originMatrix, originVectorB):
             originVectorB[i], originVectorB[pivotRow] = originVectorB[pivotRow], originVectorB[i]
             originMatrix[i], originMatrix[pivotRow] = originMatrix[pivotRow], originMatrix[i]
 
-    # Saving the Equation System after changing rows/cols
+    # Saving the equation system after changing rows/cols
     EquationSystem = [[originMatrix[row][col] for col in range(len(originMatrix[0]))] for row in range(len(originMatrix))]
     [EquationSystem[row].append(originVectorB[row][0]) for row in range(len(originVectorB))]
     printIntoFile(EquationSystem, 'Updated Equation System')
 
-    # Return the updated Equation System
+    # Return the updated equation system
     return originMatrix, originVectorB
 
 
@@ -125,7 +125,7 @@ def findInverse(matrix):
 
 def finalSolution(originMatrix, originVectorB, vectorSolution):
     """
-    Getting the Equation System components, check the accuracy of the solution, if the accuracy isn't precise
+    Getting the equation system components, check the accuracy of the solution, if the accuracy isn't precise
     calculate the precise solution and return it
 
     :param originMatrix: NxN matrix
@@ -138,16 +138,16 @@ def finalSolution(originMatrix, originVectorB, vectorSolution):
     for i in range(len(vectorR)):
         vectorR[i][0] = vectorR[i][0] - originVectorB[i][0]
 
-    # In case the Equation System solution has round error
+    # In case the equation system solution has round error
     if sum(list(map(sum, vectorR))) != 0.0:
-        printIntoFile(vectorSolution, 'Equation System solution With Round Error')
+        printIntoFile(vectorSolution, 'Equation System Solution With Round Error')
 
     # Update to the accurate solution
     for i in range(len(vectorSolution)):
         if abs(vectorSolution[i][0] - round(vectorSolution[i][0])) <= max(1e-09 * max(abs(vectorSolution[i][0]), abs(round(vectorSolution[i][0]))), 0.0):
             vectorSolution[i][0] = round(vectorSolution[i][0])
 
-    # Return the final solution of the Equation System
+    # Return the final solution of the equation system
     return vectorSolution
 
 
@@ -161,7 +161,7 @@ def multiplyMatrix(matrixA, matrixB, isTrue):
     :return: NxM matrix
     """
     # Initialize NxM matrix filled with zero's
-    matrixC = [[0.0] * len(matrixB[0]) for _ in range(len(matrixA))]
+    matrixC = [[0] * len(matrixB[0]) for _ in range(len(matrixA))]
 
     # Multiply the two matrices and store the outcome in matrixC
     for i in range(len(matrixA)):
@@ -268,13 +268,17 @@ def resetFile():
         file.write('------------------------------ Inverse Matrix Method ------------------------------\n')
 
 
+# Our Program Driver
 if __name__ == "__main__":
 
+    # Reset the calculation file
     resetFile()
 
+    # Input section
     inputMatrix = [[2, 2, 2], [2, -1, 1], [-1, -1, 2]]
     inputVectorB = [[4], [-1], [-5]]
 
+    # Running the program
     print('---------- Inverse Matrix Method ----------')
     InverseMatrix(inputMatrix, inputVectorB)
     print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
