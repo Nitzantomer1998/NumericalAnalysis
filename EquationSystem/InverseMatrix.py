@@ -182,3 +182,21 @@ def multiplyMatrix(matrixA, matrixB, isTrue):
 
     # Return the outcome matrix
     return matrixC
+
+
+def initElementaryMatrix(size, row, col, value):
+    """
+    Initialize elementary matrix, from identity matrix, and a specific value, and return it
+
+    :param size: Matrix size
+    :param row: Row index
+    :param col: Column index
+    :param value: Value parameter
+    :return: Return the elementary matrix
+    """
+    # Initialize the desire elementary matrix
+    elementaryMatrix = [[1 if row == col else 0 for col in range(size)] for row in range(size)]
+    elementaryMatrix[row][col] = value
+
+    # Return the elementary matrix
+    return elementaryMatrix
