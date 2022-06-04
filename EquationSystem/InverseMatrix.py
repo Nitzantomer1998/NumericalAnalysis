@@ -230,3 +230,39 @@ def determinantMatrix(matrix):
 
     # Returning the final Sum
     return determinantSum
+
+
+def printIntoFile(data, message):
+    """
+    Printing the content into a specified file
+
+    :param data: Data is a list representing matrix
+    :param message: Message is a string representing a message
+    """
+    # Open file and save the sent content
+    with open('Calculation.txt', 'a+') as file:
+
+        # In case we sent a message
+        if message:
+            file.write(f'{message} ({PRINT_COUNTER})\n' if PRINT_COUNTER > 0 else f'{message}\n')
+
+        # In case we sent a data
+        if data:
+            for i in range(len(data)):
+                for j in range(len(data[i])):
+                    file.write('{: ^25}'.format(float(data[i][j])))
+                file.write('\n')
+            file.write('\n')
+
+        # Used to enhance the appearance
+        if message == 'Updated Equation System' or message == 'After Multiply Matrix':
+            file.write('============================================================================================\n')
+
+
+def resetFile():
+    """
+    Reset the calculation file
+
+    """
+    with open('Calculation.txt', 'w') as file:
+        file.write('------------------------------ Inverse Matrix Method ------------------------------\n')
