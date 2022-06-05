@@ -293,3 +293,17 @@ def resetFile():
     """
     with open('Calculation.txt', 'w') as file:
         file.write('------------------------------ LU Method ------------------------------\n')
+        
+        
+if __name__ == "__main__":
+
+    # Reset the calculation file
+    resetFile()
+
+    inputMatrix = [[2, 2, 2], [2, -1, 1], [-1, -1, 2]]
+    inputVectorB = [[4], [-1], [-5]]
+
+    print('---------- LU Method ----------')
+    LU(inputMatrix, inputVectorB)
+    print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
+
