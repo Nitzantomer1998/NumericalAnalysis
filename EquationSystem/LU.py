@@ -107,3 +107,25 @@ def findLU(upperMatrix):
 
     # Return Upper matrix, and Lower matrix
     return upperMatrix, lowerMatrix
+
+
+def forwardSubstitution(lowerMatrix, vectorB):
+    """
+    Solve Ly = B, and return the vector y
+
+    :param lowerMatrix: NxN lower matrix
+    :param vectorB: Nx1 vector B
+    :return: Nx1 vector solution
+    """
+    # Initialize vectorY
+    vectorY = [[0 for _ in range(1)] for _ in range(len(lowerMatrix))]
+
+    # Solve Ly = B
+    for i in range(len(lowerMatrix)):
+        vectorY[i][0] = vectorB[i][0]
+        for j in range(i):
+            vectorY[i][0] = vectorY[i][0] - lowerMatrix[i][j] * vectorY[j][0]
+        vectorY[i][0] = vectorY[i][0] / lowerMatrix[i][i]
+
+    # Return vector solution
+    return vectorY
