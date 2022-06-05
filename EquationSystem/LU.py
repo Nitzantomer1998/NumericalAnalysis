@@ -88,6 +88,7 @@ def organizeMatrix(originMatrix, originVectorB):
     # Return the updated equation system
     return originMatrix, originVectorB
 
+
 def findLU(upperMatrix):
     """
     Solve the matrix into an Upper matrix, and Lower matrix
@@ -181,6 +182,7 @@ def finalSolution(originMatrix, originVectorB, vectorSolution):
     # Return the final solution of the equation system
     return vectorSolution
 
+
 def multiplyMatrix(matrixA, matrixB, isTrue):
     """
     Multiplying two matrices and return the outcome matrix
@@ -213,6 +215,7 @@ def multiplyMatrix(matrixA, matrixB, isTrue):
     # Return the outcome matrix
     return matrixC
 
+
 def initElementaryMatrix(size, row, col, value):
     """
     Initialize elementary matrix, from identity matrix, and a specific value, and return it
@@ -229,6 +232,7 @@ def initElementaryMatrix(size, row, col, value):
 
     # Return the elementary matrix
     return elementaryMatrix
+
 
 def determinantMatrix(matrix):
     """
@@ -258,6 +262,7 @@ def determinantMatrix(matrix):
 
     # Returning the final Sum
     return determinantSum
+
 
 def printIntoFile(data, message):
     """
@@ -293,17 +298,19 @@ def resetFile():
     """
     with open('Calculation.txt', 'w') as file:
         file.write('------------------------------ LU Method ------------------------------\n')
-        
-        
+
+
+# Our Program Driver
 if __name__ == "__main__":
 
     # Reset the calculation file
     resetFile()
 
+    # Input section
     inputMatrix = [[2, 2, 2], [2, -1, 1], [-1, -1, 2]]
     inputVectorB = [[4], [-1], [-5]]
 
+    # Running the program
     print('---------- LU Method ----------')
     LU(inputMatrix, inputVectorB)
     print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
-
