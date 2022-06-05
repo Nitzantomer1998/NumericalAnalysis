@@ -87,3 +87,23 @@ def organizeMatrix(originMatrix, originVectorB):
 
     # Return the updated equation system
     return originMatrix, originVectorB
+
+def findLU(upperMatrix):
+    """
+    Solve the matrix into an Upper matrix, and Lower matrix
+
+    :param upperMatrix: NxN matrix of the equation system
+    :return: Upper matrix, and Lower matrix
+    """
+    # Initialize Lower Matrix into an Identity matrix
+    lowerMatrix = [[1 if row == col else 0 for col in range(len(upperMatrix))] for row in range(len(upperMatrix))]
+
+    # Solving matrix into an Upper matrix, and Lower matrix
+    for i in range(len(upperMatrix)):
+        for j in range(i + 1, len(upperMatrix)):
+            if upperMatrix[j][i] != 0:
+                lowerMatrix[j][i] = upperMatrix[j][i] / upperMatrix[i][i]
+                upperMatrix = multiplyMatrix(initElementaryMatrix(len(upperMatrix), j, i, - upperMatrix[j][i] / upperMatrix[i][i]), upperMatrix, True)
+
+    # Return Upper matrix, and Lower matrix
+    return upperMatrix, lowerMatrix
