@@ -129,3 +129,26 @@ def forwardSubstitution(lowerMatrix, vectorB):
 
     # Return vector solution
     return vectorY
+
+
+def backSubstitution(upperMatrix, vectorY):
+    """
+    Solve Ux = y, and return the vectorX
+
+    :param upperMatrix: NxN upper matrix
+    :param vectorY: Nx1 vector Y
+    :return: Nx1 vector solution
+    """
+    # Initialize vectorX
+    vectorX = [[0 for _ in range(1)] for _ in range(len(upperMatrix))]
+    vectorX[len(upperMatrix) - 1][0] = vectorY[len(upperMatrix) - 1][0] / upperMatrix[len(upperMatrix) - 1][len(upperMatrix) - 1]
+
+    # Solve Ux = y
+    for i in range(len(upperMatrix) - 2, -1, -1):
+        rowSum = vectorY[i][0]
+        for j in range(i + 1, len(upperMatrix)):
+            rowSum = rowSum - upperMatrix[i][j] * vectorX[j][0]
+        vectorX[i][0] = rowSum / upperMatrix[i][i]
+
+    # Return vector solution
+    return vectorX
