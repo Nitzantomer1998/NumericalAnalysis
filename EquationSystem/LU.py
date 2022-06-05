@@ -180,3 +180,35 @@ def finalSolution(originMatrix, originVectorB, vectorSolution):
 
     # Return the final solution of the equation system
     return vectorSolution
+
+def multiplyMatrix(matrixA, matrixB, isTrue):
+    """
+    Multiplying two matrices and return the outcome matrix
+
+    :param matrixA: NxM Matrix
+    :param matrixB: NxM Matrix
+    :param isTrue: Boolean which say if to save the matrices in a file
+    :return: NxM matrix
+    """
+    # Initialize NxM matrix filled with zero's
+    matrixC = [[0] * len(matrixB[0]) for _ in range(len(matrixA))]
+
+    # Multiply the two matrices and store the outcome in matrixC
+    for i in range(len(matrixA)):
+        for j in range(len(matrixB[0])):
+            for k in range(len(matrixB)):
+                matrixC[i][j] = matrixC[i][j] + matrixA[i][k] * matrixB[k][j]
+
+    # Saving the matrices in a file
+    if isTrue:
+
+        # Global variable to follow the iteration calculation
+        global PRINT_COUNTER
+        PRINT_COUNTER = PRINT_COUNTER + 1
+
+        printIntoFile(matrixA, 'Elementary Matrix')
+        printIntoFile(matrixB, 'Pre Multiply Matrix')
+        printIntoFile(matrixC, 'After Multiply Matrix')
+
+    # Return the outcome matrix
+    return matrixC
