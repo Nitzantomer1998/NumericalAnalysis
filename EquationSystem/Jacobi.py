@@ -222,13 +222,17 @@ def resetFile():
         file.write('------------------------------ Jacobi Method ------------------------------')
 
 
+# Our Program Driver
 if __name__ == "__main__":
 
+    # Reset the calculation file
     resetFile()
 
+    # Input section
     inputMatrix = [[4, 2, 0], [2, 10, 4], [0, 4, 5]]
     inputVectorB = [[2], [6], [5]]
 
+    # Running the program
     print('---------- Jacobi Method ----------')
     Jacobi(inputMatrix, inputVectorB)
     print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
