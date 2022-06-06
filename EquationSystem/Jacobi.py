@@ -1,3 +1,10 @@
+# Solving Equation System Using Jacobi Method
+
+
+# Global Variable To Store The Machine Precision, (Set the accuracy of the solution)
+ACCURACY = 1
+
+
 def Jacobi(originMatrix, originVectorB):
     """
     Solving equation system using the Jacobi method
@@ -65,3 +72,47 @@ def Jacobi(originMatrix, originVectorB):
     else:
         printIntoFile(None, "The input equation system isn't match", False)
         print("The input equation system isn't match")
+
+
+def organizeMatrix(originMatrix, originVectorB):
+    """
+    Taking care that the pivot in the every row will be the highest possible, and return the updated equation system
+
+    :param originMatrix: NxN matrix
+    :param originVectorB: Nx1 vector
+    :return: The updated equation system
+    """
+    # Saving the equation system the user gave
+    EquationSystem = [[originMatrix[row][col] for col in range(len(originMatrix[0]))] for row in range(len(originMatrix))]
+    [EquationSystem[row].append(originVectorB[row][0]) for row in range(len(originVectorB))]
+    printIntoFile(EquationSystem, 'Inserted Equation System\n', False)
+
+    # Loop to get the highest pivots possible
+    for i in range(len(originMatrix)):
+
+        # Variable to store the highest value for the pivot
+        maxPivot = abs(originMatrix[i][i])
+
+        # Variable to store the new pivot row
+        pivotRow = -1
+
+        # Searching the highest potential Pivot for originMatrix[i][i]
+        for j in range(i + 1, len(originMatrix)):
+
+            # In case there's a higher pivot (on the Column[i])
+            if abs(originMatrix[j][i]) > maxPivot:
+                maxPivot = abs(originMatrix[j][i])
+                pivotRow = j
+
+        # In case there was a higher pivot, change the matrix so the Pivot will be the maximum
+        if maxPivot != abs(originMatrix[i][i]):
+            originVectorB[i], originVectorB[pivotRow] = originVectorB[pivotRow], originVectorB[i]
+            originMatrix[i], originMatrix[pivotRow] = originMatrix[pivotRow], originMatrix[i]
+
+    # Saving the equation system after changing rows/cols
+    EquationSystem = [[originMatrix[row][col] for col in range(len(originMatrix[0]))] for row in range(len(originMatrix))]
+    [EquationSystem[row].append(originVectorB[row][0]) for row in range(len(originVectorB))]
+    printIntoFile(EquationSystem, 'Updated Equation System', False)
+
+    # Return the updated equation system
+    return originMatrix, originVectorB
