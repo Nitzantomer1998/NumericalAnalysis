@@ -116,3 +116,25 @@ def organizeMatrix(originMatrix, originVectorB):
 
     # Return the updated equation system
     return originMatrix, originVectorB
+
+
+def isDiagonalDominant(matrix):
+    """
+    Check if the pivot in every row is bigger than the sum of the whole row (without the pivot),
+    If yes return True, else False
+
+    """
+    for i in range(len(matrix)):
+
+        # Variable to store, the summation of absolute row [i]
+        rowSum = 0
+        for j in range(len(matrix)):
+            if i != j:
+                rowSum = rowSum + abs(matrix[i][j])
+
+        # If the summation of the row is bigger than the pivot, return False (The matrix isn't diagonal dominant)
+        if rowSum > abs(matrix[i][i]):
+            return False
+
+    # The matrix is Diagonal Dominant
+    return True
