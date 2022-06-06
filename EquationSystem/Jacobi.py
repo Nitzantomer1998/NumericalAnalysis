@@ -168,3 +168,16 @@ def determinantMatrix(matrix):
 
     # Returning the final Sum
     return determinantSum
+
+
+def machinePrecision():
+    """
+    Function to find your Machine Precision, And set the accuracy of the solution
+
+    """
+    # Our global variable to store the accuracy of the solution
+    global ACCURACY
+
+    # Update the accuracy to be the maximum possible for your machine
+    while 1.0 + (ACCURACY / 2) > 1.0:
+        ACCURACY = ACCURACY / 2
