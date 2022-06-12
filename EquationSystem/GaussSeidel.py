@@ -174,3 +174,42 @@ def machinePrecision():
     # Update the accuracy to be the maximum possible for your machine
     while 1.0 + (ACCURACY / 2) > 1.0:
         ACCURACY = ACCURACY / 2
+
+
+def printIntoFile(data, message, isVector):
+    """
+    Printing the content into a specified file
+
+    :param data: Data is a list representing matrix
+    :param message: Message is a string representing a message
+    :param isVector: isVector is a boolean representing if the data is a vector
+    """
+    # Open file and save the sent content
+    with open('Calculation.txt', 'a+') as file:
+
+        # In case we sent a message
+        if message:
+            file.write('\n{: ^25}'.format(message))
+            file.write('' if message != 'Updated Equation System' else '\n')
+
+        # In case we sent a data
+        if data:
+            for i in range(len(data)):
+                for j in range(len(data[i])):
+                    file.write('{: ^25}'.format(float(data[i][j])))
+                file.write('' if isVector else '\n')
+
+        # Used to enhance the appearance
+        if message == 'Updated Equation System':
+            file.write('\n==========================================================================================\n')
+            for i in range(len(data) + 1):
+                file.write('{: ^25}'.format('Iteration' if i == 0 else chr(64 + i)))
+
+
+def resetFile():
+    """
+    Reset the calculation file
+
+    """
+    with open('Calculation.txt', 'w') as file:
+        file.write('------------------------------ Gauss Seidel Method ------------------------------')
