@@ -1,3 +1,10 @@
+# Solving Equation System Using Gauss Seidel Method
+
+
+# Global Variable To Store The Machine Precision, (Set the accuracy of the solution)
+ACCURACY = 1
+
+
 def GaussSeidel(originMatrix, originVectorB):
     """
     Solving Equation System in the Gauss Seidel method
@@ -215,13 +222,17 @@ def resetFile():
         file.write('------------------------------ Gauss Seidel Method ------------------------------')
 
 
+# Our Program Driver
 if __name__ == "__main__":
 
+    # Reset the calculation file
     resetFile()
 
+    # Input section
     inputMatrix = [[4, 2, 0], [2, 10, 4], [0, 4, 5]]
     inputVectorB = [[2], [6], [5]]
 
+    # Running the program
     print('---------- Gauss Seidel Method ----------')
     GaussSeidel(inputMatrix, inputVectorB)
     print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
