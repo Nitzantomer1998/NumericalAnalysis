@@ -142,7 +142,7 @@ def backSubstitution(upperMatrix, vectorY):
     """
     # Initialize vectorX
     vectorX = [[0 for _ in range(1)] for _ in range(len(upperMatrix))]
-    vectorX[len(upperMatrix) - 1][0] = vectorY[len(upperMatrix) - 1][0] / upperMatrix[len(upperMatrix) - 1][len(upperMatrix) - 1]
+    vectorX[-1][0] = vectorY[-1][0] / upperMatrix[-1][-1]
 
     # Solve Ux = y
     for i in range(len(upperMatrix) - 2, -1, -1):
