@@ -213,3 +213,15 @@ def resetFile():
     """
     with open('Calculation.txt', 'w') as file:
         file.write('------------------------------ Gauss Seidel Method ------------------------------')
+
+
+if __name__ == "__main__":
+
+    resetFile()
+
+    inputMatrix = [[4, 2, 0], [2, 10, 4], [0, 4, 5]]
+    inputVectorB = [[2], [6], [5]]
+
+    print('---------- Gauss Seidel Method ----------')
+    GaussSeidel(inputMatrix, inputVectorB)
+    print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
