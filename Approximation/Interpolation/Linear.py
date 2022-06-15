@@ -31,10 +31,8 @@ def LinearInterpolation(pointsList, xToFind):
 # Our Program Driver
 if __name__ == "__main__":
 
-    # Graph of points (Got to be in rising X)
+    # Input section
     graphPoints = [[0, 0], [1, 0.8415], [2, 0.9093], [3, 0.1411], [4, -0.7568], [5, -0.9589], [6, -0.2794]]
-
-    # The X value of the wanted point approximation
     xValue = 2.5
 
     print('---------- Linear Method ----------')
