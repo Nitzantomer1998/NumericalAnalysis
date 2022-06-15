@@ -25,7 +25,7 @@ def LinearInterpolation(pointsList, xToFind):
         if pointsList[i][0] <= xToFind <= pointsList[i + 1][0]:
 
             # Print the point approximation
-            print(f'Point Approximation --> ({xToFind}, {((xToFind - pointsList[i + 1][0]) * pointsList[i][1] + (pointsList[i][0] - xToFind) * pointsList[i + 1][1]) / (pointsList[i][0] - pointsList[i + 1][0])})')
+            print(f'Point Approximation --> ({xToFind}, {int(((xToFind - pointsList[i + 1][0]) * pointsList[i][1] + (pointsList[i][0] - xToFind) * pointsList[i + 1][1]) / (pointsList[i][0] - pointsList[i + 1][0]) * 10 ** 5) / 10 ** 5})')
 
 
 # Our Program Driver
