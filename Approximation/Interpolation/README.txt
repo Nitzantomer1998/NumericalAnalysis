@@ -1,6 +1,7 @@
 Interpolation Folder Guide:
 - Python file --> The Lagrange program.
 - Python file --> The Linear program.
+- Python file --> The NaturalCubicSpline program.
 - Python file --> The Neville program.
 - Python file --> The Polynomial program.
 
