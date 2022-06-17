@@ -162,3 +162,22 @@ def finalSolution(originMatrix, originVectorB, vectorSolution):
     return vectorSolution
 
 
+def multiplyMatrix(matrixA, matrixB):
+    """
+    Multiplying two matrices and return the outcome matrix
+
+    :param matrixA: NxM Matrix
+    :param matrixB: NxM Matrix
+    :return: NxM matrix
+    """
+    matrixC = [[0] * len(matrixB[0]) for _ in range(len(matrixA))]
+
+    for i in range(len(matrixA)):
+        for j in range(len(matrixB[0])):
+            for k in range(len(matrixB)):
+                matrixC[i][j] = matrixC[i][j] + matrixA[i][k] * matrixB[k][j]
+
+    return matrixC
+
+
+
