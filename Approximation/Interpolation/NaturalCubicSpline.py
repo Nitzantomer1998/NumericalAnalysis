@@ -83,3 +83,31 @@ def InverseMatrix(originMatrix, originVectorB):
         print("The input equation system isn't match")
         return None
 
+
+def organizeMatrix(originMatrix, originVectorB):
+    """
+    Taking care that the pivot in the every row will be the highest possible, and return the updated equation system
+
+    :param originMatrix: NxN matrix
+    :param originVectorB: Nx1 vector
+    :return: The updated equation system
+    """
+    for i in range(len(originMatrix)):
+
+        maxPivot = abs(originMatrix[i][i])
+
+        pivotRow = -1
+
+        for j in range(i + 1, len(originMatrix)):
+
+            if abs(originMatrix[j][i]) > maxPivot:
+                maxPivot = abs(originMatrix[j][i])
+                pivotRow = j
+
+        if maxPivot != abs(originMatrix[i][i]):
+            originVectorB[i], originVectorB[pivotRow] = originVectorB[pivotRow], originVectorB[i]
+            originMatrix[i], originMatrix[pivotRow] = originMatrix[pivotRow], originMatrix[i]
+
+    return originMatrix, originVectorB
+
+
