@@ -111,3 +111,33 @@ def organizeMatrix(originMatrix, originVectorB):
     return originMatrix, originVectorB
 
 
+def findInverse(matrix):
+    """
+    Solve the matrix into an Identity matrix, and return the inverse matrix
+
+    :param matrix: NxN matrix
+    :return: Inverse NxN matrix
+    """
+    inverseMatrix = [[1 if row == col else 0 for col in range(len(matrix))] for row in range(len(matrix))]
+
+    for i in range(len(matrix)):
+
+        if matrix[i][i] != 1:
+            inverseMatrix = multiplyMatrix(initElementaryMatrix(len(matrix), i, i, 1 / matrix[i][i]), inverseMatrix)
+            matrix = multiplyMatrix(initElementaryMatrix(len(matrix), i, i, 1 / matrix[i][i]), matrix)
+
+        for j in range(i + 1, len(matrix)):
+            if matrix[j][i] != 0:
+                inverseMatrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), inverseMatrix)
+                matrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), matrix)
+
+    for i in reversed(range(len(matrix))):
+
+        for j in reversed(range(i)):
+            if matrix[j][i] != 0:
+                inverseMatrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), inverseMatrix)
+                matrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), matrix)
+
+    return inverseMatrix
+
+
