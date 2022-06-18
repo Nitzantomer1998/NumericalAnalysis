@@ -29,8 +29,8 @@ def NaturalCubicSpline(pointsList, xToFind):
         # Initialize the arrays
         h.append(pointsList[i + 1][0] - pointsList[i][0])
         lam.append(h[i] / (h[i - 1] + h[i]))
-        d.append((6 / (h[i - 1] + h[i])) * ((pointsList[i + 1][1] - pointsList[i][1]) / h[i] - (pointsList[i][1] - pointsList[i - 1][1]) / h[i - 1]))
         u.append(1 - lam[i])
+        d.append(6 / (h[i - 1] + h[i]) * ((pointsList[i + 1][1] - pointsList[i][1]) / h[i] - (pointsList[i][1] - pointsList[i - 1][1]) / h[i - 1]))
 
     # Initialize the last index of the array initialize to zero
     h.append(0)
