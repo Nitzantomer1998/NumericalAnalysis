@@ -178,3 +178,19 @@ def multiplyMatrix(matrixA, matrixB):
                 matrixC[i][j] = matrixC[i][j] + matrixA[i][k] * matrixB[k][j]
 
     return matrixC
+
+
+def initElementaryMatrix(size, row, col, value):
+    """
+    Initialize elementary matrix, from identity matrix, and a specific value, and return it
+
+    :param size: Matrix size
+    :param row: Row index
+    :param col: Column index
+    :param value: Value parameter
+    :return: Return the elementary matrix
+    """
+    elementaryMatrix = [[1 if row == col else 0 for col in range(size)] for row in range(size)]
+    elementaryMatrix[row][col] = value
+
+    return elementaryMatrix
