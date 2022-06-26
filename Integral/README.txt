@@ -1,1 +1,2 @@
-New intergal numrical analysis project
+Integration Folder Guide:
+- Python file --> The Trapezoidal program.
