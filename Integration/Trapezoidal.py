@@ -23,3 +23,34 @@ def Trapezoidal(f, leftDomain, rightDomain, sectionAmount):
         integral = integral + 2 * f(leftDomain + i * h)
 
     print(f'Sum of the area --> {int(h / 2 * integral * 10 ** 5) / 10 ** 5}')
+
+
+def MaxFunctionValue(f, startAt, endAt):
+    """
+    Method for finding the highest point of a function
+
+    :param f: Our function
+    :param startAt: Left domain of the function
+    :param endAt: Right domain of the function
+    """
+    g = f.diff(x)
+
+    f = lambdify(x, f)
+    g = lambdify(x, g)
+
+    maxIteration = int(-(log(ACCURACY / (domainEnd - domainStart)) / log(2))) + 1
+
+    maxValue = max(f(startAt), f(endAt))
+
+    while startAt < endAt:
+
+        if g(startAt) * g(startAt + 0.1) < 0:
+
+            possiblePoint = Secant(g, startAt, startAt + 0.1, maxIteration)
+
+            if f(possiblePoint) > maxValue:
+                maxValue = f(possiblePoint)
+
+        startAt = startAt + 0.1
+
+    return maxValue
