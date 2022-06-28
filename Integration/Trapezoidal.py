@@ -54,3 +54,27 @@ def MaxFunctionValue(f, startAt, endAt):
         startAt = startAt + 0.1
 
     return maxValue
+
+
+def Secant(f, previewX, currentX, maxIteration):
+    """
+    Finding the function root in the domain range [left To right]
+
+    :param f: Our function
+    :param previewX: Left domain of the function
+    :param currentX: Right domain of the function
+    :param maxIteration: The maximum iteration for finding the root
+    :return: The root of the function if existed, else according failed message
+    """
+    for i in range(maxIteration):
+
+        nextX = (previewX * f(currentX) - currentX * f(previewX)) / (f(currentX) - f(previewX))
+
+        if abs(f(nextX)) < ACCURACY:
+            return nextX
+
+        previewX = currentX
+
+        currentX = nextX
+
+    print("Failed to find the root, Secant Method isn't suitable")
