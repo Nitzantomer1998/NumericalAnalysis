@@ -78,3 +78,16 @@ def Secant(f, previewX, currentX, maxIteration):
         currentX = nextX
 
     print("Failed to find the root, Secant Method isn't suitable")
+
+
+if __name__ == "__main__":
+
+    x = sp.symbols('x')
+
+    function = sp.sin(x)
+    domainStart = 0
+    domainEnd = sp.pi
+    sectionDivide = 4
+
+    print('---------- Trapezoidal Rule Method ----------')
+    Trapezoidal(function, domainStart, domainEnd, sectionDivide)
