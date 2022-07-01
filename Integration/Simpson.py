@@ -63,3 +63,16 @@ def MaxFunctionValue(f, startAt, endAt):
         startAt = startAt + 0.1
 
     return maxValue
+
+
+if __name__ == "__main__":
+
+    x = sp.symbols('x')
+
+    function = sp.sin(x)
+    domainStart = 0
+    domainEnd = sp.pi
+    sectionDivide = 20
+
+    print('---------- Simpson Rule Method ----------')
+    Simpson(function, domainStart, domainEnd, sectionDivide)
