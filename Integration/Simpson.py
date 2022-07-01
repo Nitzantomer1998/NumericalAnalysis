@@ -42,3 +42,24 @@ def Simpson(f, leftDomain, rightDomain, sectionAmount):
             interval = interval + 4 * f(i * h + leftDomain)
 
     print(f'Sum of the area --> {int(1 / 3 * h * interval * 10 ** 5) / 10 ** 5}')
+
+
+def MaxFunctionValue(f, startAt, endAt):
+    """
+    Method for finding the highest point of a function
+
+    :param f: Our function
+    :param startAt: Left domain of the function
+    :param endAt: Right domain of the function
+    """
+    f = lambdify(x, f)
+
+    maxValue = max(f(startAt), f(endAt))
+
+    while startAt < endAt:
+
+        maxValue = max(maxValue, f(startAt))
+
+        startAt = startAt + 0.1
+
+    return maxValue
