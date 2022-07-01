@@ -1,4 +1,5 @@
 Integration Folder Guide:
+- Python file --> The Simpson program.
 - Python file --> The Trapezoidal program.
 
 Explanation: An integral assigns numbers to function in a way that describes displacement, area, volume,
