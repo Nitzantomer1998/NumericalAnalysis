@@ -1,12 +1,9 @@
 # Finding Area Value Using Trapezoidal Method
 
 
-# Libraries for getting the derivative of a function
+# Libraries for working with derivatives
 import sympy as sp
 from sympy.utilities.lambdify import lambdify
-
-# Libraries for calculation log
-from math import log
 
 # Global variable to set the accuracy of the solution
 ACCURACY = 0.00001
@@ -22,29 +19,33 @@ def Trapezoidal(f, leftDomain, rightDomain, sectionAmount):
     :param sectionAmount: The amount of section
     """
     # Variable to store the highest possible section amount without losing information in the process
-    sectionAmountLimit = (((rightDomain - leftDomain) ** 3 * MaxFunctionValue(f, leftDomain, rightDomain)) / (12 * ACCURACY)) ** 0.5
+    sectionAmountLimit = ((abs(rightDomain - leftDomain) ** 3 * MaxFunctionValue(f, leftDomain, rightDomain)) / (12 * ACCURACY)) ** 0.5
+
+    # In case the user chose negative amount of sections
+    if sectionAmount <= 0:
+        print('You can not divide section to be negative')
+        return
 
     # In case the user chose more section than we can perform without losing information
     if sectionAmount > sectionAmountLimit:
-
-        # Appropriate failed message
-        print(f'You chose too many section, the limit is {sectionAmountLimit}')
+        print(f'You chose too many section, the limit is {int(sectionAmountLimit)}')
+        return
 
     # Initiate the function to be able to calculate Y base on given x
     f = lambdify(x, f)
 
-    # Calculating step size
-    h = (rightDomain - leftDomain) / sectionAmount
+    # Calculating step size (gap)
+    h = abs(rightDomain - leftDomain) / sectionAmount
 
-    # Initialize the integral value
-    integral = f(leftDomain) + f(rightDomain)
+    # Initialize the interval value
+    interval = f(leftDomain) + f(rightDomain)
 
-    # Calculate the rest of the integral value
+    # Calculate the rest of the interval value
     for i in range(1, sectionAmount):
-        integral = integral + 2 * f(leftDomain + i * h)
+        interval = interval + 2 * f(leftDomain + i * h)
 
     # Print the area value
-    print(f'Sum of the area --> {int(h / 2 * integral * 10 ** 5) / 10 ** 5}')
+    print(f'Sum of the area --> {int(h / 2 * interval * 10 ** 5) / 10 ** 5}')
 
 
 def MaxFunctionValue(f, startAt, endAt):
@@ -55,16 +56,22 @@ def MaxFunctionValue(f, startAt, endAt):
     :param startAt: Left domain of the function
     :param endAt: Right domain of the function
     """
+    # Activating the function to be able to get an X
     f = lambdify(x, f)
 
+    # Variable to store the max value of the function (Axis Y)
     maxValue = max(f(startAt), f(endAt))
 
+    # Divide our function domain range into multiply domains with 0.1 range
     while startAt < endAt:
 
+        # Update the maximum Y value of the function
         maxValue = max(maxValue, f(startAt))
 
+        # Update our domain for the next iteration
         startAt = startAt + 0.1
 
+    # Return the highest Y value in the function domain
     return maxValue
 
 
@@ -78,7 +85,7 @@ if __name__ == "__main__":
     function = sp.sin(x)
     domainStart = 0
     domainEnd = sp.pi
-    sectionDivide = 4
+    sectionDivide = 10
 
     # Running the program
     print('---------- Trapezoidal Rule Method ----------')
