@@ -55,53 +55,17 @@ def MaxFunctionValue(f, startAt, endAt):
     :param startAt: Left domain of the function
     :param endAt: Right domain of the function
     """
-    # Activating the function to be able to get an X
     f = lambdify(x, f)
 
-    # Variable to store the max value of the function (Axis Y)
     maxValue = max(f(startAt), f(endAt))
 
-    # Divide our function domain range into multiply domains with 0.1 range
     while startAt < endAt:
 
-        # Update the maximum Y value of the function
         maxValue = max(maxValue, f(startAt))
 
-        # Update our domain for the next iteration
         startAt = startAt + 0.1
 
-    # Return the highest Y value in the function domain
     return maxValue
-
-
-def Secant(f, previewX, currentX, maxIteration):
-    """
-    Finding the function root in the domain range [left To right]
-
-    :param f: Our function
-    :param previewX: Left domain of the function
-    :param currentX: Right domain of the function
-    :param maxIteration: The maximum iteration for finding the root
-    :return: The root of the function if existed, else according failed message
-    """
-    # Search the root within the maximum allowed iteration
-    for i in range(maxIteration):
-
-        # Variable to store the next X
-        nextX = (previewX * f(currentX) - currentX * f(previewX)) / (f(currentX) - f(previewX))
-
-        # In case we found our root, Return the root and the iteration number
-        if abs(f(nextX)) < ACCURACY:
-            return nextX
-
-        # Update the previewX to be the currentX
-        previewX = currentX
-
-        # Update the currentX to be new one
-        currentX = nextX
-
-    # In case we didn't find the root within the allowed amount iteration, Print fail message and shut down the program
-    print("Failed to find the root, Secant Method isn't suitable")
 
 
 # Our Program Driver
