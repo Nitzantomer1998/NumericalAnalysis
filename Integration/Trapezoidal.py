@@ -55,31 +55,17 @@ def MaxFunctionValue(f, startAt, endAt):
     :param startAt: Left domain of the function
     :param endAt: Right domain of the function
     """
-    # Variable to store the derivative function
-    g = f.diff(x)
-
-    # Activating the functions to be able to get an X
+    # Activating the function to be able to get an X
     f = lambdify(x, f)
-    g = lambdify(x, g)
 
-    # Variable to store the maximum iteration we allowed
-    maxIteration = int(-(log(ACCURACY / (domainEnd - domainStart)) / log(2))) + 1
-
-    # Variable to store the max value of the function
+    # Variable to store the max value of the function (Axis Y)
     maxValue = max(f(startAt), f(endAt))
 
     # Divide our function domain range into multiply domains with 0.1 range
     while startAt < endAt:
 
-        # In case the derivative function changes its sign (Mean there's a possibility for an extreme point)
-        if g(startAt) * g(startAt + 0.1) < 0:
-
-            # Getting a possibility for an extreme point (Might be a Root or an Extreme point)
-            possiblePoint = Secant(g, startAt, startAt + 0.1, maxIteration)
-
-            # In case we found an extreme point
-            if f(possiblePoint) > maxValue:
-                maxValue = f(possiblePoint)
+        # Update the maximum Y value of the function
+        maxValue = max(maxValue, f(startAt))
 
         # Update our domain for the next iteration
         startAt = startAt + 0.1
