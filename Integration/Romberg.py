@@ -38,3 +38,15 @@ def Trapezoidal(f, startAt, endAt, sectionAmount):
         interval = interval + 2 * f(startAt + i * h)
 
     return interval * h / 2
+
+if __name__ == "__main__":
+
+    x = sp.symbols('x')
+
+    function = sp.sin(x)
+    domainStart = 0
+    domainEnd = sp.pi
+    sectionDivide = 5
+
+    print('---------- Romberg Method ----------')
+    Romberg(function, domainStart, domainEnd, sectionDivide)
