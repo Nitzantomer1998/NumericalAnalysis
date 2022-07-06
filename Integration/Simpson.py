@@ -9,20 +9,20 @@ from sympy.utilities.lambdify import lambdify
 ACCURACY = 0.00001
 
 
-def Simpson(f, leftDomain, rightDomain, sectionAmount):
+def Simpson(f, startAt, endAt, sectionAmount):
     """
-    Method for finding the locked Area of the function in the segment domain [leftDomain, rightDomain]
+    Method for finding the locked Area of the function in the segment domain [startAt, endAt]
 
     :param f: Our function
-    :param leftDomain: Left domain of the function
-    :param rightDomain: Right domain of the function
+    :param startAt: Left domain of the function
+    :param endAt: Right domain of the function
     :param sectionAmount: The amount of section
     """
     # Variable to store the highest possible section amount without losing information in the process
-    sectionAmountMaxLimit = ((abs(rightDomain - leftDomain) ** 3 * MaxFunctionValue(f, leftDomain, rightDomain)) / (12 * ACCURACY)) ** 0.5
+    sectionAmountMaxLimit = ((abs(endAt - startAt) ** 3 * MaxFunctionValue(f, startAt, endAt)) / (12 * ACCURACY)) ** 0.5
 
     # Variable to store the lowest possible section amount without losing information in the process
-    sectionAmountMinLimit = (abs(rightDomain - leftDomain) ** 5 * MaxFunctionValue(f.diff(x).diff(x).diff(x).diff(x), leftDomain, rightDomain) / (180 * ACCURACY)) ** 0.25
+    sectionAmountMinLimit = (abs(endAt - startAt) ** 5 * MaxFunctionValue(f.diff(x).diff(x).diff(x).diff(x), startAt, endAt) / (180 * ACCURACY)) ** 0.25
 
     # In case the user chose negative amount of sections
     if sectionAmount <= 0:
@@ -48,21 +48,21 @@ def Simpson(f, leftDomain, rightDomain, sectionAmount):
     f = lambdify(x, f)
 
     # Calculating step size (gap)
-    h = abs(rightDomain - leftDomain) / sectionAmount
+    h = abs(endAt - startAt) / sectionAmount
 
     # Initialize the integral value
-    interval = f(leftDomain) + f(rightDomain)
+    interval = f(startAt) + f(endAt)
 
     # Calculate the rest of the interval value
     for i in range(1, sectionAmount):
 
         # In case the index is on even place [0, 2, 4, 6 ...]
         if i % 2 == 0:
-            interval = interval + 2 * f(i * h + leftDomain)
+            interval = interval + 2 * f(i * h + startAt)
 
         # In case the index is on odd place [1, 3, 5, 7 ...]
         else:
-            interval = interval + 4 * f(i * h + leftDomain)
+            interval = interval + 4 * f(i * h + startAt)
 
     # Print the area value
     print(f'Sum of the area --> {int(1 / 3 * h * interval * 10 ** 5) / 10 ** 5}')
@@ -70,7 +70,7 @@ def Simpson(f, leftDomain, rightDomain, sectionAmount):
 
 def MaxFunctionValue(f, startAt, endAt):
     """
-    Method for finding the highest point of a function
+    Method for finding the highest point of startAt function
 
     :param f: Our function
     :param startAt: Left domain of the function

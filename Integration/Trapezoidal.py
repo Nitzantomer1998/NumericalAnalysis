@@ -9,17 +9,17 @@ from sympy.utilities.lambdify import lambdify
 ACCURACY = 0.00001
 
 
-def Trapezoidal(f, leftDomain, rightDomain, sectionAmount):
+def Trapezoidal(f, startAt, endAt, sectionAmount):
     """
-    Method for finding the locked Area of the function in the segment domain [leftDomain, rightDomain]
+    Method for finding the locked Area of the function in the segment domain [startAt, endAt]
 
     :param f: Our function
-    :param leftDomain: Left domain of the function
-    :param rightDomain: Right domain of the function
+    :param startAt: Left domain of the function
+    :param endAt: Right domain of the function
     :param sectionAmount: The amount of section
     """
     # Variable to store the highest possible section amount without losing information in the process
-    sectionAmountLimit = ((abs(rightDomain - leftDomain) ** 3 * MaxFunctionValue(f, leftDomain, rightDomain)) / (12 * ACCURACY)) ** 0.5
+    sectionAmountLimit = ((abs(endAt - startAt) ** 3 * MaxFunctionValue(f, startAt, endAt)) / (12 * ACCURACY)) ** 0.5
 
     # In case the user chose negative amount of sections
     if sectionAmount <= 0:
@@ -35,14 +35,14 @@ def Trapezoidal(f, leftDomain, rightDomain, sectionAmount):
     f = lambdify(x, f)
 
     # Calculating step size (gap)
-    h = abs(rightDomain - leftDomain) / sectionAmount
+    h = abs(endAt - startAt) / sectionAmount
 
     # Initialize the interval value
-    interval = f(leftDomain) + f(rightDomain)
+    interval = f(startAt) + f(endAt)
 
     # Calculate the rest of the interval value
     for i in range(1, sectionAmount):
-        interval = interval + 2 * f(leftDomain + i * h)
+        interval = interval + 2 * f(startAt + i * h)
 
     # Print the area value
     print(f'Sum of the area --> {int(h / 2 * interval * 10 ** 5) / 10 ** 5}')
@@ -50,7 +50,7 @@ def Trapezoidal(f, leftDomain, rightDomain, sectionAmount):
 
 def MaxFunctionValue(f, startAt, endAt):
     """
-    Method for finding the highest point of a function
+    Method for finding the highest point of startAt function
 
     :param f: Our function
     :param startAt: Left domain of the function
