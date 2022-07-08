@@ -1,13 +1,5 @@
 Numerical Analysis Guide:
-  
-* Interpolation
-  - Full Cubic Spline
-  - Lagrange
-  - Linear
-  - Natural Cubic Spline
-  - Neville
-  - Polynomial
-  
+    
 * Equation System
   - Gauss Seidel
   - Inverse Matrix
@@ -19,6 +11,14 @@ Numerical Analysis Guide:
   - Simpson
   - Trapezoidal
   
+* Interpolation
+  - Full Cubic Spline
+  - Lagrange
+  - Linear
+  - Natural Cubic Spline
+  - Neville
+  - Polynomial
+
 * Finite Arithmetic
   - Machine Precision
   
