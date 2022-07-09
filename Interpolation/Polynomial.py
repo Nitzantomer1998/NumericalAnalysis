@@ -103,3 +103,42 @@ def findLU(upperMatrix):
                 upperMatrix = multiplyMatrix(initElementaryMatrix(len(upperMatrix), j, i, - upperMatrix[j][i] / upperMatrix[i][i]), upperMatrix)
 
     return upperMatrix, lowerMatrix
+
+
+def forwardSubstitution(lowerMatrix, vectorB):
+    """
+    Solve Ly = B, and return the vector y
+
+    :param lowerMatrix: NxN lower matrix
+    :param vectorB: Nx1 vector B
+    :return: Nx1 vector solution
+    """
+    vectorY = [[0 for _ in range(1)] for _ in range(len(lowerMatrix))]
+
+    for i in range(len(lowerMatrix)):
+        vectorY[i][0] = vectorB[i][0]
+        for j in range(i):
+            vectorY[i][0] = vectorY[i][0] - lowerMatrix[i][j] * vectorY[j][0]
+        vectorY[i][0] = vectorY[i][0] / lowerMatrix[i][i]
+
+    return vectorY
+
+
+def backSubstitution(upperMatrix, vectorY):
+    """
+    Solve Ux = y, and return the vectorX
+
+    :param upperMatrix: NxN upper matrix
+    :param vectorY: Nx1 vector Y
+    :return: Nx1 vector solution
+    """
+    vectorX = [[0 for _ in range(1)] for _ in range(len(upperMatrix))]
+    vectorX[-1][0] = vectorY[-1][0] / upperMatrix[-1][-1]
+
+    for i in range(len(upperMatrix) - 2, -1, -1):
+        rowSum = vectorY[i][0]
+        for j in range(i + 1, len(upperMatrix)):
+            rowSum = rowSum - upperMatrix[i][j] * vectorX[j][0]
+        vectorX[i][0] = rowSum / upperMatrix[i][i]
+
+    return vectorX
