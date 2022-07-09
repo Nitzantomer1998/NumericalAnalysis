@@ -28,3 +28,33 @@ def Polynomial(pointsList, xToFind):
         yApproximation = yApproximation + vectorSolution[i][0] * (xToFind ** i)
 
     print(f'Point Approximation --> ({xToFind}, {int(yApproximation * 10 ** 5) / 10 ** 5})')
+
+
+def LU(originMatrix, originVectorB):
+    """
+    Solving equation system in the LU Decomposition method
+
+    :param originMatrix: NxN Matrix
+    :param originVectorB: Nx1 Vector
+    """
+    if len(originMatrix) == len(originMatrix[0]) and len(originVectorB) == len(originMatrix) and len(originVectorB[0]) == 1:
+
+        if determinantMatrix(originMatrix):
+
+            originMatrix, originVectorB = organizeMatrix(originMatrix, originVectorB)
+
+            upperMatrix, lowerMatrix = findLU(originMatrix)
+
+            vectorSolutionY = forwardSubstitution(lowerMatrix, originVectorB)
+
+            vectorSolutionX = finalSolution(originMatrix, originVectorB, backSubstitution(upperMatrix, vectorSolutionY))
+
+            return vectorSolutionX
+
+        else:
+            print('This is startAt Singular matrix')
+            return None
+
+    else:
+        print("The input equation system isn't match")
+        return None
