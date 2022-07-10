@@ -28,3 +28,12 @@ def Lagrange(pointsList, xToFind):
 
     # The point approximation
     print(f'Point Approximation --> ({xToFind}, {int(yToFind * 10 ** 5) / 10 ** 5})')
+
+
+if __name__ == "__main__":
+
+    graphPoints = [[0, 0], [1, 0.8415], [2, 0.9093], [3, 0.1411], [4, -0.7568], [5, -0.9589], [6, -0.2794]]
+    xValue = 5.5
+
+    print('---------- Lagrange Method ----------')
+    Lagrange(graphPoints, xValue)
