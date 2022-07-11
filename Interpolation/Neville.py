@@ -38,3 +38,14 @@ def recursiveNeville(pointsList, xToFind, i, j):
     return ((xToFind - pointsList[i][0]) * P[i + 1][j] - (xToFind - pointsList[j][0]) * P[i][j - 1]) / (pointsList[j][0] - pointsList[i][0])
 
 
+if __name__ == "__main__":
+
+    graphPoints = [[0, 0], [1, 0.8415], [2, 0.9093], [3, 0.1411], [4, -0.7568], [5, -0.9589], [6, -0.2794]]
+    xValue = 5.5
+
+    P = [[None for _ in range(len(graphPoints))] for _ in range(len(graphPoints))]
+
+    print('---------- Neville Method ----------')
+    Neville(graphPoints, xValue)
+
+
