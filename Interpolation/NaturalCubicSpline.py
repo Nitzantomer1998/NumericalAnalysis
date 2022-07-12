@@ -53,3 +53,31 @@ def NaturalCubicSpline(pointsList, xToFind):
 
             s = ((pointsList[i + 1][0] - xToFind) ** 3 * vectorSolution[i][0] + (xToFind - pointsList[i][0]) ** 3 * vectorSolution[i + 1][0]) / (6 * h[i]) + ((pointsList[i + 1][0] - xToFind) * pointsList[i][1] + (xToFind - pointsList[i][0]) * pointsList[i + 1][1]) / h[i] - (((pointsList[i + 1][0] - xToFind) * vectorSolution[i][0] + (xToFind - pointsList[i][0]) * vectorSolution[i + 1][0]) * h[i]) / 6
             print(f'Point Approximation --> ({xToFind}, {int(s * 10 ** 5) / 10 ** 5})')
+
+
+def InverseMatrix(originMatrix, originVectorB):
+    """
+    Solving equation system in the Inverse Matrix method
+
+    :param originMatrix: NxN Matrix
+    :param originVectorB: Nx1 Vector
+    """
+    if len(originMatrix) == len(originMatrix[0]) and len(originVectorB) == len(originMatrix) and len(
+            originVectorB[0]) == 1:
+
+        if determinantMatrix(originMatrix):
+
+            originMatrix, originVectorB = organizeMatrix(originMatrix, originVectorB)
+
+            inverseMatrix = findInverse(originMatrix)
+
+            vectorSolution = finalSolution(originMatrix, originVectorB, multiplyMatrix(inverseMatrix, originVectorB))
+
+            return vectorSolution
+
+        else:
+            print('This is startAt Singular matrix')
+            return None
+
+    else:
+        return None
