@@ -4,6 +4,7 @@ Equation System Folder Guide:
 - Python file --> The Inverse Matrix program.
 - Python file --> The Jacobi program.
 - Python file --> The LU program.
+- Python file --> The Successive Over Relaxation program.
 
 Explanation: 
   - A system equations is a set of one or more equations involving a number of variables.
