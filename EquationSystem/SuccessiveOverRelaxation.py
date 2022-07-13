@@ -130,3 +130,14 @@ def determinantMatrix(matrix):
         determinantSum = determinantSum + (sign * matrix[0][current_column] * determinant_sub)
 
     return determinantSum
+
+
+def machinePrecision():
+    """
+    Function to find your Machine Precision, And set the accuracy of the solution
+
+    """
+    global ACCURACY
+
+    while 1.0 + (ACCURACY / 2) > 1.0:
+        ACCURACY = ACCURACY / 2
