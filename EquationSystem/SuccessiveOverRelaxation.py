@@ -53,3 +53,38 @@ def SuccessiveOverRelaxation(originMatrix, originVectorB, W):
 
     printIntoFile(currentIteration, 'Solution', True)
     print(f'Equation system solution {list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, currentIteration))}')
+
+
+def organizeMatrix(originMatrix, originVectorB):
+    """
+    Taking care that the pivot in the every row will be the highest possible, and return the updated equation system
+
+    :param originMatrix: NxN matrix
+    :param originVectorB: Nx1 vector
+    :return: The updated equation system
+    """
+    EquationSystem = [[originMatrix[row][col] for col in range(len(originMatrix[0]))] for row in range(len(originMatrix))]
+    [EquationSystem[row].append(originVectorB[row][0]) for row in range(len(originVectorB))]
+    printIntoFile(EquationSystem, 'Inserted Equation System\n', False)
+
+    for i in range(len(originMatrix)):
+
+        maxPivot = abs(originMatrix[i][i])
+
+        pivotRow = -1
+
+        for j in range(i + 1, len(originMatrix)):
+
+            if abs(originMatrix[j][i]) > maxPivot:
+                maxPivot = abs(originMatrix[j][i])
+                pivotRow = j
+
+        if maxPivot != abs(originMatrix[i][i]):
+            originVectorB[i], originVectorB[pivotRow] = originVectorB[pivotRow], originVectorB[i]
+            originMatrix[i], originMatrix[pivotRow] = originMatrix[pivotRow], originMatrix[i]
+
+    EquationSystem = [[originMatrix[row][col] for col in range(len(originMatrix[0]))] for row in range(len(originMatrix))]
+    [EquationSystem[row].append(originVectorB[row][0]) for row in range(len(originVectorB))]
+    printIntoFile(EquationSystem, 'Updated Equation System', False)
+
+    return originMatrix, originVectorB
