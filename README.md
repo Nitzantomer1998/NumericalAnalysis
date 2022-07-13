@@ -5,6 +5,7 @@ Numerical Analysis Guide:
   - Inverse Matrix
   - Jacobi
   - LU Decomposition
+  - Successive Over Relaxation
   <br />
   
 * Integration
