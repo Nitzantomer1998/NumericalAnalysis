@@ -88,3 +88,21 @@ def organizeMatrix(originMatrix, originVectorB):
     printIntoFile(EquationSystem, 'Updated Equation System', False)
 
     return originMatrix, originVectorB
+
+
+def isDiagonalDominant(matrix):
+    """
+    Check if the pivot in every row is bigger than the sum of the whole row (without the pivot),
+    If yes return True, else False
+
+    """
+    for i in range(len(matrix)):
+        rowSum = 0
+        for j in range(len(matrix)):
+            if i != j:
+                rowSum = rowSum + abs(matrix[i][j])
+
+        if rowSum > abs(matrix[i][i]):
+            return False
+
+    return True
