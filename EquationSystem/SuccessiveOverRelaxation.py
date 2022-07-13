@@ -176,3 +176,16 @@ def resetFile():
     """
     with open('Calculation.txt', 'w') as file:
         file.write('------------------------------ Successive Over Relaxation Method ------------------------------')
+        
+
+if __name__ == "__main__":
+
+    resetFile()
+
+    inputMatrix = [[4, 3, 0], [3, 4, -1], [0, -1, 4]]
+    inputVectorB = [[24], [30], [-24]]
+    Omega = 1.2
+
+    print('---------- Successive Over Relaxation Method ----------')
+    SuccessiveOverRelaxation(inputMatrix, inputVectorB, Omega)
+    print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
