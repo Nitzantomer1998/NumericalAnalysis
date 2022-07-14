@@ -212,3 +212,27 @@ def initElementaryMatrix(size, row, col, value):
     elementaryMatrix[row][col] = value
 
     return elementaryMatrix
+
+
+def determinantMatrix(matrix):
+    """
+    Calculate the matrix determinant and return the result
+
+    :param matrix: NxN Matrix
+    :return: Matrix determinant
+    """
+    if len(matrix) == 2:
+        value = matrix[0][0] * matrix[1][1] - matrix[1][0] * matrix[0][1]
+        return value
+
+    determinantSum = 0
+
+    for current_column in range(len(matrix)):
+        sign = (-1) ** current_column
+
+        determinant_sub = determinantMatrix(
+            [row[: current_column] + row[current_column + 1:] for row in (matrix[: 0] + matrix[0 + 1:])])
+
+        determinantSum = determinantSum + (sign * matrix[0][current_column] * determinant_sub)
+
+    return determinantSum
