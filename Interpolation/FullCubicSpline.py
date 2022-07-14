@@ -156,3 +156,25 @@ def findInverse(matrix):
                 matrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), matrix)
 
     return inverseMatrix
+
+
+def finalSolution(originMatrix, originVectorB, vectorSolution):
+    """
+    Getting the equation system components, check the accuracy of the solution, if the accuracy isn't precise
+    calculate the precise solution and return it
+
+    :param originMatrix: NxN matrix
+    :param originVectorB: Nx1 vector
+    :param vectorSolution: Nx1 vector semi solution (not surly accurate)
+    :return: Nx1 vector, the precise Equation System solution
+    """
+    vectorR = multiplyMatrix(originMatrix, vectorSolution)
+    for i in range(len(vectorR)):
+        vectorR[i][0] = vectorR[i][0] - originVectorB[i][0]
+
+    for i in range(len(vectorSolution)):
+        if abs(vectorSolution[i][0] - round(vectorSolution[i][0])) <= max(
+                1e-09 * max(abs(vectorSolution[i][0]), abs(round(vectorSolution[i][0]))), 0):
+            vectorSolution[i][0] = round(vectorSolution[i][0])
+
+    return vectorSolution
