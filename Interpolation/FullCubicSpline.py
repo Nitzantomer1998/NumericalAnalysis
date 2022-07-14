@@ -62,3 +62,40 @@ def FullCubicSpline(pointsList, xToFind, leftDerivative, rightDerivative):
             # The point approximation
             s = ((pointsList[i + 1][0] - xToFind) ** 3 * vectorSolution[i][0] + (xToFind - pointsList[i][0]) ** 3 * vectorSolution[i + 1][0]) / (6 * h[i]) + ((pointsList[i + 1][0] - xToFind) * pointsList[i][1] + (xToFind - pointsList[i][0]) * pointsList[i + 1][1]) / h[i] - (((pointsList[i + 1][0] - xToFind) * vectorSolution[i][0] + (xToFind - pointsList[i][0]) * vectorSolution[i + 1][0]) * h[i]) / 6
             print(f'Point Approximation --> ({xToFind}, {int(s * 10 ** 5) / 10 ** 5})')
+
+
+def InverseMatrix(originMatrix, originVectorB):
+    """
+    Solving equation system in the Inverse Matrix method
+
+    :param originMatrix: NxN Matrix
+    :param originVectorB: Nx1 Vector
+    """
+    # Check if the matrix is Quadratic matrix, and check if the vector is in appropriate size
+    if len(originMatrix) == len(originMatrix[0]) and len(originVectorB) == len(originMatrix) and len(
+            originVectorB[0]) == 1:
+
+        # In case the matrix has one solution
+        if determinantMatrix(originMatrix):
+
+            # Organize the matrix pivots
+            originMatrix, originVectorB = organizeMatrix(originMatrix, originVectorB)
+
+            # Getting the inverse matrix of originMatrix
+            inverseMatrix = findInverse(originMatrix)
+
+            # Getting the equation system solution
+            vectorSolution = finalSolution(originMatrix, originVectorB, multiplyMatrix(inverseMatrix, originVectorB))
+
+            # Return the equation system final solution
+            return vectorSolution
+
+        # According message In case there is more or less than one solution
+        else:
+            print('This is a Singular matrix')
+            return None
+
+    # In case the input equation system isn't meet the demands
+    else:
+        print("The input equation system isn't match")
+        return None
