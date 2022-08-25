@@ -170,17 +170,13 @@ def find_machine_precision():
         ACCURACY = ACCURACY / 2
         
 
-# Our Program Driver
 if __name__ == "__main__":
 
-    # Reset the calculation file
-    resetFile()
+    reset_file()
 
-    # Input section
-    inputMatrix = [[4, 2, 0], [2, 10, 4], [0, 4, 5]]
-    inputVectorB = [[2], [6], [5]]
+    input_matrix = [[4, 2], [2, 10], [0, 4, 5]]
+    input_vector_b = [[2], [6], [5]]
 
-    # Running the program
     print('---------- Gauss Seidel Method ----------')
-    GaussSeidel(inputMatrix, inputVectorB)
+    gauss_seidel_method(input_matrix, input_vector_b)
     print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
