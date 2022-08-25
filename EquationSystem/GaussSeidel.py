@@ -163,15 +163,9 @@ def reset_file():
         file.write('------------------------------ Gauss Seidel Method ------------------------------')            
         
         
-def machinePrecision():
-    """
-    Function to find your Machine Precision, And set the accuracy of the solution
-
-    """
-    # Our global variable to store the accuracy of the solution
+def find_machine_precision():
     global ACCURACY
 
-    # Update the accuracy to be the maximum possible for your machine
     while 1.0 + (ACCURACY / 2) > 1.0:
         ACCURACY = ACCURACY / 2
         
