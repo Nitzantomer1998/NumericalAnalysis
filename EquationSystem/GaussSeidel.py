@@ -130,6 +130,15 @@ def is_diagonal_dominant(matrix):
     return True
 
 
+def is_solution_found(current_iteration, previous_iteration):
+    for i in range(len(current_iteration)):
+
+        if abs(current_iteration[i][0] - previous_iteration[i][0]) > ACCURACY:
+            return False
+
+    return True
+
+
 def machinePrecision():
     """
     Function to find your Machine Precision, And set the accuracy of the solution
