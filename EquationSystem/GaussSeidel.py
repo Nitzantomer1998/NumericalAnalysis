@@ -5,73 +5,48 @@
 ACCURACY = 1
 
 
-def GaussSeidel(originMatrix, originVectorB):
-    """
-    Solving Equation System in the Gauss Seidel method
+def gauss_seidel_method(origin_matrix, origin_vector_b):
+    if not is_equation_system_valid(origin_matrix, origin_vector_b):
+        return
 
-    :param originMatrix: NxN Matrix
-    :param originVectorB: Nx1 Vector
-    """
-    # Check if the matrix is Quadratic matrix, and check if the vector is in appropriate size
-    if len(originMatrix) == len(originMatrix[0]) and len(originVectorB) == len(originMatrix) and len(originVectorB[0]) == 1:
+    organize_matrix(origin_matrix, origin_vector_b)
 
-        # In case the matrix has one solution
-        if determinantMatrix(originMatrix):
+    find_machine_precision()
 
-            # Organize the matrix pivots
-            originMatrix, originVectorB = organizeMatrix(originMatrix, originVectorB)
+    previous_iteration = [[0 for _ in range(1)] for _ in range(len(origin_matrix))]
+    current_iteration = [[0 for _ in range(1)] for _ in range(len(origin_matrix))]
 
-            # Getting your Machine Precision
-            machinePrecision()
+    for _ in range(500):
 
-            # Our lists for the Prev iteration values, and our Current iteration values
-            prevIteration = [[0 for _ in range(1)] for _ in range(len(originMatrix))]
-            currentIteration = [[0 for _ in range(1)] for _ in range(len(originMatrix))]
+        for i in range(len(origin_matrix)):
 
-            # Loop for finding the solution
-            for _ in range(500):
+            row_sum = 0
 
-                # Calculate the next guess
-                for i in range(len(originMatrix)):
-                    rowSum = 0
-                    for j in range(len(originMatrix)):
-                        if i != j:
-                            rowSum = rowSum + originMatrix[i][j] * currentIteration[j][0]
-                    currentIteration[i][0] = (originVectorB[i][0] - rowSum) / originMatrix[i][i]
+            for j in range(len(origin_matrix)):
+                if i != j:
+                    row_sum = row_sum + origin_matrix[i][j] * current_iteration[j][0]
 
-                # Save the current iteration values into the file
-                printIntoFile(currentIteration, _ + 1, True)
+            current_iteration[i][0] = (origin_vector_b[i][0] - row_sum) / origin_matrix[i][i]
 
-                # In case we found the solution, Stop the program
-                if all([False if abs(currentIteration[row][0] - prevIteration[row][0]) > ACCURACY else True for row in range(len(currentIteration))]):
-                    break
+        print_into_file(current_iteration, _ + 1, True)
 
-                # Update the previous solution to be the current solution
-                prevIteration = [[currentIteration[row][0] for _ in range(1)] for row in range(len(currentIteration))]
+        if is_solution_found(current_iteration, previous_iteration):
+            break
 
-                # According message in case the Matrix is not converge
-                if _ == 499:
-                    if not isDiagonalDominant(originMatrix):
-                        printIntoFile(None, "This isn't a Diagonal Dominant matrix", False)
-                        print("This isn't a Diagonal Dominant matrix")
+        previous_iteration = [[current_iteration[row][0] for _ in range(1)] for row in range(len(current_iteration))]
 
-                    printIntoFile(None, "This equation system isn't Converge", False)
-                    print("This equation system isn't Converge")
-                    exit()
+        if _ == 499:
+            if not is_diagonal_dominant(origin_matrix):
+                print_into_file(None, "Error: Matrix Isn't a Diagonal Dominant", False)
+                print("Error: Matrix Isn't a Diagonal Dominant")
 
-            # Saving the equation system final solution
-            printIntoFile(currentIteration, 'Solution', True)
-            print(f'Equation system solution {list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, currentIteration))}')
+            print_into_file(None, "Error: Equation System Isn't Converge", False)
+            print("Error: Equation System Isn't Converge")
+            exit()
 
-        # According message In case there is more or less than one solution
-        else:
-            printIntoFile(None, 'This is a Singular matrix', False)
-            print('This is a Singular matrix')
+    print_into_file(current_iteration, 'Solution', True)
 
-    # In case the input equation system isn't meet the demands
-    else:
-        printIntoFile(None, "The input equation system isn't match", False)
-        print("The input equation system isn't match")
+    print(f'Equation System Solution {list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, current_iteration))}')
 
 
 def organizeMatrix(originMatrix, originVectorB):
