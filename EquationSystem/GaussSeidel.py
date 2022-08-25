@@ -157,7 +157,12 @@ def print_into_file(data, message, is_vector):
             for i in range(len(data) + 1):
                 file.write('{: ^25}'.format('Iteration' if i == 0 else chr(64 + i)))
                 
-                
+             
+def reset_file():
+    with open('Calculation.txt', 'w') as file:
+        file.write('------------------------------ Gauss Seidel Method ------------------------------')            
+        
+        
 def machinePrecision():
     """
     Function to find your Machine Precision, And set the accuracy of the solution
@@ -169,16 +174,7 @@ def machinePrecision():
     # Update the accuracy to be the maximum possible for your machine
     while 1.0 + (ACCURACY / 2) > 1.0:
         ACCURACY = ACCURACY / 2
-
-
-def resetFile():
-    """
-    Reset the calculation file
-
-    """
-    with open('Calculation.txt', 'w') as file:
-        file.write('------------------------------ Gauss Seidel Method ------------------------------')
-
+        
 
 # Our Program Driver
 if __name__ == "__main__":
