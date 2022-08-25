@@ -71,28 +71,6 @@ def organize_matrix(origin_matrix, origin_vector_b):
     print_into_file(build_system_equation(origin_matrix, origin_vector_b), 'Updated Equation System', False)
 
 
-def isDiagonalDominant(matrix):
-    """
-    Check if the pivot in every row is bigger than the sum of the whole row (without the pivot),
-    If yes return True, else False
-
-    """
-    for i in range(len(matrix)):
-
-        # Variable to store, the summation of absolute row [i]
-        rowSum = 0
-        for j in range(len(matrix)):
-            if i != j:
-                rowSum = rowSum + abs(matrix[i][j])
-
-        # If the summation of the row is bigger than the pivot, return False (The matrix is not diagonal dominant)
-        if rowSum > abs(matrix[i][i]):
-            return False
-
-    # The matrix is Diagonal Dominant
-    return True
-
-
 def calculate_determinant(matrix):
     if len(matrix) == 2:
         value = matrix[0][0] * matrix[1][1] - matrix[1][0] * matrix[0][1]
@@ -135,6 +113,23 @@ def is_equation_system_valid(origin_matrix, origin_vector_b):
         return False
 
     return True
+
+
+def is_diagonal_dominant(matrix):
+    for i in range(len(matrix)):
+
+        row_sum = 0
+
+        for j in range(len(matrix)):
+            if i != j:
+                row_sum = row_sum + abs(matrix[i][j])
+
+        if row_sum > abs(matrix[i][i]):
+            return False
+
+    return True
+
+
 def machinePrecision():
     """
     Function to find your Machine Precision, And set the accuracy of the solution
