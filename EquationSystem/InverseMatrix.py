@@ -209,11 +209,8 @@ def print_into_file(data, message):
             file.write('============================================================================================\n')
 
 
-def resetFile():
-    """
-    Reset the calculation file
-
-    """
+def reset_file():
+    
     with open('Calculation.txt', 'w') as file:
         file.write('------------------------------ Inverse Matrix Method ------------------------------\n')
 
