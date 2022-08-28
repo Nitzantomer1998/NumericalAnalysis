@@ -5,41 +5,20 @@
 PRINT_COUNTER = 0
 
 
-def InverseMatrix(originMatrix, originVectorB):
-    """
-    Solving equation system in the Inverse Matrix method
+def inverse_matrix_method(origin_matrix, origin_vector_b):
+    if not is_equation_system_valid(origin_matrix, origin_vector_b):
+        return
 
-    :param originMatrix: NxN Matrix
-    :param originVectorB: Nx1 Vector
-    """
-    # Check if the matrix is Quadratic matrix, and check if the vector is in appropriate size
-    if len(originMatrix) == len(originMatrix[0]) and len(originVectorB) == len(originMatrix) and len(originVectorB[0]) == 1:
+    organize_matrix(origin_matrix, origin_vector_b)
 
-        # In case the matrix has one solution
-        if determinantMatrix(originMatrix):
+    inverse_matrix = find_inverse(origin_matrix)
 
-            # Organize the matrix pivots
-            originMatrix, originVectorB = organizeMatrix(originMatrix, originVectorB)
+    semi_solution = multiply_matrices(inverse_matrix, origin_vector_b, False)
+    vector_solution = find_final_solution(origin_matrix, origin_vector_b, semi_solution)
 
-            # Getting the inverse matrix of originMatrix
-            inverseMatrix = findInverse(originMatrix)
+    print_into_file(vector_solution, 'Equation System Final Solution')
 
-            # Getting the equation system solution
-            vectorSolution = finalSolution(originMatrix, originVectorB, multiplyMatrix(inverseMatrix, originVectorB, False))
-
-            # Saving the equation system final solution
-            printIntoFile(vectorSolution, 'Equation System Final Solution')
-            print(f'Equation system solution {list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, vectorSolution))}')
-
-        # According message In case there is more or less than one solution
-        else:
-            printIntoFile(None, 'This is a Singular matrix')
-            print('This is a Singular matrix')
-
-    # In case the input equation system isn't meet the demands
-    else:
-        printIntoFile(None, "The input equation system isn't match")
-        print("The input equation system isn't match")
+    print(f'Equation system solution {list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, vector_solution))}')
 
 
 def organizeMatrix(originMatrix, originVectorB):
