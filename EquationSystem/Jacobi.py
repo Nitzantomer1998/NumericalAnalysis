@@ -97,6 +97,27 @@ def build_system_equation(origin_matrix, origin_vector_b):
     return equation_system
 
 
+def is_equation_system_valid(origin_matrix, origin_vector_b):
+
+    if len(origin_matrix) != len(origin_vector_b):
+        print_into_file(None, "Error: Input Equation System Isn't Match", False)
+        print("Error: Input Equation System Isn't Match")
+        return False
+
+    for i in range(len(origin_matrix)):
+        if len(origin_matrix) != len(origin_matrix[i]):
+            print_into_file(None, "Error: Input Equation System Isn't Match", False)
+            print("Error: Input Equation System Isn't Match")
+            return False
+
+    if calculate_determinant(origin_matrix) == 0:
+        print_into_file(None, 'Error: Matrix Is Singular', False)
+        print('Error: Matrix Is Singular')
+        return False
+
+    return True
+
+
 def isDiagonalDominant(matrix):
     """
     Check if the pivot in every row is bigger than the sum of the whole row (without the pivot),
