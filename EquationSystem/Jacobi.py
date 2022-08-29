@@ -1,10 +1,6 @@
 # Solving Equation System Using Jacobi Method
 
 
-# Global Variable To Store The Machine Precision, (Set the accuracy of the solution)
-ACCURACY = 1
-
-
 def jacobi_method(origin_matrix, origin_vector_b):
     
     if not is_equation_system_valid(origin_matrix, origin_vector_b):
@@ -182,17 +178,13 @@ def find_machine_precision():
     return computer_accuracy
 
 
-# Our Program Driver
 if __name__ == "__main__":
 
-    # Reset the calculation file
-    resetFile()
+    reset_file()
 
-    # Input section
-    inputMatrix = [[4, 2, 0], [2, 10, 4], [0, 4, 5]]
-    inputVectorB = [[2], [6], [5]]
+    input_matrix = [[4, 2, 0], [2, 10, 4], [0, 4, 5]]
+    input_vector_b = [[2], [6], [5]]
 
-    # Running the program
     print('---------- Jacobi Method ----------')
-    Jacobi(inputMatrix, inputVectorB)
+    jacobi_method(input_matrix, input_vector_b)
     print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
