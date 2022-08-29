@@ -6,51 +6,34 @@ ACCURACY = 1
 
 
 def jacobi_method(origin_matrix, origin_vector_b):
-    """
-    Solving equation system in the Jacobi method
-
-    :param origin_matrix: NxN Matrix
-    :param origin_vector_b: Nx1 Vector
-    """
-    # if the input equation system isn't valid, stop the program
+    
     if not is_equation_system_valid(origin_matrix, origin_vector_b):
         return
 
-    # Organize the matrix pivots
     organize_matrix(origin_matrix, origin_vector_b)
 
-    # Lists contain the Previous iteration values, and the Current iteration values
     previous_iteration = [[0 for _ in range(1)] for _ in range(len(origin_matrix))]
     current_iteration = [[0 for _ in range(1)] for _ in range(len(origin_matrix))]
 
-    # Loop for finding the solution
     for _ in range(500):
 
-        # Calculate the next iteration
         for i in range(len(origin_matrix)):
 
-            # Variable to store the sum of the row
             row_sum = 0
 
-            # Calculate the sum of the row i
             for j in range(len(origin_matrix)):
                 if i != j:
                     row_sum = row_sum + origin_matrix[i][j] * previous_iteration[j][0]
 
-            # Update the Current iteration value at the index i
             current_iteration[i][0] = (origin_vector_b[i][0] - row_sum) / origin_matrix[i][i]
 
-        # Save the current iteration values into the file
         print_into_file(current_iteration, _ + 1, True)
 
-        # if we found the solution, Stop the loop
         if is_solution_found(current_iteration, previous_iteration):
             break
 
-        # Update the previous solution to be the current solution
         previous_iteration = [[current_iteration[row][0] for _ in range(1)] for row in range(len(current_iteration))]
 
-        # if the equation system isn't converge
         if _ == 499:
             if not is_diagonal_dominant(origin_matrix):
                 print_into_file(None, "Error: Matrix Isn't a Diagonal Dominant", False)
@@ -60,57 +43,34 @@ def jacobi_method(origin_matrix, origin_vector_b):
             print("Error: Equation System Isn't Converge")
             exit()
 
-    # Saving the equation system final solution
     print_into_file(current_iteration, 'Solution', True)
 
-    # Printing the equation system final solution
     print(f'Equation System Solution {list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, current_iteration))}')
 
 
-def organizeMatrix(originMatrix, originVectorB):
-    """
-    Taking care that the pivot in the every row will be the highest possible, and return the updated equation system
+def organize_matrix(origin_matrix, origin_vector_b):
+    
+    print_into_file(build_system_equation(origin_matrix, origin_vector_b), 'Inserted Equation System\n', False)
 
-    :param originMatrix: NxN matrix
-    :param originVectorB: Nx1 vector
-    :return: The updated equation system
-    """
-    # Saving the equation system the user gave
-    EquationSystem = [[originMatrix[row][col] for col in range(len(originMatrix[0]))] for row in range(len(originMatrix))]
-    [EquationSystem[row].append(originVectorB[row][0]) for row in range(len(originVectorB))]
-    printIntoFile(EquationSystem, 'Inserted Equation System\n', False)
+    for i in range(len(origin_matrix)):
 
-    # Loop to get the highest pivots possible
-    for i in range(len(originMatrix)):
+        max_pivot = abs(origin_matrix[i][i])
 
-        # Variable to store the highest value for the pivot
-        maxPivot = abs(originMatrix[i][i])
+        new_pivot_row = -1
 
-        # Variable to store the new pivot row
-        pivotRow = -1
+        for j in range(i + 1, len(origin_matrix)):
 
-        # Searching the highest potential Pivot for originMatrix[i][i]
-        for j in range(i + 1, len(originMatrix)):
+            if abs(origin_matrix[j][i]) > max_pivot:
+                max_pivot = abs(origin_matrix[j][i])
+                new_pivot_row = j
 
-            # In case there's a higher pivot (on the Column[i])
-            if abs(originMatrix[j][i]) > maxPivot:
-                maxPivot = abs(originMatrix[j][i])
-                pivotRow = j
+        if max_pivot != abs(origin_matrix[i][i]):
+            origin_vector_b[i], origin_vector_b[new_pivot_row] = origin_vector_b[new_pivot_row], origin_vector_b[i]
+            origin_matrix[i], origin_matrix[new_pivot_row] = origin_matrix[new_pivot_row], origin_matrix[i]
 
-        # In case there was a higher pivot, change the matrix so the Pivot will be the maximum
-        if maxPivot != abs(originMatrix[i][i]):
-            originVectorB[i], originVectorB[pivotRow] = originVectorB[pivotRow], originVectorB[i]
-            originMatrix[i], originMatrix[pivotRow] = originMatrix[pivotRow], originMatrix[i]
+    print_into_file(build_system_equation(origin_matrix, origin_vector_b), 'Updated Equation System', False)
 
-    # Saving the equation system after changing rows/cols
-    EquationSystem = [[originMatrix[row][col] for col in range(len(originMatrix[0]))] for row in range(len(originMatrix))]
-    [EquationSystem[row].append(originVectorB[row][0]) for row in range(len(originVectorB))]
-    printIntoFile(EquationSystem, 'Updated Equation System', False)
-
-    # Return the updated equation system
-    return originMatrix, originVectorB
-
-
+   
 def isDiagonalDominant(matrix):
     """
     Check if the pivot in every row is bigger than the sum of the whole row (without the pivot),
