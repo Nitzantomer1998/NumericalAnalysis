@@ -146,19 +146,6 @@ def is_solution_found(current_iteration, previous_iteration):
     return True
 
 
-def machinePrecision():
-    """
-    Function to find your Machine Precision, And set the accuracy of the solution
-
-    """
-    # Our global variable to store the accuracy of the solution
-    global ACCURACY
-
-    # Update the accuracy to be the maximum possible for your machine
-    while 1.0 + (ACCURACY / 2) > 1.0:
-        ACCURACY = ACCURACY / 2
-
-
 def print_into_file(data, message, is_vector):
    
     with open('Calculation.txt', 'a+') as file:
@@ -185,6 +172,16 @@ def reset_file():
         file.write('------------------------------ Jacobi Method ------------------------------')
 
         
+def find_machine_precision():
+    
+    computer_accuracy = 1
+
+    while 1.0 + (computer_accuracy / 2) > 1.0:
+        computer_accuracy = computer_accuracy / 2
+
+    return computer_accuracy
+
+
 # Our Program Driver
 if __name__ == "__main__":
 
