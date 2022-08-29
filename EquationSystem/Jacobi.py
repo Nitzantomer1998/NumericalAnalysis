@@ -71,6 +71,24 @@ def organize_matrix(origin_matrix, origin_vector_b):
     print_into_file(build_system_equation(origin_matrix, origin_vector_b), 'Updated Equation System', False)
 
    
+def calculate_determinant(matrix):
+   
+    if len(matrix) == 2:
+        value = matrix[0][0] * matrix[1][1] - matrix[1][0] * matrix[0][1]
+        return value
+
+    determinant_sum = 0
+
+    for current_column in range(len(matrix)):
+        sign = (-1) ** current_column
+
+        determinant_sub = calculate_determinant([row[: current_column] + row[current_column + 1:] for row in (matrix[: 0] + matrix[0 + 1:])])
+
+        determinant_sum = determinant_sum + (sign * matrix[0][current_column] * determinant_sub)
+
+    return determinant_sum
+
+
 def isDiagonalDominant(matrix):
     """
     Check if the pivot in every row is bigger than the sum of the whole row (without the pivot),
@@ -92,35 +110,6 @@ def isDiagonalDominant(matrix):
     # The matrix is Diagonal Dominant
     return True
 
-
-def determinantMatrix(matrix):
-    """
-    Calculate the matrix determinant and return the result
-
-    :param matrix: NxN Matrix
-    :return: Matrix determinant
-    """
-    # Simple case, The matrix size is 2x2
-    if len(matrix) == 2:
-        value = matrix[0][0] * matrix[1][1] - matrix[1][0] * matrix[0][1]
-        return value
-
-    # Initialize our sum variable
-    determinantSum = 0
-
-    # Loop to traverse each column of the matrix
-    for current_column in range(len(matrix)):
-        sign = (-1) ** current_column
-
-        # Calling the function recursively to get determinant value of sub matrix obtained
-        determinant_sub = determinantMatrix(
-            [row[: current_column] + row[current_column + 1:] for row in (matrix[: 0] + matrix[0 + 1:])])
-
-        # Adding the calculated determinant value of particular column matrix to total the determinantSum
-        determinantSum = determinantSum + (sign * matrix[0][current_column] * determinant_sub)
-
-    # Returning the final Sum
-    return determinantSum
 
 
 def machinePrecision():
