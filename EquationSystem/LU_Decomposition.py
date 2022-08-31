@@ -135,6 +135,13 @@ def build_system_equation(origin_matrix, origin_vector_b):
     return equation_system
 
 
+def build_elementary_matrix(size):
+    
+    elementary_matrix = [[1.0 if row == col else 0.0 for col in range(size)] for row in range(size)]
+
+    return elementary_matrix
+
+
 def multiplyMatrix(matrixA, matrixB, isTrue):
     """
     Multiplying two matrices and return the outcome matrix
