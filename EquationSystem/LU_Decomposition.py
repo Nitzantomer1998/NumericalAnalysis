@@ -48,25 +48,21 @@ def organize_matrix(origin_matrix, origin_vector_b):
 
 
 
-def findLU(upperMatrix):
-    """
-    Solve the matrix into an Upper matrix, and Lower matrix
+def find_lower_upper(upper_matrix):
+    
+    lower_matrix = [[1.0 if row == col else 0 for col in range(len(upper_matrix))] for row in range(len(upper_matrix))]
 
-    :param upperMatrix: NxN matrix of the equation system
-    :return: Upper matrix, and Lower matrix
-    """
-    # Initialize Lower Matrix into an Identity matrix
-    lowerMatrix = [[1 if row == col else 0 for col in range(len(upperMatrix))] for row in range(len(upperMatrix))]
+    for i in range(len(upper_matrix)):
+        for j in range(i + 1, len(upper_matrix)):
+            if upper_matrix[j][i] != 0:
+                lower_matrix[j][i] = upper_matrix[j][i] / upper_matrix[i][i]
 
-    # Solving matrix into an Upper matrix, and Lower matrix
-    for i in range(len(upperMatrix)):
-        for j in range(i + 1, len(upperMatrix)):
-            if upperMatrix[j][i] != 0:
-                lowerMatrix[j][i] = upperMatrix[j][i] / upperMatrix[i][i]
-                upperMatrix = multiplyMatrix(initElementaryMatrix(len(upperMatrix), j, i, - upperMatrix[j][i] / upperMatrix[i][i]), upperMatrix, True)
+                elementary_matrix = build_elementary_matrix(len(upper_matrix))
+                elementary_matrix[j][i] = - upper_matrix[j][i] / upper_matrix[i][i]
 
-    # Return Upper matrix, and Lower matrix
-    return upperMatrix, lowerMatrix
+                upper_matrix = multiply_matrices(elementary_matrix, upper_matrix, True)
+
+    return upper_matrix, lower_matrix
 
 
 def forwardSubstitution(lowerMatrix, vectorB):
