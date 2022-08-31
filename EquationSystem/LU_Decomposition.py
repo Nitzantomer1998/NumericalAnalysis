@@ -187,37 +187,25 @@ def reset_file():
         file.write('------------------------------ LU Method ------------------------------\n')
         
         
-def multiplyMatrix(matrixA, matrixB, isTrue):
-    """
-    Multiplying two matrices and return the outcome matrix
+def multiply_matrices(matrix_a, matrix_b, is_to_save):
+    
+    matrix_c = [[0] * len(matrix_b[0]) for _ in range(len(matrix_a))]
 
-    :param matrixA: NxM Matrix
-    :param matrixB: NxM Matrix
-    :param isTrue: Boolean which say if to save the matrices in a file
-    :return: NxM matrix
-    """
-    # Initialize NxM matrix filled with zero's
-    matrixC = [[0] * len(matrixB[0]) for _ in range(len(matrixA))]
+    for i in range(len(matrix_a)):
+        for j in range(len(matrix_b[0])):
+            for k in range(len(matrix_b)):
+                matrix_c[i][j] = matrix_c[i][j] + matrix_a[i][k] * matrix_b[k][j]
 
-    # Multiply the two matrices and store the outcome in matrixC
-    for i in range(len(matrixA)):
-        for j in range(len(matrixB[0])):
-            for k in range(len(matrixB)):
-                matrixC[i][j] = matrixC[i][j] + matrixA[i][k] * matrixB[k][j]
+    if is_to_save:
 
-    # Saving the matrices in a file
-    if isTrue:
-
-        # Global variable to follow the iteration calculation
         global PRINT_COUNTER
         PRINT_COUNTER = PRINT_COUNTER + 1
 
-        printIntoFile(matrixA, 'Elementary Matrix')
-        printIntoFile(matrixB, 'Pre Multiply Matrix')
-        printIntoFile(matrixC, 'After Multiply Matrix')
+        print_into_file(matrix_a, 'Elementary Matrix')
+        print_into_file(matrix_b, 'Pre Multiply Matrix')
+        print_into_file(matrix_c, 'After Multiply Matrix')
 
-    # Return the outcome matrix
-    return matrixC
+    return matrix_c
 
 
 # Our Program Driver
