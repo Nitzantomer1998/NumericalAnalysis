@@ -181,6 +181,12 @@ def print_into_file(data, message):
             file.write('============================================================================================\n')
             
             
+def reset_file():
+    
+    with open('Calculation.txt', 'w') as file:
+        file.write('------------------------------ LU Method ------------------------------\n')
+        
+        
 def multiplyMatrix(matrixA, matrixB, isTrue):
     """
     Multiplying two matrices and return the outcome matrix
@@ -212,15 +218,6 @@ def multiplyMatrix(matrixA, matrixB, isTrue):
 
     # Return the outcome matrix
     return matrixC
-
-
-def resetFile():
-    """
-    Reset the calculation file
-
-    """
-    with open('Calculation.txt', 'w') as file:
-        file.write('------------------------------ LU Method ------------------------------\n')
 
 
 # Our Program Driver
