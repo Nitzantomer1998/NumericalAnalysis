@@ -163,6 +163,24 @@ def is_equation_system_valid(origin_matrix, origin_vector_b):
     return True
 
 
+def print_into_file(data, message):
+    
+    with open('Calculation.txt', 'a+') as file:
+
+        if message:
+            file.write(f'{message} ({PRINT_COUNTER})\n' if PRINT_COUNTER > 0 else f'{message}\n')
+
+        if data:
+            for i in range(len(data)):
+                for j in range(len(data[i])):
+                    file.write('{: ^25}'.format(float(data[i][j])))
+                file.write('\n')
+            file.write('\n')
+
+        if message == 'Updated Equation System' or message == 'After Multiply Matrix':
+            file.write('============================================================================================\n')
+            
+            
 def multiplyMatrix(matrixA, matrixB, isTrue):
     """
     Multiplying two matrices and return the outcome matrix
@@ -194,51 +212,6 @@ def multiplyMatrix(matrixA, matrixB, isTrue):
 
     # Return the outcome matrix
     return matrixC
-
-
-def initElementaryMatrix(size, row, col, value):
-    """
-    Initialize elementary matrix, from identity matrix, and a specific value, and return it
-
-    :param size: Matrix size
-    :param row: Row index
-    :param col: Column index
-    :param value: Value parameter
-    :return: Return the elementary matrix
-    """
-    # Initialize the desire elementary matrix
-    elementaryMatrix = [[1 if row == col else 0 for col in range(size)] for row in range(size)]
-    elementaryMatrix[row][col] = value
-
-    # Return the elementary matrix
-    return elementaryMatrix
-
-
-def printIntoFile(data, message):
-    """
-    Printing the content into a specified file
-
-    :param data: Data is a list representing matrix
-    :param message: Message is a string representing a message
-    """
-    # Open file and save the sent content
-    with open('Calculation.txt', 'a+') as file:
-
-        # In case we sent a message
-        if message:
-            file.write(f'{message} ({PRINT_COUNTER})\n' if PRINT_COUNTER > 0 else f'{message}\n')
-
-        # In case we sent a data
-        if data:
-            for i in range(len(data)):
-                for j in range(len(data[i])):
-                    file.write('{: ^25}'.format(float(data[i][j])))
-                file.write('\n')
-            file.write('\n')
-
-        # Used to enhance the appearance
-        if message == 'Updated Equation System' or message == 'After Multiply Matrix':
-            file.write('============================================================================================\n')
 
 
 def resetFile():
