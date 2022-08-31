@@ -92,32 +92,21 @@ def back_substitution(upper_matrix, vector_y):
     return vector_x
 
 
-def finalSolution(originMatrix, originVectorB, vectorSolution):
-    """
-    Getting the equation system components, check the accuracy of the solution, if the accuracy isn't precise
-    calculate the precise solution and return it
+def find_final_solution(origin_matrix, origin_vector_b, vector_solution):
+    
+    vector_precision = multiply_matrices(origin_matrix, vector_solution, False)
+    for i in range(len(vector_precision)):
+        vector_precision[i][0] = vector_precision[i][0] - origin_vector_b[i][0]
 
-    :param originMatrix: NxN matrix
-    :param originVectorB: Nx1 vector
-    :param vectorSolution: Nx1 vector semi solution (not surly accurate)
-    :return: Nx1 vector, the precise equation system solution
-    """
-    # Solve r = Ax0 - b (Vector r represent the accuracy of the solution we found)
-    vectorR = multiplyMatrix(originMatrix, vectorSolution, False)
-    for i in range(len(vectorR)):
-        vectorR[i][0] = vectorR[i][0] - originVectorB[i][0]
+    if sum(list(map(sum, vector_precision))) != 0:
+        print_into_file(vector_solution, 'Equation System Solution With Round Error')
 
-    # In case the equation system solution has round error
-    if sum(list(map(sum, vectorR))) != 0:
-        printIntoFile(vectorSolution, 'Equation System Solution With Round Error')
+    for i in range(len(vector_solution)):
+        if abs(vector_solution[i][0] - round(vector_solution[i][0])) <= max(
+                1e-09 * max(abs(vector_solution[i][0]), abs(round(vector_solution[i][0]))), 0):
+            vector_solution[i][0] = round(vector_solution[i][0])
 
-    # Update to the correct solution
-    for i in range(len(vectorSolution)):
-        if abs(vectorSolution[i][0] - round(vectorSolution[i][0])) <= max(1e-09 * max(abs(vectorSolution[i][0]), abs(round(vectorSolution[i][0]))), 0):
-            vectorSolution[i][0] = round(vectorSolution[i][0])
-
-    # Return the final solution of the equation system
-    return vectorSolution
+    return vector_solution
 
 
 def multiplyMatrix(matrixA, matrixB, isTrue):
