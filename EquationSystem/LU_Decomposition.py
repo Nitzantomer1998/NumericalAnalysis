@@ -5,44 +5,23 @@
 PRINT_COUNTER = 0
 
 
-def LU(originMatrix, originVectorB):
-    """
-    Solving equation system in the LU Decomposition method
+def lower_upper_decomposition_method(origin_matrix, origin_vector_b):
 
-    :param originMatrix: NxN Matrix
-    :param originVectorB: Nx1 Vector
-    """
-    # Check if the matrix is Quadratic matrix, and check if the vector is in appropriate size
-    if len(originMatrix) == len(originMatrix[0]) and len(originVectorB) == len(originMatrix) and len(originVectorB[0]) == 1:
+    if not is_equation_system_valid(origin_matrix, origin_vector_b):
+        return
 
-        # In case the matrix has one solution
-        if determinantMatrix(originMatrix):
+    organize_matrix(origin_matrix, origin_vector_b)
 
-            # Organize the matrix pivots
-            originMatrix, originVectorB = organizeMatrix(originMatrix, originVectorB)
+    upper_matrix, lower_matrix = find_lower_upper(origin_matrix)
 
-            # Getting the Lower, and Upper matrices of our equation system
-            upperMatrix, lowerMatrix = findLU(originMatrix)
+    lower_vector_solution = forward_substitution(lower_matrix, origin_vector_b)
 
-            # Solve Ly = B
-            vectorSolutionY = forwardSubstitution(lowerMatrix, originVectorB)
+    vector_solution = back_substitution(upper_matrix, lower_vector_solution)
+    final_vector_solution = find_final_solution(origin_matrix, origin_vector_b, vector_solution)
 
-            # Solve Ux = y (Getting the equation system solution)
-            vectorSolutionX = finalSolution(originMatrix, originVectorB, backSubstitution(upperMatrix, vectorSolutionY))
+    print_into_file(final_vector_solution, 'Equation System Final Solution')
 
-            # Saving the equation system final solution
-            printIntoFile(vectorSolutionX, 'Equation System Final Solution')
-            print(f'Equation system solution {list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, vectorSolutionX))}')
-
-        # According message In case there is more or less than one solution
-        else:
-            printIntoFile(None, 'This is a Singular matrix')
-            print('This is a Singular matrix')
-
-    # In case the input equation system isn't meet the demands
-    else:
-        printIntoFile(None, "The input equation system isn't match")
-        print("The input equation system isn't match")
+    print(f'Equation system solution {list(map(lambda x: int(x[0] * 10 ** 5) / 10 ** 5, final_vector_solution))}')
 
 
 def organizeMatrix(originMatrix, originVectorB):
