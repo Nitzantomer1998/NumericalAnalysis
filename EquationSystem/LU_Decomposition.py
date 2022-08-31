@@ -208,17 +208,13 @@ def multiply_matrices(matrix_a, matrix_b, is_to_save):
     return matrix_c
 
 
-# Our Program Driver
 if __name__ == "__main__":
 
-    # Reset the calculation file
-    resetFile()
+    reset_file()
 
-    # Input section
-    inputMatrix = [[2, 2, 2], [2, -1, 1], [-1, -1, 2]]
-    inputVectorB = [[4], [-1], [-5]]
+    input_matrix = [[2, 2, 2], [2, -1, 1], [-1, -1, 2]]
+    input_vector_b = [[4], [-1], [-5]]
 
-    # Running the program
     print('---------- LU Method ----------')
-    LU(inputMatrix, inputVectorB)
+    lower_upper_decomposition_method(input_matrix, input_vector_b)
     print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
