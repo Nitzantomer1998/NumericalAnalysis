@@ -142,6 +142,27 @@ def build_elementary_matrix(size):
     return elementary_matrix
 
 
+def is_equation_system_valid(origin_matrix, origin_vector_b):
+    
+    if len(origin_matrix) != len(origin_vector_b):
+        print_into_file(None, "Error: Input Equation System Isn't Match")
+        print("Error: Input Equation System Isn't Match")
+        return False
+
+    for i in range(len(origin_matrix)):
+        if len(origin_matrix) != len(origin_matrix[i]):
+            print_into_file(None, "Error: Input Equation System Isn't Match")
+            print("Error: Input Equation System Isn't Match")
+            return False
+
+    if calculate_determinant(origin_matrix) == 0:
+        print_into_file(None, 'Error: Matrix Is Singular')
+        print('Error: Matrix Is Singular')
+        return False
+
+    return True
+
+
 def multiplyMatrix(matrixA, matrixB, isTrue):
     """
     Multiplying two matrices and return the outcome matrix
