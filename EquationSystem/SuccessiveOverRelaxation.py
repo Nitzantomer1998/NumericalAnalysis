@@ -184,11 +184,8 @@ def print_into_file(data, message, is_vector):
                 file.write('{: ^25}'.format('Iteration' if i == 0 else chr(64 + i)))
 
 
-def resetFile():
-    """
-    Reset the calculation file
-
-    """
+def reset_file():
+   
     with open('Calculation.txt', 'w') as file:
         file.write('------------------------------ Successive Over Relaxation Method ------------------------------')
 
