@@ -187,18 +187,14 @@ def find_machine_precision():
     return computer_accuracy
 
 
-# Our Program Driver
 if __name__ == "__main__":
 
-    # Reset the calculation file
-    resetFile()
+    reset_file()
 
-    # Input section
-    inputMatrix = [[4, 3, 0], [3, 4, -1], [0, -1, 4]]
-    inputVectorB = [[24], [30], [-24]]
-    Omega = 1.2
+    input_matrix = [[4, 2, 0], [2, 10, 4], [0, 4, 5]]
+    input_vector_b = [[2], [6], [5]]
+    omega = 1.2
 
-    # Running the program
     print('---------- Successive Over Relaxation Method ----------')
-    SuccessiveOverRelaxation(inputMatrix, inputVectorB, Omega)
+    successive_over_relaxation_method(input_matrix, input_vector_b, omega)
     print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
