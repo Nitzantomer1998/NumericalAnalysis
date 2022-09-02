@@ -123,27 +123,20 @@ def is_equation_system_valid(origin_matrix, origin_vector_b, w):
     return True
 
 
-def isDiagonalDominant(matrix):
-    """
-    Check if the pivot in every row is bigger than the sum of the whole row (without the pivot),
-    If yes return True, else False
-
-    """
+def is_diagonal_dominant(matrix):
+    
     for i in range(len(matrix)):
 
-        # Variable to store, the summation of absolute row [i]
-        rowSum = 0
+        row_sum = 0
+
         for j in range(len(matrix)):
             if i != j:
-                rowSum = rowSum + abs(matrix[i][j])
+                row_sum = row_sum + abs(matrix[i][j])
 
-        # If the summation of the row is bigger than the pivot, return False (The matrix is not diagonal dominant)
-        if rowSum > abs(matrix[i][i]):
+        if row_sum > abs(matrix[i][i]):
             return False
 
-    # The matrix is Diagonal Dominant
     return True
-
 
 def machinePrecision():
     """
