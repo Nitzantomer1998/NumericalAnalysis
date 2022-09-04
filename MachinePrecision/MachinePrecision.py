@@ -35,15 +35,10 @@ def print_into_file(data, message):
                     file.write(f'{data[i]} ')
             file.write('\n')
 
-def resetFile():
-    """
-    Reset the calculation file
-
-    """
+def reset_file():
     with open('Calculation.txt', 'w') as file:
         file.write('------------------------------- Machine Precision Method -------------------------------\n')
         file.write('{: ^25}Calculation\n'.format('Iteration'))
-
 
 # Our Program Driver
 if __name__ == "__main__":
