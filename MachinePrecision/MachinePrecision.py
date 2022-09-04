@@ -19,21 +19,13 @@ def find_machine_precision():
     print(f'This Machine Maximum Accuracy --> {computer_accuracy}')
 
 
-def printIntoFile(data, message):
-    """
-    Printing the content into a specified file
-
-    :param data: Data is a list representing matrix
-    :param message: Message is a string representing a message
-    """
-    # Open file and save the sent data
+def print_into_file(data, message):
+    
     with open('Calculation.txt', 'a+') as file:
 
-        # In case we sent a message
         if message:
             file.write(message)
 
-        # In case we sent a data
         if data:
             for i in range(len(data)):
                 if i == 0:
@@ -42,7 +34,6 @@ def printIntoFile(data, message):
                 else:
                     file.write(f'{data[i]} ')
             file.write('\n')
-
 
 def resetFile():
     """
