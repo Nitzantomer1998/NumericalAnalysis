@@ -1,26 +1,22 @@
 # Machine Precision Finder
 
 
-def MachinePrecision():
-    """
-    Finding the machine precision
+def find_machine_precision():
+   
+    computer_accuracy = 1
 
-    """
-    # Variable to store our machine precision
-    ourPrecision = 1
+    loop_counter = 1
 
-    # Variable to store the amount of iteration
-    loopCounter = 1
+    while 1.0 + (computer_accuracy / 2) > 1.0:
 
-    # Loop for finding the Machine Precision
-    while 1.0 + (ourPrecision / 2) > 1.0:
-        printIntoFile([loopCounter, ourPrecision, '\\', 2, '=', ourPrecision / 2], None)
-        ourPrecision = ourPrecision / 2
-        loopCounter = loopCounter + 1
+        print_into_file([loop_counter, computer_accuracy, '\\', 2, '=', computer_accuracy / 2], None)
 
-    # Your Machine Precision
-    printIntoFile(None, f'\nYour Machine Accuracy --> {ourPrecision}')
-    print(f'Your Machine Accuracy --> {ourPrecision}')
+        computer_accuracy = computer_accuracy / 2
+        loop_counter = loop_counter + 1
+
+    print_into_file(None, f'\nThis Machine Maximum Accuracy --> {computer_accuracy}')
+
+    print(f'This Machine Maximum Accuracy --> {computer_accuracy}')
 
 
 def printIntoFile(data, message):
