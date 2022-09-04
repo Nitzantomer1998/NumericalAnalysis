@@ -40,13 +40,11 @@ def reset_file():
         file.write('------------------------------- Machine Precision Method -------------------------------\n')
         file.write('{: ^25}Calculation\n'.format('Iteration'))
 
-# Our Program Driver
+         
 if __name__ == "__main__":
 
-    # Reset the calculation file
-    resetFile()
+    reset_file()
 
-    # Running the program
     print('---------- Machine Precision Method ----------')
-    MachinePrecision()
+    find_machine_precision()
     print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
