@@ -49,40 +49,26 @@ def root_finder(f, left_domain, right_domain, max_iteration_allowed):
 
 
 
-def Bisection(f, leftDomain, rightDomain, maxIteration):
-    """
-    Finding the function root in the domain [left To right]
+def bisection_method(f, left_domain, right_domain, max_iteration_allowed):
+   
+    for i in range(max_iteration_allowed):
 
-    :param f: Our function
-    :param leftDomain: Left domain of the function
-    :param rightDomain: Right domain of the function
-    :param maxIteration: The maximum iteration for finding the root
-    :return: The root of the function if existed, else according failed message
-    """
-    # Search the root within the maximum allowed iteration
-    for i in range(maxIteration):
+        middle_domain = left_domain + (right_domain - left_domain) / 2
 
-        # Variable to store the middle of the current function domain
-        middle = leftDomain + (rightDomain - leftDomain) / 2
+        print_into_file([i + 1, middle_domain, f(middle_domain)], None)
 
-        # Save the calculation in the file
-        printIntoFile([i + 1, middle, f(middle)], None)
+        if abs(f(middle_domain)) < solution_accuracy:
+            return int(middle_domain * 10 ** 5) / 10 ** 5, i + 1
 
-        # In case we found our root, Return the root and the iteration number
-        if abs(f(middle)) < ACCURACY:
-            return int(middle * 10 ** 5) / 10 ** 5, i + 1
+        elif f(left_domain) * f(middle_domain) < 0:
+            right_domain = middle_domain
 
-        # In case the root is between the leftDomain To the middle domain, Update the rightDomain to be the middle
-        elif f(leftDomain) * f(middle) < 0:
-            rightDomain = middle
+        else:
+            left_domain = middle_domain
 
-        # In case the root is between the middle To the rightDomain, Update the leftDomain to be the middle
-        elif f(middle) * f(rightDomain) < 0:
-            leftDomain = middle
+    print_into_file(None, 'Error: Failed To Find The Root')
+    print('Error: Failed To Find The Root')
 
-    # In case we didn't find the root within the allowed amount of iteration, Print a fail message and end the program
-    printIntoFile(None, "Failed to find the root, Bisection Method isn't suitable")
-    print("Failed to find the root, Bisection Method isn't suitable")
 
 
 def printIntoFile(data, message):
