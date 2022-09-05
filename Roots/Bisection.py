@@ -70,6 +70,10 @@ def bisection_method(f, left_domain, right_domain, max_iteration_allowed):
     print('Error: Failed To Find The Root')
 
 
+def calculate_max_iteration_allowed(left_domain, right_domain):
+    
+    return int(- sympy.ln(solution_accuracy / (right_domain - left_domain)) / sympy.ln(2)) + 1
+
 
 def printIntoFile(data, message):
     """
