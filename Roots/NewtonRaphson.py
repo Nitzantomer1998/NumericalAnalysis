@@ -12,57 +12,42 @@ from math import log
 ACCURACY = 0.00001
 
 
-def rootFinder(f, startAt, endAt, maxIteration):
-    """
-    Method for finding the function Roots
-
-    :param f: Our function
-    :param startAt: Left domain of the function
-    :param endAt: Right domain of the function
-    :param maxIteration: The maximum iteration for finding the root
-    """
-    # Variables to store the derivative function
+def root_finder(f, left_domain, right_domain, max_iteration_allowed):
+   
     g = f.diff(x)
     h = g.diff(x)
 
-    # Activating the functions to be able to get an X
-    f = lambdify(x, f)
-    g = lambdify(x, g)
-    h = lambdify(x, h)
+    f = sympy.utilities.lambdify(x, f)
+    g = sympy.utilities.lambdify(x, g)
+    h = sympy.utilities.lambdify(x, h)
 
-    # Divide our function domain range into multiply domains with 0.1 range, then search for each one of them for a root
-    while startAt < endAt:
+    while left_domain < right_domain:
 
-        # In case the root is in the domain edge
-        if f(startAt) == 0:
-            printIntoFile(None, f'The root --> {startAt}    Iteration --> None (Special case)')
-            print(f'The root --> {startAt}    Iteration --> None (Special case)')
+        if f(left_domain) == 0:
 
-            startAt = startAt + 0.1
-            continue
+            print_into_file(None, f'Root --> {left_domain}    Iteration --> 0')
 
-        # In case the function changes its sign (Means there's at least one root)
-        if f(startAt) * f(startAt + 0.1) < 0:
-            root, iteration = NewtonRaphson(f, g, startAt + 0.05, maxIteration)
-            printIntoFile(None, f'Root --> {root}    Iteration --> {iteration}')
-            print('The root --> ' + str(root) + '\tIteration --> ' + str(iteration))
+            print(f'Root --> {left_domain}    Iteration --> 0')
 
-        # In case the derivative function changes its sign (Mean there's a possibility for a root)
-        if g(startAt) * g(startAt + 0.1) < 0:
+        elif f(left_domain) * f(left_domain + 0.1) < 0:
 
-            # Getting a possibility for a root (Might be a Root or an Extreme point)
-            possibleRoot, iteration = NewtonRaphson(g, h, startAt + 0.05, maxIteration)
+            root, iteration = newton_raphson_method(f, g, left_domain + 0.05, max_iteration_allowed)
 
-            # In case we found a root
-            if abs(f(possibleRoot)) < ACCURACY:
-                printIntoFile(None, f'Root --> {possibleRoot}    Iteration --> {iteration}')
-                print('The root --> ' + str(possibleRoot) + '\tIteration --> ' + str(iteration))
+            print_into_file(None, f'Root --> {root}    Iteration --> {iteration}')
 
-            else:
-                printIntoFile(None, 'Failed found extreme point, Not a root')
+            print(f'Root --> {root}    Iteration --> {iteration}')
 
-        # Update our domain for the next iteration
-        startAt = startAt + 0.1
+        elif g(left_domain) * g(left_domain + 0.1) < 0:
+
+            possible_root, iteration = newton_raphson_method(g, h, left_domain + 0.05, max_iteration_allowed)
+
+            if abs(f(possible_root)) == 0:
+
+                print_into_file(None, f'Root --> {possible_root}    Iteration --> {iteration}')
+
+                print(f'Root --> {possible_root}    Iteration --> {iteration}')
+
+        left_domain = left_domain + 0.1
 
 
 def NewtonRaphson(f, g, currentX, maxIteration):
