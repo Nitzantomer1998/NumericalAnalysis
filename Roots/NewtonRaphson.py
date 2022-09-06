@@ -68,6 +68,18 @@ def newton_raphson_method(f, g, current_x, max_iteration_allowed):
     exit(True)
 
 
+def calculate_max_iteration_allowed(left_domain, right_domain):
+    """
+    Returning the max allowed amount of iteration in order to find a root
+
+    :param left_domain: The domain start of the function
+    :param right_domain: The domain end of the function
+    :return: The max allowed amount of iteration
+    """
+    # returning the max allowed iteration for finding a root using the needed formula calculation
+    return int(- sympy.ln(solution_accuracy / (right_domain - left_domain)) / sympy.ln(2)) + 1
+
+   
 def printIntoFile(data, message):
     """
     Printing the content into a specified file
