@@ -95,13 +95,10 @@ def print_into_file(data, message):
 
 
 
-def resetFile():
-    """
-    Reset the calculation file
-
-    """
+def reset_file():
+   
     with open('Calculation.txt', 'w') as file:
-        file.write('------------------------------- Newton-Raphson Method -------------------------------\n')
+        file.write('------------------------------- Newton Raphson Method -------------------------------\n')
         file.write('{: ^25}{: ^25}{: ^25}{: ^25}\n'.format('Iteration', 'x', 'f(x)', "f'(x)"))
 
 
