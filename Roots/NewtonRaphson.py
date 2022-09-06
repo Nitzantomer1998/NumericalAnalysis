@@ -50,35 +50,22 @@ def root_finder(f, left_domain, right_domain, max_iteration_allowed):
         left_domain = left_domain + 0.1
 
 
-def NewtonRaphson(f, g, currentX, maxIteration):
-    """
-    Finding the function root
+def newton_raphson_method(f, g, current_x, max_iteration_allowed):
+   
+    for i in range(max_iteration_allowed):
 
-    :param f: Our function
-    :param g: The derivative function of f
-    :param currentX: The value of the middle domain range of the function
-    :param maxIteration: The maximum iteration for finding the root
-    :return: The root of the function if existed, else according failed message
-    """
-    # Search the root within the maximum allowed iteration
-    for i in range(maxIteration):
+        next_x = current_x - f(current_x) / g(current_x)
 
-        # Variable to store the next X
-        nextX = currentX - f(currentX) / g(currentX)
+        print_into_file([i + 1, next_x, f(next_x), g(next_x)], None)
 
-        # Save the calculation in the file
-        printIntoFile([i + 1, nextX, f(nextX), g(nextX)], None)
+        if abs(f(next_x)) < solution_accuracy:
+            return int(next_x * 10 ** 5) / 10 ** 5, i + 1
 
-        # In case we found our root, Return the root and the iteration number
-        if abs(f(nextX)) < ACCURACY:
-            return int(nextX * 10 ** 5) / 10 ** 5, i + 1
+        current_x = next_x
 
-        # Update the currentX to be the new one
-        currentX = nextX
-
-    # In case we didn't find the root within the allowed amount of iteration, Print a fail message and end the program
-    printIntoFile(None, "Failed to find the root, Newton Raphson Method isn't suitable")
-    print("Failed to find the root, Newton Raphson Method isn't suitable")
+    print_into_file(None, 'Error: Failed To Find The Root')
+    print('Error: Failed To Find The Root')
+    exit(True)
 
 
 def printIntoFile(data, message):
