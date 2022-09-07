@@ -48,38 +48,24 @@ def root_finder(f, left_domain, right_domain, max_iteration_allowed):
         left_domain = left_domain + 0.1
 
 
-def Secant(f, previewX, currentX, maxIteration):
-    """
-    Finding the function root in the domain range [left To right]
+def secant_method(f, previous_x, current_x, max_iteration_allowed):
+   
+    for i in range(max_iteration_allowed):
 
-    :param f: Our function
-    :param previewX: Left domain of the function
-    :param currentX: Right domain of the function
-    :param maxIteration: The maximum iteration for finding the root
-    :return: The root of the function if existed, else according failed message
-    """
-    # Search the root within the maximum allowed iteration
-    for i in range(maxIteration):
+        next_x = (previous_x * f(current_x) - current_x * f(previous_x)) / (f(current_x) - f(previous_x))
 
-        # Variable to store the next X
-        nextX = (previewX * f(currentX) - currentX * f(previewX)) / (f(currentX) - f(previewX))
+        print_into_file([i + 1, previous_x, next_x, f(next_x)], None)
 
-        # Save the calculation in the file
-        printIntoFile([i + 1, previewX, nextX, f(nextX)], None)
+        if abs(f(next_x)) < solution_accuracy:
+            return int(next_x * 10 ** 5) / 10 ** 5, i + 1
 
-        # In case we found our root, Return the root and the iteration number
-        if abs(f(nextX)) < ACCURACY:
-            return int(nextX * 10 ** 5) / 10 ** 5, i + 1
+        previous_x = current_x
 
-        # Update the previewX to be the currentX
-        previewX = currentX
+        current_x = next_x
 
-        # Update the currentX to be new one
-        currentX = nextX
-
-    # In case we didn't find the root within the allowed amount iteration, Print fail message and shut down the program
-    printIntoFile(None, "Failed to find the root, Secant Method isn't suitable")
-    print("Failed to find the root, Secant Method isn't suitable")
+    print_into_file(None, 'Error: Failed To Find The Root')
+    print('Error: Failed To Find The Root')
+    exit(True)
 
 
 def printIntoFile(data, message):
