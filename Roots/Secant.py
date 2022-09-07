@@ -73,27 +73,19 @@ def calculate_max_iteration_allowed(left_domain, right_domain):
     return int(- sympy.ln(solution_accuracy / (right_domain - left_domain)) / sympy.ln(2)) + 1
    
    
-def printIntoFile(data, message):
-    """
-    Printing the content into a specified file
-
-    :param data: Data is a list representing matrix
-    :param message: Message is a string representing a message
-    """
-    # Open file and save the sent content
+def print_into_file(data, message):
+    
     with open('Calculation.txt', 'a+') as file:
 
-        # In case we sent a message
         if message:
             file.write('\n{: ^25}\n'.format(message))
             file.write('--------------------------------------------------------------------------------------------\n')
 
-        # In case we sent a data
         if data:
             for i in range(len(data)):
                 file.write('{: ^25}'.format(float(data[i])))
-
             file.write('\n')
+
 
 
 def resetFile():
