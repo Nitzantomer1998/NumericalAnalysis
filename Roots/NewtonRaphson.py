@@ -54,7 +54,7 @@ def root_finder(f, left_domain, right_domain, max_iteration_allowed):
             possible_root, iteration = newton_raphson_method(g, h, left_domain + 0.05, max_iteration_allowed)
 
             # if we found a root
-            if abs(f(possible_root)) == 0:
+            if abs(f(possible_root)) < solution_accuracy:
 
                 # Saving the root
                 print_into_file(None, f'Root --> {possible_root}    Iteration --> {iteration}')
