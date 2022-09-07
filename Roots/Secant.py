@@ -94,22 +94,17 @@ def reset_file():
         file.write('------------------------------- Secant Method -------------------------------\n')
         file.write('{: ^25}{: ^25}{: ^25}{: ^25}\n'.format('Iteration', 'previewX', 'nextX', "f(nextX)"))
 
-# Our Program Driver
+         
 if __name__ == "__main__":
 
-    # Reset the calculation file
-    resetFile()
+    reset_file()
 
-    # Input section
-    x = sp.symbols('x')
+    x = sympy.symbols('x')
     function = x ** 4 + x ** 3 - 3 * x ** 2
-    domainStart = -3
-    domainEnd = 2
+    domain_start = -3
+    domain_end = 2
+    solution_accuracy = 0.00001
 
-    # Variable to store the maximum iteration in order to find the function roots
-    allowedIteration = int(-(log(ACCURACY / (domainEnd - domainStart)) / log(2))) + 1
-
-    # Running the program
     print('---------- Secant Method ----------')
-    rootFinder(function, domainStart, domainEnd, allowedIteration)
+    root_finder(function, domain_start, domain_end, calculate_max_iteration_allowed(domain_start, domain_end))
     print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
