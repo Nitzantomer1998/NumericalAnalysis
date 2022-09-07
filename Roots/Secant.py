@@ -88,15 +88,11 @@ def print_into_file(data, message):
 
 
 
-def resetFile():
-    """
-    Reset the calculation file
-
-    """
+def reset_file():
+   
     with open('Calculation.txt', 'w') as file:
         file.write('------------------------------- Secant Method -------------------------------\n')
         file.write('{: ^25}{: ^25}{: ^25}{: ^25}\n'.format('Iteration', 'previewX', 'nextX', "f(nextX)"))
-
 
 # Our Program Driver
 if __name__ == "__main__":
