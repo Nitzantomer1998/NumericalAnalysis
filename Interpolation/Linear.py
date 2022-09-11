@@ -15,6 +15,19 @@ def linear_interpolation_method(points_list, x_to_find):
             print(f'Point Approximation --> ({x_to_find}, {int(found_y_value * 10 ** 5) / 10 ** 5})')
 
             
+def is_inserted_data_valid(points_list, x_to_find):
+    
+    if len(points_list) < 2:
+        print('Error: Interpolation Demand Minimum Of Two Points')
+        return False
+
+    if x_to_find < points_list[0][0] or x_to_find > points_list[-1][0]:
+        print('Error: The Requested Point Is Not Suitable For Interpolation Method')
+        return False
+
+    return True
+
+
 # Our Program Driver
 if __name__ == "__main__":
 
