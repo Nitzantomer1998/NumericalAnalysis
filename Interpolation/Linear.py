@@ -1,33 +1,20 @@
 # Finding Point Approximation Using Linear Interpolation Method
 
 
-def LinearInterpolation(pointsList, xToFind):
-    """
-    Interpolation for finding startAt Point based on the x value
-
-    :param pointsList: List of point represent the points on the graph
-    :param xToFind: value on the axis X, that we are searching for
-    """
-    # In case we can't perform interpolation
-    if len(pointsList) < 2:
-        print('Error, Interpolation demand minimum of two points')
+def linear_interpolation_method(points_list, x_to_find):
+    
+    if not is_inserted_data_valid(points_list, x_to_find):
         return
 
-    # In case we can't perform interpolation
-    if xToFind < pointsList[0][0] or xToFind > pointsList[-1][0]:
-        print('The wanted point is not suitable for interpolation method')
-        return
+    for i in range(len(points_list) - 1):
 
-    # Loop to find the nearest points to the wanted one
-    for i in range(len(pointsList) - 1):
+        if points_list[i][0] <= x_to_find <= points_list[i + 1][0]:
 
-        # In case the needed action is interpolation
-        if pointsList[i][0] <= xToFind <= pointsList[i + 1][0]:
+            found_y_value = ((x_to_find - points_list[i + 1][0]) * points_list[i][1] + (points_list[i][0] - x_to_find) * points_list[i + 1][1]) / (points_list[i][0] - points_list[i + 1][0])
 
-            # Print the point approximation
-            print(f'Point Approximation --> ({xToFind}, {int(((xToFind - pointsList[i + 1][0]) * pointsList[i][1] + (pointsList[i][0] - xToFind) * pointsList[i + 1][1]) / (pointsList[i][0] - pointsList[i + 1][0]) * 10 ** 5) / 10 ** 5})')
+            print(f'Point Approximation --> ({x_to_find}, {int(found_y_value * 10 ** 5) / 10 ** 5})')
 
-
+            
 # Our Program Driver
 if __name__ == "__main__":
 
