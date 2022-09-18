@@ -76,26 +76,17 @@ def find_lower_upper(upper_matrix):
     return upper_matrix, lower_matrix
 
 
-def forwardSubstitution(lowerMatrix, vectorB):
-    """
-    Solve Ly = B, and return the vector y
+def forward_substitution(lower_matrix, vector_b):
+    
+    vector_y = [[0 for _ in range(1)] for _ in range(len(lower_matrix))]
 
-    :param lowerMatrix: NxN lower matrix
-    :param vectorB: Nx1 vector B
-    :return: Nx1 vector solution
-    """
-    # Initialize vectorY
-    vectorY = [[0 for _ in range(1)] for _ in range(len(lowerMatrix))]
-
-    # Solve Ly = B
-    for i in range(len(lowerMatrix)):
-        vectorY[i][0] = vectorB[i][0]
+    for i in range(len(lower_matrix)):
+        vector_y[i][0] = vector_b[i][0]
         for j in range(i):
-            vectorY[i][0] = vectorY[i][0] - lowerMatrix[i][j] * vectorY[j][0]
-        vectorY[i][0] = vectorY[i][0] / lowerMatrix[i][i]
+            vector_y[i][0] = vector_y[i][0] - lower_matrix[i][j] * vector_y[j][0]
+        vector_y[i][0] = vector_y[i][0] / lower_matrix[i][i]
 
-    # Return vector solution
-    return vectorY
+    return vector_y
 
 
 def backSubstitution(upperMatrix, vectorY):
