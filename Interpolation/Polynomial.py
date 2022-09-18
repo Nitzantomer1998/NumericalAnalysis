@@ -181,25 +181,16 @@ def is_inserted_data_valid(points_list, x_to_find):
     return True
    
    
-def multiplyMatrix(matrixA, matrixB):
-    """
-    Multiplying two matrices and return the outcome matrix
+def multiply_matrices(matrix_a, matrix_b):
+    
+    matrix_c = [[0] * len(matrix_b[0]) for _ in range(len(matrix_a))]
 
-    :param matrixA: NxM Matrix
-    :param matrixB: NxM Matrix
-    :return: NxM matrix
-    """
-    # Initialize NxM matrix filled with zero's
-    matrixC = [[0] * len(matrixB[0]) for _ in range(len(matrixA))]
+    for i in range(len(matrix_a)):
+        for j in range(len(matrix_b[0])):
+            for k in range(len(matrix_b)):
+                matrix_c[i][j] = matrix_c[i][j] + matrix_a[i][k] * matrix_b[k][j]
 
-    # Multiply the two matrices and store the outcome in matrixC
-    for i in range(len(matrixA)):
-        for j in range(len(matrixB[0])):
-            for k in range(len(matrixB)):
-                matrixC[i][j] = matrixC[i][j] + matrixA[i][k] * matrixB[k][j]
-
-    # Return the outcome matrix
-    return matrixC
+    return matrix_c
 
 
 # Our Program Driver
