@@ -193,13 +193,11 @@ def multiply_matrices(matrix_a, matrix_b):
     return matrix_c
 
 
-# Our Program Driver
 if __name__ == "__main__":
 
-    # Input section
-    graphPoints = [[0, 0], [1, 0.8415], [2, 0.9093], [3, 0.1411], [4, -0.7568], [5, -0.9589], [6, -0.2794]]
-    xValue = 2.5
+    graph_points = [[0, 0], [1, 0.8415], [2, 0.9093], [3, 0.1411], [4, -0.7568], [5, -0.9589], [6, -0.2794]]
+    x_value = 2.5
 
-    # Running the program
-    print('---------- Polynomial Method ----------')
-    Polynomial(graphPoints, xValue)
+    print('---------- Polynomial Interpolation Method ----------')
+    polynomial_interpolation_method(graph_points, x_value)
+
