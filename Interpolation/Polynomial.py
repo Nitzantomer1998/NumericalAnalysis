@@ -168,6 +168,19 @@ def is_equation_system_valid(origin_matrix, origin_vector_b):
     return True
    
    
+def is_inserted_data_valid(points_list, x_to_find):
+    
+    if len(points_list) < 2:
+        print('Error: Interpolation Demand Minimum Of Two Points')
+        return False
+
+    if x_to_find < points_list[0][0] or x_to_find > points_list[-1][0]:
+        print('Error: The Requested Point Is Not Suitable For Interpolation Method')
+        return False
+
+    return True
+   
+   
 def multiplyMatrix(matrixA, matrixB):
     """
     Multiplying two matrices and return the outcome matrix
