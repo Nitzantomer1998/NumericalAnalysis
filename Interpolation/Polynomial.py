@@ -150,6 +150,24 @@ def build_elementary_matrix(size):
     return elementary_matrix
    
    
+def is_equation_system_valid(origin_matrix, origin_vector_b):
+    
+    if len(origin_matrix) != len(origin_vector_b):
+        print("Error: Input Equation System Isn't Match")
+        return False
+
+    for i in range(len(origin_matrix)):
+        if len(origin_matrix) != len(origin_matrix[i]):
+            print("Error: Input Equation System Isn't Match")
+            return False
+
+    if calculate_determinant(origin_matrix) == 0:
+        print('Error: Matrix Is Singular')
+        return False
+
+    return True
+   
+   
 def multiplyMatrix(matrixA, matrixB):
     """
     Multiplying two matrices and return the outcome matrix
@@ -169,24 +187,6 @@ def multiplyMatrix(matrixA, matrixB):
 
     # Return the outcome matrix
     return matrixC
-
-
-def initElementaryMatrix(size, row, col, value):
-    """
-    Initialize elementary matrix, from identity matrix, and startAt specific value, and return it
-
-    :param size: Matrix size
-    :param row: Row index
-    :param col: Column index
-    :param value: Value parameter
-    :return: Return the elementary matrix
-    """
-    # Initialize the desire elementary matrix
-    elementaryMatrix = [[1 if row == col else 0 for col in range(size)] for row in range(size)]
-    elementaryMatrix[row][col] = value
-
-    # Return the elementary matrix
-    return elementaryMatrix
 
 
 # Our Program Driver
