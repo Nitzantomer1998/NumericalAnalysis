@@ -1,44 +1,26 @@
 # Finding Point Approximation Using Polynomial Method
 
 
-def Polynomial(pointsList, xToFind):
-    """
-    Method for finding approximation of the wanted point
-
-    :param pointsList: List of point represent the points on the graph
-    :param xToFind: value on the axis X, that we are searching for
-    """
-    # In case we can't perform interpolation
-    if len(pointsList) < 2:
-        print('Error, Interpolation demand minimum of two points')
+def polynomial_interpolation_method(points_list, x_to_find):
+   
+    if not is_inserted_data_valid(points_list, x_to_find):
         return
 
-    # In case we can't perform interpolation
-    if xToFind < pointsList[0][0] or xToFind > pointsList[-1][0]:
-        print('The wanted point is not suitable for interpolation method')
+    matrix = [[points_list[row][0] ** col for col in range(len(points_list))] for row in range(len(points_list))]
+    vector_b = [[points_list[row][1] for _ in range(1)] for row in range(len(points_list))]
+
+    vector_solution = lower_upper_decomposition_method(matrix, vector_b)
+
+    if any(vector_solution) is None:
+        print('Error: Equation System Failed To Find A Solution')
         return
 
-    # Creating startAt Linear Equation from out List of points
-    matrix = [[pointsList[row][0] ** col for col in range(len(pointsList))] for row in range(len(pointsList))]
-    vectorB = [[pointsList[row][1] for _ in range(1)] for row in range(len(pointsList))]
+    y_value = 0
 
-    # The solution of the Linear Equation
-    vectorSolution = LU(matrix, vectorB)
+    for i in range(len(vector_solution)):
+        y_value = y_value + vector_solution[i][0] * (x_to_find ** i)
 
-    # In case the equation system solution failed
-    if any(vectorSolution) is None:
-        print('Error, The equation system solver failed')
-        return
-
-    # The Y approximation of the point x
-    yApproximation = 0
-
-    # Loop to find Y approximation
-    for i in range(len(vectorSolution)):
-        yApproximation = yApproximation + vectorSolution[i][0] * (xToFind ** i)
-
-    # The point approximation
-    print(f'Point Approximation --> ({xToFind}, {int(yApproximation * 10 ** 5) / 10 ** 5})')
+    print(f'Point Approximation --> ({x_to_find}, {int(y_value * 10 ** 5) / 10 ** 5})')
 
 
 def LU(originMatrix, originVectorB):
