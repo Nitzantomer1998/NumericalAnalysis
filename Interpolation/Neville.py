@@ -1,25 +1,14 @@
 # Finding Point Approximation Using Neville Method
 
 
-def Neville(pointsList, xToFind):
-    """
-    Method for finding startAt Point based on the x value
-
-    :param pointsList: List of point represent the points on the graph
-    :param xToFind: value on the axis X, that we are searching for
-    """
-    # In case we can't perform interpolation
-    if len(pointsList) < 2:
-        print('Error, Interpolation demand minimum of two points')
+def neville_interpolation_method(points_list, x_to_find):
+    
+    if not is_inserted_data_valid(points_list, x_to_find):
         return
 
-    # In case we can't perform interpolation
-    if xToFind < pointsList[0][0] or xToFind > pointsList[-1][0]:
-        print('The wanted point is not suitable for interpolation method')
-        return
+    y_value = recursive_neville(points_list, x_to_find, 0, len(points_list) - 1)
 
-    # The point approximation
-    print(f'Point Approximation --> ({xToFind}, {int(recursiveNeville(pointsList, xToFind, 0, len(pointsList) - 1) * 10 ** 5) / 10 ** 5})')
+    print(f'Point Approximation --> ({x_to_find}, {int(y_value * 10 ** 5) / 10 ** 5})')
 
 
 def recursiveNeville(pointsList, xToFind, i, j):
