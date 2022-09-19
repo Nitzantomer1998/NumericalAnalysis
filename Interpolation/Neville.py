@@ -38,16 +38,12 @@ def is_inserted_data_valid(points_list, x_to_find):
     return True
 
 
-# Our Program Driver
 if __name__ == "__main__":
 
-    # Input section
-    graphPoints = [[0, 0], [1, 0.8415], [2, 0.9093], [3, 0.1411], [4, -0.7568], [5, -0.9589], [6, -0.2794]]
-    xValue = 5.5
+    graph_points = [[0, 0], [1, 0.8415], [2, 0.9093], [3, 0.1411], [4, -0.7568], [5, -0.9589], [6, -0.2794]]
+    x_value = 2.5
 
-    # List for saving calculations performed to reduce the complexity of running time (Memoized)
-    P = [[None for _ in range(len(graphPoints))] for _ in range(len(graphPoints))]
+    P = [[None for _ in range(len(graph_points))] for _ in range(len(graph_points))]
 
-    # Running the program
-    print('---------- Neville Method ----------')
-    Neville(graphPoints, xValue)
+    print('---------- Neville Interpolation Method ----------')
+    neville_interpolation_method(graph_points, x_value)
