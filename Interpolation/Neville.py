@@ -25,6 +25,17 @@ def recursive_neville(points_list, x_to_find, i, j):
     return ((x_to_find - points_list[i][0]) * P[i + 1][j] - (x_to_find - points_list[j][0]) * P[i][j - 1]) / (points_list[j][0] - points_list[i][0])
 
 
+def is_inserted_data_valid(points_list, x_to_find):
+   
+    if len(points_list) < 2:
+        print('Error: Interpolation Demand Minimum Of Two Points')
+        return False
+
+    if x_to_find < points_list[0][0] or x_to_find > points_list[-1][0]:
+        print('Error: The Requested Point Is Not Suitable For Interpolation Method')
+        return False
+
+    return True
 
 
 # Our Program Driver
