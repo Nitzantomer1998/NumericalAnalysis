@@ -1,43 +1,24 @@
 # Finding Point Approximation Using Lagrange Method
 
 
-def Lagrange(pointsList, xToFind):
-    """
-    Method for finding startAt Point based on the x value
-
-    :param pointsList: List of point represent the points on the graph
-    :param xToFind: value on the axis X, that we are searching for
-    """
-    # In case we can't perform interpolation
-    if len(pointsList) < 2:
-        print('Error, Interpolation demand minimum of two points')
+def lagrange_interpolation_method(points_list, x_to_find):
+   
+    if not is_inserted_data_valid(points_list, x_to_find):
         return
 
-    # In case we can't perform interpolation
-    if xToFind < pointsList[0][0] or xToFind > pointsList[-1][0]:
-        print('The wanted point is not suitable for interpolation method')
-        return
+    y_value = 0
 
-    # The Y approximation of the point x
-    yToFind = 0
+    for i in range(len(points_list)):
 
-    # Loop to find Y approximation
-    for i in range(len(pointsList)):
+        l = 1
 
-        # Calculate Li(x)
-        L = 1
-
-        # Loop to calculate the Li(x) result
-        for j in range(len(pointsList)):
-
+        for j in range(len(points_list)):
             if i != j:
-                L = L * (xToFind - pointsList[j][0]) / (pointsList[i][0] - pointsList[j][0])
+                l = l * (x_to_find - points_list[j][0]) / (points_list[i][0] - points_list[j][0])
 
-        # Calculate the approximation of Y in the current I iteration
-        yToFind = yToFind + L * pointsList[i][1]
+        y_value = y_value + l * points_list[i][1]
 
-    # The point approximation
-    print(f'Point Approximation --> ({xToFind}, {int(yToFind * 10 ** 5) / 10 ** 5})')
+    print(f'Point Approximation --> ({x_to_find}, {int(y_value * 10 ** 5) / 10 ** 5})')
 
 
 # Our Program Driver
