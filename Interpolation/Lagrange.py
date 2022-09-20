@@ -21,6 +21,28 @@ def lagrange_interpolation_method(points_list, x_to_find):
     print(f'Point Approximation --> ({x_to_find}, {int(y_value * 10 ** 5) / 10 ** 5})')
 
 
+def is_inserted_data_valid(points_list, x_to_find):
+    """
+    Checking if the inserted points list and search value is valid, and return accordingly
+
+    :param points_list: List of points represent the points on the axis
+    :param x_to_find: Axis x value that we are searching for
+    :return: True if the sent data valid, else False
+    """
+    # if there's not enough points
+    if len(points_list) < 2:
+        print('Error: Interpolation Demand Minimum Of Two Points')
+        return False
+
+    # if the request point approximation is out of range for interpolation
+    if x_to_find < points_list[0][0] or x_to_find > points_list[-1][0]:
+        print('Error: The Requested Point Is Not Suitable For Interpolation Method')
+        return False
+
+    # Returning true (inserted data is valid)
+    return True
+   
+   
 # Our Program Driver
 if __name__ == "__main__":
 
