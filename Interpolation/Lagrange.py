@@ -63,5 +63,5 @@ if __name__ == "__main__":
     x_value = 2.5
 
     # Running the program
-    print('---------- Lagrange Method ----------')
+    print('---------- Lagrange Interpolation Method ----------')
     lagrange_interpolation_method(graph_points, x_value)
