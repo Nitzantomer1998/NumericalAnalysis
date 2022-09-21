@@ -190,6 +190,30 @@ def build_elementary_matrix(size):
     return elementary_matrix
 
 
+def build_data_table(points_list):
+    
+    h = [points_list[1][0] - points_list[0][0]]
+    lam = [0]
+    u = [0]
+    d = [0]
+
+    for i in range(1, len(points_list) - 1):
+        h.append(points_list[i + 1][0] - points_list[i][0])
+        lam.append(h[i] / (h[i - 1] + h[i]))
+        u.append(1 - lam[i])
+        d.append(6 / (h[i - 1] + h[i]) * (
+                    (points_list[i + 1][1] - points_list[i][1]) / h[i] - (points_list[i][1] - points_list[i - 1][1]) /
+                    h[i - 1]))
+
+    h.append(0)
+    lam.append(0)
+    u.append(0)
+    d.append(0)
+
+    # Returning the initialized arrays
+    return h, lam, u, d
+
+
 # Our Program Driver
 if __name__ == "__main__":
 
