@@ -77,41 +77,21 @@ def organize_matrix(origin_matrix, origin_vector_b):
             origin_matrix[i], origin_matrix[new_pivot_row] = origin_matrix[new_pivot_row], origin_matrix[i]
 
 
-def findInverse(matrix):
-    """
-    Solve the matrix into an Identity matrix, and return the inverse matrix
+def find_lower_upper(upper_matrix):
+    
+    lower_matrix = [[1.0 if row == col else 0 for col in range(len(upper_matrix))] for row in range(len(upper_matrix))]
 
-    :param matrix: NxN matrix
-    :return: Inverse NxN matrix
-    """
-    # Initialize inverseMatrix into an Identity matrix
-    inverseMatrix = [[1 if row == col else 0 for col in range(len(matrix))] for row in range(len(matrix))]
+    for i in range(len(upper_matrix)):
+        for j in range(i + 1, len(upper_matrix)):
+            if upper_matrix[j][i] != 0:
+                lower_matrix[j][i] = upper_matrix[j][i] / upper_matrix[i][i]
 
-    # Solving matrix into an Identity matrix, and get alongside the Inverse Matrix (Lower part)
-    for i in range(len(matrix)):
+                elementary_matrix = build_elementary_matrix(len(upper_matrix))
+                elementary_matrix[j][i] = - upper_matrix[j][i] / upper_matrix[i][i]
 
-        # In case the pivot isn't one, we will make sure it will be
-        if matrix[i][i] != 1:
-            inverseMatrix = multiplyMatrix(initElementaryMatrix(len(matrix), i, i, 1 / matrix[i][i]), inverseMatrix)
-            matrix = multiplyMatrix(initElementaryMatrix(len(matrix), i, i, 1 / matrix[i][i]), matrix)
+                upper_matrix = multiply_matrices(elementary_matrix, upper_matrix)
 
-        # In case the column under the pivot isn't zero
-        for j in range(i + 1, len(matrix)):
-            if matrix[j][i] != 0:
-                inverseMatrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), inverseMatrix)
-                matrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), matrix)
-
-    # Solving matrix into an Identity matrix, and get alongside the Inverse Matrix (Upper part)
-    for i in reversed(range(len(matrix))):
-
-        # In case the column above the pivot isn't zero
-        for j in reversed(range(i)):
-            if matrix[j][i] != 0:
-                inverseMatrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), inverseMatrix)
-                matrix = multiplyMatrix(initElementaryMatrix(len(matrix), j, i, - matrix[j][i]), matrix)
-
-    # Return the inverse matrix
-    return inverseMatrix
+    return upper_matrix, lower_matrix
 
 
 def finalSolution(originMatrix, originVectorB, vectorSolution):
