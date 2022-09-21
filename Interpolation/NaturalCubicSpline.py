@@ -94,6 +94,19 @@ def find_lower_upper(upper_matrix):
     return upper_matrix, lower_matrix
 
 
+def forward_substitution(lower_matrix, vector_b):
+    
+    vector_y = [[0 for _ in range(1)] for _ in range(len(lower_matrix))]
+
+    for i in range(len(lower_matrix)):
+        vector_y[i][0] = vector_b[i][0]
+        for j in range(i):
+            vector_y[i][0] = vector_y[i][0] - lower_matrix[i][j] * vector_y[j][0]
+        vector_y[i][0] = vector_y[i][0] / lower_matrix[i][i]
+
+    return vector_y
+
+
 def finalSolution(originMatrix, originVectorB, vectorSolution):
     """
     Getting the equation system components, check the accuracy of the solution, if the accuracy isn't precise
