@@ -58,38 +58,23 @@ def lower_upper_decomposition_method(origin_matrix, origin_vector_b):
     return final_vector_solution
 
 
-def organizeMatrix(originMatrix, originVectorB):
-    """
-    Taking care that the pivot in the every row will be the highest possible, and return the updated equation system
+def organize_matrix(origin_matrix, origin_vector_b):
+   
+    for i in range(len(origin_matrix)):
 
-    :param originMatrix: NxN matrix
-    :param originVectorB: Nx1 vector
-    :return: The updated equation system
-    """
-    # Loop to get the highest pivots possible
-    for i in range(len(originMatrix)):
+        max_pivot = abs(origin_matrix[i][i])
 
-        # Variable to store the highest value for the pivot
-        maxPivot = abs(originMatrix[i][i])
+        new_pivot_row = -1
 
-        # Variable to store the new pivot row
-        pivotRow = -1
+        for j in range(i + 1, len(origin_matrix)):
 
-        # Searching the highest potential Pivot for originMatrix[i][i]
-        for j in range(i + 1, len(originMatrix)):
+            if abs(origin_matrix[j][i]) > max_pivot:
+                max_pivot = abs(origin_matrix[j][i])
+                new_pivot_row = j
 
-            # In case there's a higher pivot (on the Column[i])
-            if abs(originMatrix[j][i]) > maxPivot:
-                maxPivot = abs(originMatrix[j][i])
-                pivotRow = j
-
-        # In case there was a higher pivot, change the matrix so the Pivot will be the maximum
-        if maxPivot != abs(originMatrix[i][i]):
-            originVectorB[i], originVectorB[pivotRow] = originVectorB[pivotRow], originVectorB[i]
-            originMatrix[i], originMatrix[pivotRow] = originMatrix[pivotRow], originMatrix[i]
-
-    # Return the updated equation system
-    return originMatrix, originVectorB
+        if max_pivot != abs(origin_matrix[i][i]):
+            origin_vector_b[i], origin_vector_b[new_pivot_row] = origin_vector_b[new_pivot_row], origin_vector_b[i]
+            origin_matrix[i], origin_matrix[new_pivot_row] = origin_matrix[new_pivot_row], origin_matrix[i]
 
 
 def findInverse(matrix):
