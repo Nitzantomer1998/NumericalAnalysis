@@ -193,6 +193,13 @@ def calculate_determinant(matrix):
     return determinant_sum
 
 
+def build_system_equation(origin_matrix, origin_vector_b):
+    
+    equation_system = [[origin_matrix[row][col] for col in range(len(origin_matrix[0]))] for row in range(len(origin_matrix))]
+    [equation_system[row].append(origin_vector_b[row][0]) for row in range(len(origin_vector_b))]
+
+    return equation_system
+
 # Our Program Driver
 if __name__ == "__main__":
 
