@@ -1,72 +1,40 @@
 # Finding Point Approximation Using Full Cubic Spline Interpolation Method
 
 
-def FullCubicSpline(pointsList, xToFind, leftDerivative, rightDerivative):
-    """
-    Method for finding a Point based on the x value
-
-    :param pointsList: List of point represent the points on the graph
-    :param xToFind: value on the axis X, that we are searching for
-    :param leftDerivative: Left domain segment derivative
-    :param rightDerivative: Right domain segment derivative
-    """
-    # In case we can't perform interpolation
-    if len(pointsList) < 4:
-        print('Error, Cubic Interpolation demand minimum of four points')
+def full_cubic_spline_interpolation(points_list, x_to_find, derivative_values):
+   
+    if not is_inserted_data_valid(points_list, x_to_find):
         return
 
-    # In case we can't perform interpolation
-    if xToFind < pointsList[0][0] or xToFind > pointsList[-1][0]:
-        print('The wanted point is not suitable for interpolation method')
-        return
+    h, lam, u, d = build_data_table(points_list, derivative_values)
 
-    # Arrays to store the data
-    h = [pointsList[1][0] - pointsList[0][0]]
-    lam = [1]
-    u = [0]
-    d = [6 / h[0] * ((pointsList[1][1] - pointsList[0][1]) / h[0] - leftDerivative)]
+    for i in range(len(points_list) - 1):
 
-    # Loop to traverse the pointList
-    for i in range(1, len(pointsList) - 1):
-        # Initialize the arrays
-        h.append(pointsList[i + 1][0] - pointsList[i][0])
-        lam.append(h[i] / (h[i - 1] + h[i]))
-        u.append(1 - lam[i])
-        d.append(6 / (h[i - 1] + h[i]) * ((pointsList[i + 1][1] - pointsList[i][1]) / h[i] - (pointsList[i][1] - pointsList[i - 1][1]) / h[i - 1]))
+        if points_list[i][0] <= x_to_find <= points_list[i + 1][0]:
 
-    # Initialize the last index of the array initialize to zero
-    h.append(0)
-    lam.append(0)
-    u.append(1)
-    d.append(6 / h[-2] * (rightDerivative - (pointsList[-1][1] - pointsList[-2][1]) / h[0]))
+            built_matrix = [[0 for _ in range(len(points_list))] for _ in range(len(points_list))]
+            built_vector = [[d[row] for _ in range(1)] for row in range(len(points_list))]
 
-    # Loop to traverse the pointList
-    for i in range(len(pointsList) - 1):
-
-        # Getting the points between the wanted point approximation
-        if pointsList[i][0] <= xToFind <= pointsList[i + 1][0]:
-
-            # Initialize matrices for system equation
-            finalMatrix = [[0 for _ in range(len(pointsList))] for _ in range(len(pointsList))]
-            finalVector = [[d[row] for _ in range(1)] for row in range(len(pointsList))]
-
-            # Double loops to traverse and initialize the system equation
-            for j in range(len(pointsList) - 1):
-                for k in range(len(pointsList) - 1):
+            for j in range(len(points_list) - 1):
+                for k in range(len(points_list) - 1):
                     if j == k:
-                        finalMatrix[j][j] = 2
-                        finalMatrix[j + 1][k] = u[j + 1]
-                        finalMatrix[j][k + 1] = lam[j]
-            finalMatrix[-1][-1] = 2
+                        built_matrix[j][j] = 2
+                        built_matrix[j + 1][k] = u[j + 1]
+                        built_matrix[j][k + 1] = lam[j]
 
-            # Getting the system equation solution
-            vectorSolution = InverseMatrix(finalMatrix, finalVector)
+            built_matrix[-1][-1] = 2
 
-            # The point approximation
-            s = ((pointsList[i + 1][0] - xToFind) ** 3 * vectorSolution[i][0] + (xToFind - pointsList[i][0]) ** 3 * vectorSolution[i + 1][0]) / (6 * h[i]) + ((pointsList[i + 1][0] - xToFind) * pointsList[i][1] + (xToFind - pointsList[i][0]) * pointsList[i + 1][1]) / h[i] - (((pointsList[i + 1][0] - xToFind) * vectorSolution[i][0] + (xToFind - pointsList[i][0]) * vectorSolution[i + 1][0]) * h[i]) / 6
-            print(f'Point Approximation --> ({xToFind}, {int(s * 10 ** 5) / 10 ** 5})')
+            vector_solution = lower_upper_decomposition_method(built_matrix, built_vector)
 
+            if any(vector_solution) is None:
+                print('Error: Equation System Failed To Find A Solution')
+                return
 
+            y_value = ((points_list[i + 1][0] - x_to_find) ** 3 * vector_solution[i][0] + (x_to_find - points_list[i][0]) ** 3 * vector_solution[i + 1][0]) / (6 * h[i]) + ((points_list[i + 1][0] - x_to_find) * points_list[i][1] + (x_to_find - points_list[i][0]) * points_list[i + 1][1]) / h[i] - (((points_list[i + 1][0] - x_to_find) * vector_solution[i][0] + (x_to_find - points_list[i][0]) * vector_solution[i + 1][0]) * h[i]) / 6
+
+            print(f'Point Approximation --> ({x_to_find}, {int(y_value * 10 ** 5) / 10 ** 5})')
+
+            
 def InverseMatrix(originMatrix, originVectorB):
     """
     Solving equation system in the Inverse Matrix method
