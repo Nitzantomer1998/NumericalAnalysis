@@ -35,41 +35,22 @@ def full_cubic_spline_interpolation(points_list, x_to_find, derivative_values):
             print(f'Point Approximation --> ({x_to_find}, {int(y_value * 10 ** 5) / 10 ** 5})')
 
             
-def InverseMatrix(originMatrix, originVectorB):
-    """
-    Solving equation system in the Inverse Matrix method
-
-    :param originMatrix: NxN Matrix
-    :param originVectorB: Nx1 Vector
-    """
-    # Check if the matrix is Quadratic matrix, and check if the vector is in appropriate size
-    if len(originMatrix) == len(originMatrix[0]) and len(originVectorB) == len(originMatrix) and len(
-            originVectorB[0]) == 1:
-
-        # In case the matrix has one solution
-        if determinantMatrix(originMatrix):
-
-            # Organize the matrix pivots
-            originMatrix, originVectorB = organizeMatrix(originMatrix, originVectorB)
-
-            # Getting the inverse matrix of originMatrix
-            inverseMatrix = findInverse(originMatrix)
-
-            # Getting the equation system solution
-            vectorSolution = finalSolution(originMatrix, originVectorB, multiplyMatrix(inverseMatrix, originVectorB))
-
-            # Return the equation system final solution
-            return vectorSolution
-
-        # According message In case there is more or less than one solution
-        else:
-            print('This is a Singular matrix')
-            return None
-
-    # In case the input equation system isn't meet the demands
-    else:
-        print("The input equation system isn't match")
+def lower_upper_decomposition_method(origin_matrix, origin_vector_b):
+    
+    if not is_equation_system_valid(origin_matrix, origin_vector_b):
         return None
+
+    organize_matrix(origin_matrix, origin_vector_b)
+
+    upper_matrix, lower_matrix = find_lower_upper(origin_matrix)
+
+    lower_vector_solution = forward_substitution(lower_matrix, origin_vector_b)
+
+    vector_solution = back_substitution(upper_matrix, lower_vector_solution)
+    final_vector_solution = find_final_solution(origin_matrix, origin_vector_b, vector_solution)
+
+    return final_vector_solution
+
 
 
 def organizeMatrix(originMatrix, originVectorB):
