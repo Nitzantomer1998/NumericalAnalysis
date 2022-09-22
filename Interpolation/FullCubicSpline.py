@@ -160,7 +160,28 @@ def build_elementary_matrix(size):
 
     return elementary_matrix
    
+
+def build_data_table(points_list, derivative_values):
    
+    h = [points_list[1][0] - points_list[0][0]]
+    lam = [1]
+    u = [0]
+    d = [6 / h[0] * ((points_list[1][1] - points_list[0][1]) / h[0] - derivative_values[0])]
+
+    for i in range(1, len(points_list) - 1):
+        h.append(points_list[i + 1][0] - points_list[i][0])
+        lam.append(h[i] / (h[i - 1] + h[i]))
+        u.append(1 - lam[i])
+        d.append(6 / (h[i - 1] + h[i]) * ((points_list[i + 1][1] - points_list[i][1]) / h[i] - (points_list[i][1] - points_list[i - 1][1]) / h[i - 1]))
+
+    h.append(0)
+    lam.append(0)
+    u.append(1)
+    d.append(6 / h[-2] * (derivative_values[1] - (points_list[-1][1] - points_list[-2][1]) / h[0]))
+
+    return h, lam, u, d
+
+
 def multiplyMatrix(matrixA, matrixB):
     """
     Multiplying two matrices and return the outcome matrix
