@@ -225,15 +225,12 @@ def multiply_matrices(matrix_a, matrix_b):
     return matrix_c
 
 
-# Our Program Driver
 if __name__ == "__main__":
 
-    # Input section
-    graphPoints = [[0, 0], [1, 0.8415], [2, 0.9093], [3, 0.1411], [4, -0.7568], [5, -0.9589], [6, -0.2794]]
-    derivativeLeft = 0
-    derivativeRight = 1
-    xValue = 2.5
+    graph_points = [[0, 0], [1, 0.8415], [2, 0.9093], [3, 0.1411], [4, -0.7568], [5, -0.9589], [6, -0.2794]]
+    x_value = 2.5
+    left_derivative_value = 0
+    right_derivative_value = 1
 
-    # Running the program
-    print('---------- Full Cubic Spline Method ----------')
-    FullCubicSpline(graphPoints, xValue, derivativeLeft, derivativeRight)
+    print('---------- Full Cubic Spline Interpolation Method ----------')
+    full_cubic_spline_interpolation(graph_points, x_value, [left_derivative_value, right_derivative_value])
