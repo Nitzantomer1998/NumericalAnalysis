@@ -99,6 +99,20 @@ def forward_substitution(lower_matrix, vector_b):
 
     return vector_y
    
+
+def back_substitution(upper_matrix, vector_y):
+    
+    vector_x = [[0 for _ in range(1)] for _ in range(len(upper_matrix))]
+    vector_x[-1][0] = vector_y[-1][0] / upper_matrix[-1][-1]
+
+    for i in range(len(upper_matrix) - 2, -1, -1):
+        row_sum = vector_y[i][0]
+        for j in range(i + 1, len(upper_matrix)):
+            row_sum = row_sum - upper_matrix[i][j] * vector_x[j][0]
+        vector_x[i][0] = row_sum / upper_matrix[i][i]
+
+    return vector_x
+
    
 def finalSolution(originMatrix, originVectorB, vectorSolution):
     """
