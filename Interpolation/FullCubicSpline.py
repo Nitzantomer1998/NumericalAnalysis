@@ -154,6 +154,13 @@ def build_system_equation(origin_matrix, origin_vector_b):
     return equation_system
 
 
+def build_elementary_matrix(size):
+    
+    elementary_matrix = [[1.0 if row == col else 0.0 for col in range(size)] for row in range(size)]
+
+    return elementary_matrix
+   
+   
 def multiplyMatrix(matrixA, matrixB):
     """
     Multiplying two matrices and return the outcome matrix
@@ -173,24 +180,6 @@ def multiplyMatrix(matrixA, matrixB):
 
     # Return the outcome matrix
     return matrixC
-
-
-def initElementaryMatrix(size, row, col, value):
-    """
-    Initialize elementary matrix, from identity matrix, and a specific value, and return it
-
-    :param size: Matrix size
-    :param row: Row index
-    :param col: Column index
-    :param value: Value parameter
-    :return: Return the elementary matrix
-    """
-    # Initialize the desire elementary matrix
-    elementaryMatrix = [[1 if row == col else 0 for col in range(size)] for row in range(size)]
-    elementaryMatrix[row][col] = value
-
-    # Return the elementary matrix
-    return elementaryMatrix
 
 
 # Our Program Driver
