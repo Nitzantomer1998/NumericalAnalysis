@@ -182,6 +182,24 @@ def build_data_table(points_list, derivative_values):
     return h, lam, u, d
 
 
+def is_equation_system_valid(origin_matrix, origin_vector_b):
+  
+    if len(origin_matrix) != len(origin_vector_b):
+        print("Error: Input Equation System Isn't Match")
+        return False
+
+    for i in range(len(origin_matrix)):
+        if len(origin_matrix) != len(origin_matrix[i]):
+            print("Error: Input Equation System Isn't Match")
+            return False
+
+    if calculate_determinant(origin_matrix) == 0:
+        print('Error: Matrix Is Singular')
+        return False
+
+    return True
+   
+   
 def multiplyMatrix(matrixA, matrixB):
     """
     Multiplying two matrices and return the outcome matrix
