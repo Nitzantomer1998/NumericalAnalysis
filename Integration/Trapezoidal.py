@@ -9,43 +9,21 @@ from sympy.utilities.lambdify import lambdify
 ACCURACY = 0.00001
 
 
-def Trapezoidal(f, startAt, endAt, sectionAmount):
-    """
-    Method for finding the locked Area of the function in the segment domain [startAt, endAt]
-
-    :param f: Our function
-    :param startAt: Left domain of the function
-    :param endAt: Right domain of the function
-    :param sectionAmount: The amount of section
-    """
-    # Variable to store the highest possible section amount without losing information in the process
-    sectionAmountLimit = ((abs(endAt - startAt) ** 3 * MaxFunctionValue(f, startAt, endAt)) / (12 * ACCURACY)) ** 0.5
-
-    # In case the user chose negative amount of sections
-    if sectionAmount <= 0:
-        print('You can not divide section to be negative')
+def trapezoidal_rule_method(f, left_domain, right_domain, section_amount):
+    
+    if not is_inserted_data_valid(f, left_domain, right_domain, section_amount):
         return
 
-    # In case the user chose more section than we can perform without losing information
-    if sectionAmount > sectionAmountLimit:
-        print(f'You chose too many section, the limit is {int(sectionAmountLimit)}')
-        return
+    f = sympy.utilities.lambdify(x, f)
 
-    # Initiate the function to be able to calculate Y base on given x
-    f = lambdify(x, f)
+    h = abs(right_domain - left_domain) / section_amount
 
-    # Calculating step size (gap)
-    h = abs(endAt - startAt) / sectionAmount
+    interval = f(left_domain) + f(right_domain)
 
-    # Initialize the interval value
-    interval = f(startAt) + f(endAt)
+    for i in range(1, section_amount):
+        interval = interval + 2 * f(left_domain + i * h)
 
-    # Calculate the rest of the interval value
-    for i in range(1, sectionAmount):
-        interval = interval + 2 * f(startAt + i * h)
-
-    # Print the area value
-    print(f'Sum of the area --> {int(h / 2 * interval * 10 ** 5) / 10 ** 5}')
+    print(f'Sum Of Area --> {int(h / 2 * interval * 10 ** 5) / 10 ** 5}')
 
 
 def MaxFunctionValue(f, startAt, endAt):
