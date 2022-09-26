@@ -1,4 +1,4 @@
-# Finding Area Value Using Simpson Method
+# Finding Area Value Using Simpson Rule Method
 
 
 # Libraries for getting the derivatives of a function
