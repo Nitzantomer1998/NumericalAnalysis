@@ -26,31 +26,19 @@ def trapezoidal_rule_method(f, left_domain, right_domain, section_amount):
     print(f'Sum Of Area --> {int(h / 2 * interval * 10 ** 5) / 10 ** 5}')
 
 
-def MaxFunctionValue(f, startAt, endAt):
-    """
-    Method for finding the highest point of startAt function
+def max_function_value(f, left_domain, right_domain):
+    
+    f = sympy.utilities.lambdify(x, f)
 
-    :param f: Our function
-    :param startAt: Left domain of the function
-    :param endAt: Right domain of the function
-    """
-    # Activating the function to be able to get an X
-    f = lambdify(x, f)
+    max_value = max(f(left_domain), f(right_domain))
 
-    # Variable to store the max value of the function (Axis Y)
-    maxValue = max(f(startAt), f(endAt))
+    while left_domain < right_domain:
 
-    # Divide our function domain range into multiply domains with 0.1 range
-    while startAt < endAt:
+        max_value = max(max_value, f(left_domain))
 
-        # Update the maximum Y value of the function
-        maxValue = max(maxValue, f(startAt))
+        left_domain = left_domain + 0.1
 
-        # Update our domain for the next iteration
-        startAt = startAt + 0.1
-
-    # Return the highest Y value in the function domain
-    return maxValue
+    return max_value
 
 
 # Our Program Driver
