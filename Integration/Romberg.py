@@ -53,6 +53,21 @@ def max_function_value(f, left_domain, right_domain):
     return max_value
 
 
+
+def is_inserted_data_valid(f, left_domain, right_domain, section_amount):
+    
+    if section_amount <= 0:
+        print('Error: Section Amount Must Be Non Negative Integer')
+        return False
+
+    max_section_amount = ((abs(right_domain - left_domain) ** 3 * max_function_value(f, left_domain, right_domain)) / (12 * solution_accuracy)) ** 0.5
+    if section_amount > max_section_amount:
+        print(f'You Chose Too Many Section, The Upper Limit Is {int(max_section_amount)}')
+        return False
+
+    return True
+
+
 # Our Program Driver
 if __name__ == "__main__":
 
