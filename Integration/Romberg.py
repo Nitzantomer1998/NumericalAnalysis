@@ -68,18 +68,14 @@ def is_inserted_data_valid(f, left_domain, right_domain, section_amount):
     return True
 
 
-# Our Program Driver
 if __name__ == "__main__":
 
-    # Symbol
-    x = sp.symbols('x')
+    x = sympy.symbols('x')
+    function = sympy.sin(x)
+    domain_start = 0
+    domain_end = sympy.pi
+    section_divide = 10
+    solution_accuracy = 0.00001
 
-    # Input section
-    function = sp.sin(x)
-    domainStart = 0
-    domainEnd = sp.pi
-    sectionDivide = 5
-
-    # Running the program
     print('---------- Romberg Method ----------')
-    Romberg(function, domainStart, domainEnd, sectionDivide)
+    romberg_method(function, domain_start, domain_end, section_divide)
