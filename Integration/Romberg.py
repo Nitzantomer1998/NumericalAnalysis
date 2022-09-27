@@ -25,6 +25,19 @@ def romberg_method(f, left_domain, right_domain, section_amount):
     print(f'Sum Of Area --> {int(r[-1][-1] * 10 ** 5) / 10 ** 5}')
 
 
+    
+def trapezoidal_rule_method(f, left_domain, right_domain, section_amount):
+    
+    h = abs(right_domain - left_domain) / section_amount
+
+    interval = f(left_domain) + f(right_domain)
+
+    for i in range(1, section_amount):
+        interval = interval + 2 * f(left_domain + i * h)
+
+    return h * interval / 2
+
+
 # Our Program Driver
 if __name__ == "__main__":
 
