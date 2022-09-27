@@ -38,6 +38,21 @@ def trapezoidal_rule_method(f, left_domain, right_domain, section_amount):
     return h * interval / 2
 
 
+def max_function_value(f, left_domain, right_domain):
+    
+    f = sympy.utilities.lambdify(x, f)
+
+    max_value = max(f(left_domain), f(right_domain))
+
+    while left_domain < right_domain:
+
+        max_value = max(max_value, f(left_domain))
+
+        left_domain = left_domain + 0.1
+
+    return max_value
+
+
 # Our Program Driver
 if __name__ == "__main__":
 
