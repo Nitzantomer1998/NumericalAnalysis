@@ -6,54 +6,23 @@ import sympy as sp
 from sympy.utilities.lambdify import lambdify
 
 
-def Romberg(f, startAt, endAt, sectionAmount):
-    """
-    Method for finding the locked Area of the function in the segment domain [startAt, endAt]
+def romberg_method(f, left_domain, right_domain, section_amount):
+    
+    if not is_inserted_data_valid(f, left_domain, right_domain, section_amount):
+        return
 
-    :param f: Our function
-    :param startAt: Left domain of the function
-    :param endAt: Right domain of the function
-    :param sectionAmount: The amount of section
-    """
-    # Initiate the function to be able to calculate Y base on given x
-    f = lambdify(x, f)
+    f = sympy.utilities.lambdify(x, f)
 
-    # Initialize matrix to store approximation area values
-    R = [[0 for _ in range(sectionAmount)] for _ in range(sectionAmount)]
+    r = [[0.0 for _ in range(section_amount)] for _ in range(section_amount)]
 
-    # Double loop to fill R with area approximation values
-    for i in range(sectionAmount):
-        R[i][0] = Trapezoidal(f, startAt, endAt, 2 ** i)
+    for i in range(section_amount):
+
+        r[i][0] = trapezoidal_rule_method(f, left_domain, right_domain, 2 ** i)
 
         for j in range(i):
-            R[i][j + 1] = (4 ** (j + 1) * R[i][j] - R[i - 1][j]) / (4 ** (j + 1) - 1)
+            r[i][j + 1] = (4 ** (j + 1) * r[i][j] - r[i - 1][j]) / (4 ** (j + 1) - 1)
 
-    # Print the area value
-    print(f'Sum of the area --> {int(R[-1][-1] * 10 ** 5) / 10 ** 5}')
-
-
-def Trapezoidal(f, startAt, endAt, sectionAmount):
-    """
-    Method for finding the locked Area of the function in the segment domain [startAt, endAt]
-
-    :param f: Our function
-    :param startAt: Left domain of the function
-    :param endAt: Right domain of the function
-    :param sectionAmount: The amount of section
-    :return: Interval value
-    """
-    # Calculating step size (gap)
-    h = abs(endAt - startAt) / sectionAmount
-
-    # Initialize the interval value
-    interval = f(startAt) + f(endAt)
-
-    # Calculate the rest of the interval value
-    for i in range(1, sectionAmount):
-        interval = interval + 2 * f(startAt + i * h)
-
-    # Return the area approximation value
-    return interval * h / 2
+    print(f'Sum Of Area --> {int(r[-1][-1] * 10 ** 5) / 10 ** 5}')
 
 
 # Our Program Driver
