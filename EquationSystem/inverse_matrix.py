@@ -84,7 +84,6 @@ def find_inverse(matrix):
 
         # if the pivot isn't one
         if matrix[i][i] != 1:
-
             # Building the elementary matrix in order to affect the inverse matrix
             elementary_matrix = build_elementary_matrix(len(matrix))
             elementary_matrix[i][i] = 1 / matrix[i][i]
@@ -96,7 +95,6 @@ def find_inverse(matrix):
         # if the column under the pivot isn't zero
         for j in range(i + 1, len(matrix)):
             if matrix[j][i] != 0:
-
                 # Building the elementary matrix in order to affect the inverse matrix
                 elementary_matrix = build_elementary_matrix(len(matrix))
                 elementary_matrix[j][i] = - matrix[j][i]
@@ -111,7 +109,6 @@ def find_inverse(matrix):
         # if the column above the pivot isn't zero
         for j in reversed(range(i)):
             if matrix[j][i] != 0:
-
                 # Building the elementary matrix in order to affect the inverse matrix
                 elementary_matrix = build_elementary_matrix(len(matrix))
                 elementary_matrix[j][i] = - matrix[j][i]
@@ -145,7 +142,8 @@ def find_final_solution(origin_matrix, origin_vector_b, vector_solution):
 
     # Update to the accurate solution
     for i in range(len(vector_solution)):
-        if abs(vector_solution[i][0] - round(vector_solution[i][0])) <= max(1e-09 * max(abs(vector_solution[i][0]), abs(round(vector_solution[i][0]))), 0):
+        if abs(vector_solution[i][0] - round(vector_solution[i][0])) <= max(
+                1e-09 * max(abs(vector_solution[i][0]), abs(round(vector_solution[i][0]))), 0):
             vector_solution[i][0] = round(vector_solution[i][0])
 
     # Return the final solution of the equation system
@@ -172,7 +170,8 @@ def calculate_determinant(matrix):
         sign = (-1) ** current_column
 
         # Calling the function recursively to get determinant value of sub matrix obtained
-        determinant_sub = calculate_determinant([row[: current_column] + row[current_column + 1:] for row in (matrix[: 0] + matrix[0 + 1:])])
+        determinant_sub = calculate_determinant(
+            [row[: current_column] + row[current_column + 1:] for row in (matrix[: 0] + matrix[0 + 1:])])
 
         # Adding the calculated determinant value of particular column to the total of determinant_sum
         determinant_sum = determinant_sum + (sign * matrix[0][current_column] * determinant_sub)
@@ -190,7 +189,8 @@ def build_system_equation(origin_matrix, origin_vector_b):
     :return: (N + 1)xN matrix
     """
     # Creating new double list to build the system equation
-    equation_system = [[origin_matrix[row][col] for col in range(len(origin_matrix[0]))] for row in range(len(origin_matrix))]
+    equation_system = [[origin_matrix[row][col] for col in range(len(origin_matrix[0]))] for row in
+                       range(len(origin_matrix))]
     [equation_system[row].append(origin_vector_b[row][0]) for row in range(len(origin_vector_b))]
 
     # Returning the built list
@@ -298,10 +298,9 @@ def multiply_matrices(matrix_a, matrix_b, is_to_save):
 
     # Saving the matrices in a file
     if is_to_save:
-
         # Global variable to follow the iteration calculation
         global PRINT_COUNTER
-        PRINT_COUNTER = PRINT_COUNTER + 1
+        PRINT_COUNTER += 1
 
         print_into_file(matrix_a, 'Elementary Matrix')
         print_into_file(matrix_b, 'Pre Multiply Matrix')
@@ -313,7 +312,6 @@ def multiply_matrices(matrix_a, matrix_b, is_to_save):
 
 # The Program Driver
 if __name__ == "__main__":
-
     # Reset the calculation file
     reset_file()
 
