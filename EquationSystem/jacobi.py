@@ -119,7 +119,8 @@ def calculate_determinant(matrix):
         sign = (-1) ** current_column
 
         # Calling the function recursively to get determinant value of sub matrix obtained
-        determinant_sub = calculate_determinant([row[: current_column] + row[current_column + 1:] for row in (matrix[: 0] + matrix[0 + 1:])])
+        determinant_sub = calculate_determinant(
+            [row[: current_column] + row[current_column + 1:] for row in (matrix[: 0] + matrix[0 + 1:])])
 
         # Adding the calculated determinant value of particular column to the total of determinant_sum
         determinant_sum = determinant_sum + (sign * matrix[0][current_column] * determinant_sub)
@@ -137,7 +138,8 @@ def build_system_equation(origin_matrix, origin_vector_b):
     :return: (N + 1)xN matrix
     """
     # Creating new double list to build the system equation
-    equation_system = [[origin_matrix[row][col] for col in range(len(origin_matrix[0]))] for row in range(len(origin_matrix))]
+    equation_system = [[origin_matrix[row][col] for col in range(len(origin_matrix[0]))] for row in
+                       range(len(origin_matrix))]
     [equation_system[row].append(origin_vector_b[row][0]) for row in range(len(origin_vector_b))]
 
     # Returning the built list
@@ -272,7 +274,7 @@ def find_machine_precision():
 
     # Loop to find the maximum precision of your machine
     while 1.0 + (computer_accuracy / 2) > 1.0:
-        computer_accuracy = computer_accuracy / 2
+        computer_accuracy /= 2
 
     # Return computer maximum precision
     return computer_accuracy
@@ -280,7 +282,6 @@ def find_machine_precision():
 
 # The Program Driver
 if __name__ == "__main__":
-
     # Reset the calculation file
     reset_file()
 
