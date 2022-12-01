@@ -58,12 +58,11 @@ def max_function_value(f, left_domain, right_domain):
 
     # Divide our function domain range into multiply domains with 0.1 range
     while left_domain < right_domain:
-
         # Update the maximum Y value of the function
         max_value = max(max_value, f(left_domain))
 
         # Update our domain for the next iteration
-        left_domain = left_domain + 0.1
+        left_domain += 0.1
 
     # Return the highest Y value in the function domain
     return max_value
@@ -90,13 +89,18 @@ def is_inserted_data_valid(f, left_domain, right_domain, section_amount):
         return False
 
     # if the section amount is greater than the maximum of section to be performed without losing information
-    max_section_amount = ((abs(right_domain - left_domain) ** 3 * max_function_value(f, left_domain, right_domain)) / (12 * solution_accuracy)) ** 0.5
+    max_section_amount = ((abs(right_domain - left_domain) ** 3 * max_function_value(f, left_domain, right_domain)) / (
+            12 * solution_accuracy)) ** 0.5
+
     if section_amount > max_section_amount:
         print(f'You Chose Too Many Section, The Upper Limit Is {int(max_section_amount)}')
         return False
 
     # if the section amount is lower than the minimum of section to be performed without losing information
-    min_section_amount = (abs(right_domain - left_domain) ** 5 * max_function_value(f.diff(x).diff(x).diff(x).diff(x), left_domain, right_domain) / (180 * solution_accuracy)) ** 0.25
+    min_section_amount = (abs(right_domain - left_domain) ** 5 * max_function_value(f.diff(x).diff(x).diff(x).diff(x),
+                                                                                    left_domain, right_domain) / (
+                                  180 * solution_accuracy)) ** 0.25
+
     if section_amount + 1 < min_section_amount:
         print(f'You Chose Below The Minimum Section, The Lower Limit Is {int(min_section_amount)}')
         return False
@@ -107,7 +111,6 @@ def is_inserted_data_valid(f, left_domain, right_domain, section_amount):
 
 # The Program Driver
 if __name__ == "__main__":
-
     # Input section
     x = sympy.symbols('x')
     function = sympy.sin(x)
