@@ -250,7 +250,7 @@ def print_into_file(data, message):
     :param message: Message is a string representing a message
     """
     # Open file and save the sent content
-    with open('Calculation.txt', 'a+') as file:
+    with open('..\\Calculation.txt', 'a+') as file:
 
         # if we sent a message
         if message:
@@ -274,7 +274,7 @@ def reset_file():
     Resetting the calculation file
 
     """
-    with open('Calculation.txt', 'w') as file:
+    with open('..\\Calculation.txt', 'w') as file:
         file.write('------------------------------ Inverse Matrix Method ------------------------------\n')
 
 
