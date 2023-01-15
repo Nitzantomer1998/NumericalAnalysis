@@ -150,7 +150,7 @@ def reset_file():
 
     """
     with open('..\\Calculation.txt', 'w') as file:
-        file.write('------------------------------- Trapezoidal Rule Method -------------------------------\n')
+        file.write('------------------------------- Simpson Rule Method -------------------------------\n')
         file.write('{: ^25}{: ^25}{: ^25}{: ^25}{: ^25}{: ^25}{: ^25}{: ^25}{: ^25}\n'.format('Interval_Start',
                                                                                               'f(Interval_Start)',
                                                                                               'Midpoint', 'f(Midpoint)',
