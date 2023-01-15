@@ -53,7 +53,6 @@ def root_finder(f, left_domain, right_domain, max_iteration_allowed):
 
             # if we found a root
             if abs(f(possible_root)) < solution_accuracy:
-
                 # Saving the root
                 print_into_file(None, f'Root --> {possible_root}    Iteration --> {iteration}')
 
@@ -61,7 +60,7 @@ def root_finder(f, left_domain, right_domain, max_iteration_allowed):
                 print(f'Root --> {possible_root}    Iteration --> {iteration}')
 
         # Updating the new domain for the next iteration
-        left_domain = left_domain + 0.1
+        left_domain += 0.1
 
 
 def bisection_method(f, left_domain, right_domain, max_iteration_allowed):
@@ -121,7 +120,7 @@ def print_into_file(data, message):
     :param message: Message is a string representing a message
     """
     # Open file and save the sent content
-    with open('Calculation.txt', 'a+') as file:
+    with open('..\\Calculation.txt', 'a+') as file:
 
         # if we sent a message
         if message:
@@ -140,14 +139,13 @@ def reset_file():
     Resetting the calculation file
 
     """
-    with open('Calculation.txt', 'w') as file:
+    with open('..\\Calculation.txt', 'w') as file:
         file.write('------------------------------- Bisection Method -------------------------------\n')
         file.write('{: ^25}{: ^25}{: ^25}\n'.format('Iteration', 'x', 'f(x)'))
 
 
 # The Program Driver
 if __name__ == "__main__":
-
     # Reset the calculation file
     reset_file()
 
