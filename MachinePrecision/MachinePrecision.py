@@ -14,13 +14,12 @@ def find_machine_precision():
 
     # Loop to find the maximum precision of your machine
     while 1.0 + (computer_accuracy / 2) > 1.0:
-
         # Printing the calculation into the calculation file
         print_into_file([loop_counter, computer_accuracy, '\\', 2, '=', computer_accuracy / 2], None)
 
         # Updating the computer accuracy value and the iteration number
-        computer_accuracy = computer_accuracy / 2
-        loop_counter = loop_counter + 1
+        computer_accuracy /= 2
+        loop_counter += 1
 
     # Saving the final machine precision value
     print_into_file(None, f'\nThis Machine Maximum Accuracy --> {computer_accuracy}')
@@ -37,7 +36,7 @@ def print_into_file(data, message):
     :param message: Message is a string representing a message
     """
     # Open file and save the sent content
-    with open('Calculation.txt', 'a+') as file:
+    with open('..\\Calculation.txt', 'a+') as file:
 
         # In case we sent a message
         if message:
@@ -59,14 +58,13 @@ def reset_file():
     Resetting the calculation file
 
     """
-    with open('Calculation.txt', 'w') as file:
+    with open('..\\Calculation.txt', 'w') as file:
         file.write('------------------------------- Machine Precision Method -------------------------------\n')
         file.write('{: ^25}Calculation\n'.format('Iteration'))
 
 
 # The Program Driver
 if __name__ == "__main__":
-
     # Reset the calculation file
     reset_file()
 
