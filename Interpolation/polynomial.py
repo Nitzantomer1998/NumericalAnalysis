@@ -31,6 +31,12 @@ def polynomial_interpolation_method(points_list, x_to_find):
     for i in range(len(vector_solution)):
         y_value = y_value + vector_solution[i][0] * (x_to_find ** i)
 
+        # Saving the calculation
+        print_into_file([i + 1, x_to_find, vector_solution[i][0], y_value], None)
+
+    # Saving the calculation
+    print_into_file(None, f'Point Approximation --> ({x_to_find}, {int(y_value * 10 ** 5) / 10 ** 5})')
+
     # Print the point approximation
     print(f'Point Approximation --> ({x_to_find}, {int(y_value * 10 ** 5) / 10 ** 5})')
 
@@ -211,7 +217,8 @@ def calculate_determinant(matrix):
         sign = (-1) ** current_column
 
         # Calling the function recursively to get determinant value of sub matrix obtained
-        determinant_sub = calculate_determinant([row[: current_column] + row[current_column + 1:] for row in (matrix[: 0] + matrix[0 + 1:])])
+        determinant_sub = calculate_determinant(
+            [row[: current_column] + row[current_column + 1:] for row in (matrix[: 0] + matrix[0 + 1:])])
 
         # Adding the calculated determinant value of particular column to the total of determinant_sum
         determinant_sum = determinant_sum + (sign * matrix[0][current_column] * determinant_sub)
@@ -229,7 +236,8 @@ def build_system_equation(origin_matrix, origin_vector_b):
     :return: (N + 1)xN matrix
     """
     # Creating new double list to build the system equation
-    equation_system = [[origin_matrix[row][col] for col in range(len(origin_matrix[0]))] for row in range(len(origin_matrix))]
+    equation_system = [[origin_matrix[row][col] for col in range(len(origin_matrix[0]))] for row in
+                       range(len(origin_matrix))]
     [equation_system[row].append(origin_vector_b[row][0]) for row in range(len(origin_vector_b))]
 
     # Returning the built list
@@ -321,8 +329,42 @@ def multiply_matrices(matrix_a, matrix_b):
     return matrix_c
 
 
+def print_into_file(data, message):
+    """
+    Printing the content into the calculation file
+
+    :param data: Data is a list representing matrix
+    :param message: Message is a string representing a message
+    """
+    # Open file and save the sent content
+    with open('..\\Calculation.txt', 'a+') as file:
+
+        # if we sent a message
+        if message:
+            file.write('\n{: ^25}\n'.format(message))
+            file.write('--------------------------------------------------------------------------------------------\n')
+
+        # if we sent a data
+        if data:
+            for i in range(len(data)):
+                file.write('{: ^25}'.format(float(data[i])))
+            file.write('\n')
+
+
+def reset_file():
+    """
+    Resetting the calculation file
+
+    """
+    with open('..\\Calculation.txt', 'w') as file:
+        file.write('------------------------------- Polynomial Interpolation Method -------------------------------\n')
+        file.write('{: ^25}{: ^25}{: ^25}{: ^25}\n'.format('Iteration', 'X', 'Coefficient', 'Y'))
+
+
 # The Program Driver
 if __name__ == "__main__":
+    # Reset the calculation file
+    reset_file()
 
     # Input section
     graph_points = [[0, 0], [1, 0.8415], [2, 0.9093], [3, 0.1411], [4, -0.7568], [5, -0.9589], [6, -0.2794]]
@@ -331,3 +373,4 @@ if __name__ == "__main__":
     # Running the program
     print('---------- Polynomial Interpolation Method ----------')
     polynomial_interpolation_method(graph_points, x_value)
+    print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
