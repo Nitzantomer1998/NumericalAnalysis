@@ -33,6 +33,15 @@ def romberg_method(f, left_domain, right_domain, section_amount):
         for j in range(i):
             r[i][j + 1] = (4 ** (j + 1) * r[i][j] - r[i - 1][j]) / (4 ** (j + 1) - 1)
 
+    # Save the calculation
+    for i in range(section_amount):
+        for j in range(i + 1):
+            trapezoidal_rule = trapezoidal_rule_method(f, left_domain, right_domain, 2 ** i)
+            print_into_file([i, j, trapezoidal_rule, r[i][j]], None)
+
+    # Save the area calculation
+    print_into_file(None, f'Sum Of Area --> {int(r[-1][-1] * 10 ** 5) / 10 ** 5}')
+
     # Print the area value
     print(f'Sum Of Area --> {int(r[-1][-1] * 10 ** 5) / 10 ** 5}')
 
@@ -45,20 +54,20 @@ def trapezoidal_rule_method(f, left_domain, right_domain, section_amount):
     :param left_domain: The domain start of the function
     :param right_domain: The domain end of the function
     :param section_amount: The amount of section
-    :return: The locked Area of the function in the sent segment domain [left_domain, right_domain]
     """
     # Calculating step size
     h = abs(right_domain - left_domain) / section_amount
 
     # Initialize the interval value
-    interval = f(left_domain) + f(right_domain)
+    interval = 0.5 * (f(left_domain) + f(right_domain))
 
-    # Calculate the rest of the interval value
-    for i in range(1, section_amount):
-        interval = interval + 2 * f(left_domain + i * h)
+    # Loop to calculate the trapezoid area
+    for i in range(1, section_amount + 1):
+        # Calculate the values for the current trapezoid
+        interval = interval + f(left_domain + i * h)
 
     # Return the area value
-    return h * interval / 2
+    return interval * h
 
 
 def max_function_value(f, left_domain, right_domain):
@@ -115,8 +124,44 @@ def is_inserted_data_valid(f, left_domain, right_domain, section_amount):
     return True
 
 
+def print_into_file(data, message):
+    """
+    Printing the content into the calculation file
+
+    :param data: Data is a list representing matrix
+    :param message: Message is a string representing a message
+    """
+    # Open file and save the sent content
+    with open('..\\Calculation.txt', 'a+') as file:
+
+        # if we sent a message
+        if message:
+            file.write('\n{: ^25}\n'.format(message))
+            file.write('--------------------------------------------------------------------------------------------\n')
+
+        # if we sent a data
+        if data:
+            for i in range(len(data)):
+                file.write('{: ^25}'.format(float(data[i])))
+            file.write('\n')
+
+
+def reset_file():
+    """
+    Resetting the calculation file
+
+    """
+    with open('..\\Calculation.txt', 'w') as file:
+        file.write('------------------------------- Romberg Method -------------------------------\n')
+        file.write('{: ^25}{: ^25}{: ^25}{: ^25}\n'.format('Iteration Number', 'Number of Sub-intervals',
+                                                           'Trapezoidal Rule Area', 'Romberg Area', ))
+
+
 # The Program Driver
 if __name__ == "__main__":
+    # Reset the calculation file
+    reset_file()
+
     # Input section
     x = sympy.symbols('x')
     function = sympy.sin(x)
