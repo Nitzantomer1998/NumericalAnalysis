@@ -1,5 +1,4 @@
 Machine Precision Folder Guide:
-- Text file --> The program calculation.
 - Python file --> The Machine Precision program.
 
 Explanation: 
