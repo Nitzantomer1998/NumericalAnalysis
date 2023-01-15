@@ -160,3 +160,5 @@ if __name__ == "__main__":
     # Running the program
     print('---------- Trapezoidal Rule Method ----------')
     trapezoidal_rule_method(function, domain_start, domain_end, section_divide)
+    print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
+
