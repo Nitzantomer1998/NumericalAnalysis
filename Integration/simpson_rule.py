@@ -24,9 +24,6 @@ def simpson_rule_method(f, left_domain, right_domain, section_amount):
     # Calculating step size
     h = abs(right_domain - left_domain) / section_amount
 
-    # Initialize the interval value
-    interval = f(left_domain) + f(right_domain)
-
     # Initialize the area summation
     area = 0
 
