@@ -25,16 +25,36 @@ def trapezoidal_rule_method(f, left_domain, right_domain, section_amount):
     h = abs(right_domain - left_domain) / section_amount
 
     # Initialize the interval value
-    interval = f(left_domain) + f(right_domain)
+    interval = 0.5 * (f(left_domain) + f(right_domain))
 
-    # Calculate the rest of the interval value
-    for i in range(1, section_amount):
-        interval = interval + 2 * f(left_domain + i * h)
+    # Loop to calculate the trapezoid area
+    for i in range(1, section_amount + 1):
+        # Calculate the values for the current trapezoid
+        interval_start_x = left_domain + (i - 1) * h
+        interval_start_y = f(interval_start_x)
+
+        interval_end_x = left_domain + i * h
+        interval_end_y = f(interval_end_x)
+
+        width = interval_end_x - interval_start_x
+        height = (interval_start_y + interval_end_y) / 2
+        area = width * height
+
+        # Save the calculation
+        print_into_file(
+            [interval_start_x, interval_start_y, interval_end_x, interval_end_y, width, height, area, interval * h],
+            None)
+
+        interval = interval + f(left_domain + i * h)
+
+    # Save the area
+    print_into_file(None, f'Sum Of Area --> {int(interval * h * 10 ** 5) / 10 ** 5}')
 
     # Print the area value
-    print(f'Sum Of Area --> {int(h / 2 * interval * 10 ** 5) / 10 ** 5}')
+    print(f'Sum Of Area --> {int(interval * h * 10 ** 5) / 10 ** 5}')
 
 
+# Other functions are the same as before
 def max_function_value(f, left_domain, right_domain):
     """
     Returning the highest Y value of the sent function in the sent domain
@@ -88,8 +108,47 @@ def is_inserted_data_valid(f, left_domain, right_domain, section_amount):
     return True
 
 
+def print_into_file(data, message):
+    """
+    Printing the content into the calculation file
+
+    :param data: Data is a list representing matrix
+    :param message: Message is a string representing a message
+    """
+    # Open file and save the sent content
+    with open('..\\Calculation.txt', 'a+') as file:
+
+        # if we sent a message
+        if message:
+            file.write('\n{: ^25}\n'.format(message))
+            file.write('--------------------------------------------------------------------------------------------\n')
+
+        # if we sent a data
+        if data:
+            for i in range(len(data)):
+                file.write('{: ^25}'.format(float(data[i])))
+            file.write('\n')
+
+
+def reset_file():
+    """
+    Resetting the calculation file
+
+    """
+    with open('..\\Calculation.txt', 'w') as file:
+        file.write('------------------------------- Trapezoidal Rule Method -------------------------------\n')
+        file.write(
+            '{: ^25}{: ^25}{: ^25}{: ^25}{: ^25}{: ^25}{: ^25}{: ^25}\n'.format('Interval_Start', 'f(Interval_Start)',
+                                                                                'Interval_End', 'f(Interval_End)',
+                                                                                'Interval Width', 'Interval Height',
+                                                                                'Trapezoid Area', 'Sum Area'))
+
+
 # The Program Driver
 if __name__ == "__main__":
+    # Reset the calculation file
+    reset_file()
+
     # Input section
     x = sympy.symbols('x')
     function = sympy.sin(x)
