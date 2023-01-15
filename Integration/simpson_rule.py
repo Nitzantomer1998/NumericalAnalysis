@@ -27,19 +27,35 @@ def simpson_rule_method(f, left_domain, right_domain, section_amount):
     # Initialize the interval value
     interval = f(left_domain) + f(right_domain)
 
-    # Calculate the rest of the interval value
-    for i in range(1, section_amount):
+    # Initialize the area summation
+    area = 0
 
-        # if the index is even
-        if i % 2 == 0:
-            interval = interval + 2 * f(i * h + left_domain)
+    # Loop to calculate the area
+    for i in range(1, section_amount + 1):
+        # Calculate the values for the current interval
+        interval_start_x = left_domain + (i - 1) * h
+        interval_start_y = f(interval_start_x)
 
-        # if the index is odd
-        else:
-            interval = interval + 4 * f(i * h + left_domain)
+        interval_end_x = left_domain + i * h
+        interval_end_y = f(interval_end_x)
+
+        mid_point_x = (interval_start_x + interval_end_x) / 2
+        mid_point_y = f(mid_point_x)
+
+        width = interval_end_x - interval_start_x
+        height = (interval_start_y + 4 * mid_point_y + interval_end_y) * h / 6
+        area += height
+
+        # Save the calculation
+        print_into_file(
+            [interval_start_x, interval_start_y, mid_point_x, mid_point_y, interval_end_x, interval_end_y, width,
+             height, area], None)
+
+    # Save the area
+    print_into_file(None, f'Sum Of Area --> {int(area * 10 ** 5) / 10 ** 5}')
 
     # Print the area value
-    print(f'Sum Of The Area --> {int(1 / 3 * h * interval * 10 ** 5) / 10 ** 5}')
+    print(f'Sum Of Area --> {int(area * 10 ** 5) / 10 ** 5}')
 
 
 def max_function_value(f, left_domain, right_domain):
@@ -109,8 +125,49 @@ def is_inserted_data_valid(f, left_domain, right_domain, section_amount):
     return True
 
 
+def print_into_file(data, message):
+    """
+    Printing the content into the calculation file
+
+    :param data: Data is a list representing matrix
+    :param message: Message is a string representing a message
+    """
+    # Open file and save the sent content
+    with open('..\\Calculation.txt', 'a+') as file:
+
+        # if we sent a message
+        if message:
+            file.write('\n{: ^25}\n'.format(message))
+            file.write('--------------------------------------------------------------------------------------------\n')
+
+        # if we sent a data
+        if data:
+            for i in range(len(data)):
+                file.write('{: ^25}'.format(float(data[i])))
+            file.write('\n')
+
+
+def reset_file():
+    """
+    Resetting the calculation file
+
+    """
+    with open('..\\Calculation.txt', 'w') as file:
+        file.write('------------------------------- Trapezoidal Rule Method -------------------------------\n')
+        file.write('{: ^25}{: ^25}{: ^25}{: ^25}{: ^25}{: ^25}{: ^25}{: ^25}{: ^25}\n'.format('Interval_Start',
+                                                                                              'f(Interval_Start)',
+                                                                                              'Midpoint', 'f(Midpoint)',
+                                                                                              'Interval_End',
+                                                                                              'f(Interval_End)',
+                                                                                              'Width', 'Height = Area',
+                                                                                              'Sum Area'))
+
+
 # The Program Driver
 if __name__ == "__main__":
+    # Reset the calculation file
+    reset_file()
+
     # Input section
     x = sympy.symbols('x')
     function = sympy.sin(x)
