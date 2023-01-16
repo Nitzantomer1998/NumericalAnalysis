@@ -44,7 +44,7 @@ def natural_cubic_spline_interpolation_method(points_list, x_to_find):
                 print('Error: Equation System Failed To Find A Solution')
                 return
 
-            # Setting the solution to start from index 1 insted of 0, for easier formula calculation
+            # Setting the solution to start from index 1 instead of 0, for easier formula calculation
             vector_solution.append([0])
             vector_solution.append([0])
 
@@ -52,7 +52,22 @@ def natural_cubic_spline_interpolation_method(points_list, x_to_find):
                 vector_solution[j] = vector_solution[j - 1]
 
             # The Y approximation value based on the x value
-            y_value = ((points_list[i + 1][0] - x_to_find) ** 3 * vector_solution[i][0] + (x_to_find - points_list[i][0]) ** 3 * vector_solution[i + 1][0]) / (6 * h[i]) + ((points_list[i + 1][0] - x_to_find) * points_list[i][1] + (x_to_find - points_list[i][0]) * points_list[i + 1][1]) / h[i] - (((points_list[i + 1][0] - x_to_find) * vector_solution[i][0] + (x_to_find - points_list[i][0]) * vector_solution[i + 1][0]) * h[i]) / 6
+            y_value = ((points_list[i + 1][0] - x_to_find) ** 3 * vector_solution[i][0] + (
+                        x_to_find - points_list[i][0]) ** 3 * vector_solution[i + 1][0]) / (6 * h[i]) + (
+                                  (points_list[i + 1][0] - x_to_find) * points_list[i][1] + (
+                                      x_to_find - points_list[i][0]) * points_list[i + 1][1]) / h[i] - (((points_list[
+                                                                                                              i + 1][
+                                                                                                              0] - x_to_find) *
+                                                                                                         vector_solution[
+                                                                                                             i][0] + (
+                                                                                                                     x_to_find -
+                                                                                                                     points_list[
+                                                                                                                         i][
+                                                                                                                         0]) *
+                                                                                                         vector_solution[
+                                                                                                             i + 1][
+                                                                                                             0]) * h[
+                                                                                                            i]) / 6
 
             # Print the point approximation
             print(f'Point Approximation --> ({x_to_find}, {int(y_value * 10 ** 5) / 10 ** 5})')
@@ -234,7 +249,8 @@ def calculate_determinant(matrix):
         sign = (-1) ** current_column
 
         # Calling the function recursively to get determinant value of sub matrix obtained
-        determinant_sub = calculate_determinant([row[: current_column] + row[current_column + 1:] for row in (matrix[: 0] + matrix[0 + 1:])])
+        determinant_sub = calculate_determinant(
+            [row[: current_column] + row[current_column + 1:] for row in (matrix[: 0] + matrix[0 + 1:])])
 
         # Adding the calculated determinant value of particular column to the total of determinant_sum
         determinant_sum = determinant_sum + (sign * matrix[0][current_column] * determinant_sub)
@@ -252,7 +268,8 @@ def build_system_equation(origin_matrix, origin_vector_b):
     :return: (N + 1)xN matrix
     """
     # Creating new double list to build the system equation
-    equation_system = [[origin_matrix[row][col] for col in range(len(origin_matrix[0]))] for row in range(len(origin_matrix))]
+    equation_system = [[origin_matrix[row][col] for col in range(len(origin_matrix[0]))] for row in
+                       range(len(origin_matrix))]
     [equation_system[row].append(origin_vector_b[row][0]) for row in range(len(origin_vector_b))]
 
     # Returning the built list
@@ -292,8 +309,8 @@ def build_data_table(points_list):
         lam.append(h[i] / (h[i - 1] + h[i]))
         u.append(1 - lam[i])
         d.append(6 / (h[i - 1] + h[i]) * (
-                    (points_list[i + 1][1] - points_list[i][1]) / h[i] - (points_list[i][1] - points_list[i - 1][1]) /
-                    h[i - 1]))
+                (points_list[i + 1][1] - points_list[i][1]) / h[i] - (points_list[i][1] - points_list[i - 1][1]) / h[
+            i - 1]))
 
     # Initialize the last index of the array to zero (for easier adjustment)
     h.append(0)
@@ -378,7 +395,6 @@ def multiply_matrices(matrix_a, matrix_b):
 
 # The Program Driver
 if __name__ == "__main__":
-
     # Input section
     graph_points = [[0, 0], [1, 0.8415], [2, 0.9093], [3, 0.1411], [4, -0.7568], [5, -0.9589], [6, -0.2794]]
     x_value = 2.5
