@@ -15,6 +15,9 @@ def lagrange_interpolation_method(points_list, x_to_find):
     # The Y approximation value based on the x value
     y_value = 0
 
+    # The accurate rate of Y approximation
+    y_accurate = 0
+
     # Loop for calculating the Y approximation value
     for i in range(len(points_list)):
 
@@ -28,6 +31,15 @@ def lagrange_interpolation_method(points_list, x_to_find):
 
         # Calculate the approximation of Y in the current I iteration
         y_value = y_value + l * points_list[i][1]
+
+        # Calculate the accurate rate of Y approximation
+        y_accurate = y_accurate + l
+
+        # Save the calculation
+        print_into_file([i + 1, x_to_find, y_value, y_accurate], None)
+
+    # Save the calculation
+    print_into_file(None, f'Point Approximation --> ({x_to_find}, {int(y_value * 10 ** 5) / 10 ** 5})')
 
     # Print the point approximation
     print(f'Point Approximation --> ({x_to_find}, {int(y_value * 10 ** 5) / 10 ** 5})')
@@ -55,9 +67,43 @@ def is_inserted_data_valid(points_list, x_to_find):
     return True
 
 
+def print_into_file(data, message):
+    """
+    Printing the content into the calculation file
+
+    :param data: Data is a list representing matrix
+    :param message: Message is a string representing a message
+    """
+    # Open file and save the sent content
+    with open('..\\Calculation.txt', 'a+') as file:
+
+        # if we sent a message
+        if message:
+            file.write('\n{: ^25}\n'.format(message))
+            file.write('--------------------------------------------------------------------------------------------\n')
+
+        # if we sent a data
+        if data:
+            for i in range(len(data)):
+                file.write('{: ^25}'.format(float(data[i])))
+            file.write('\n')
+
+
+def reset_file():
+    """
+    Resetting the calculation file
+
+    """
+    with open('..\\Calculation.txt', 'w') as file:
+        file.write('------------------------------- Lagrange Interpolation Method -------------------------------\n')
+        file.write('{: ^25}{: ^25}{: ^25}{: ^25}\n'.format('Iteration', 'X', 'Y', 'Y Accurate Rate'))
+
+
 # The Program Driver
 if __name__ == "__main__":
-    
+    # Reset the calculation file
+    reset_file()
+
     # Input section
     graph_points = [[0, 0], [1, 0.8415], [2, 0.9093], [3, 0.1411], [4, -0.7568], [5, -0.9589], [6, -0.2794]]
     x_value = 2.5
@@ -65,3 +111,4 @@ if __name__ == "__main__":
     # Running the program
     print('---------- Lagrange Interpolation Method ----------')
     lagrange_interpolation_method(graph_points, x_value)
+    print('\n\nCalculation Is Done, Check File "Calculation" For More Information')
