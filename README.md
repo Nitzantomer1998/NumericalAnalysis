@@ -25,7 +25,7 @@ $ git clone https://github.com/Nitzantomer1998/NumericalAnalysis.git
   <li>Integration: Romberg, Simpson, Trapezoidal</li>
   <li>Interpolation: Natural Cubic Spline, Full Cubic Spline, Lagrange, Linear, Neville, Polynomial</li>
   <li>Finite Arithmetic: Machine precision</li>
-  <li>Root-finding: Bisection, Newton Raphson, Secant</li>
+  <li>Root Finding: Bisection, Newton Raphson, Secant</li>
 </ul>
 
 <h2>Limitations</h2>
