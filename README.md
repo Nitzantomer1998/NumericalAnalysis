@@ -18,7 +18,7 @@
 <ol>
    <li>
       Clone or download the repository to your local machine
-      <pre>$ git clone https://github.com/Nitzantomer1998/NumericalAnalysis.git</pre>
+      <pre><code>git clone https://github.com/Nitzantomer1998/NumericalAnalysis.git</code></pre>
   </li>
    <li>Open the project in your preferred IDE</li>
    <li>Import the desired algorithm and use it in your project</li>
