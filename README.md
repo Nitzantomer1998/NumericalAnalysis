@@ -12,6 +12,7 @@
 <h3>Prerequisites</h3>
 <ul>
    <li>Python 3.x</li>
+   <li>Python IDE</li>
 </ul>
 
 <h3>Installation</h3>
